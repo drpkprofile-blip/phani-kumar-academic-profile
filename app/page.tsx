@@ -383,7 +383,7 @@ export default function Home() {
                 <p>{item.field}</p>
 
                 {item.detail && <p>{item.detail}</p>}
-                {item.marks && <p className="marks">{item.marks}</p>}
+                
 
                 <div className="proof-row">
                   <ExternalLink url={item.proof}>Proof</ExternalLink>
