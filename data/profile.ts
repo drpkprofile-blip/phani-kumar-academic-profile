@@ -16,7 +16,7 @@ export const profile = {
 
   lastName: "Kumar Simhadri",
 
-  qualifications: "B. Tech., M.E., M. Tech (AI-ML), PhD.",
+  qualifications: "B. Tech.[Mech], M.E.[CAD/CAM], M. Tech (AI-ML), PhD[AU].",
 
   designation: "Assistant Professor",
 
@@ -89,11 +89,17 @@ export const profile = {
     },
   ] satisfies ProfileLink[],
 
+  youtubeChannel: {
+    title: "Code & CAD with PK",
+    href: "https://youtube.com/@codeandcadwithpk?si=vaESyvrIBw5tMVYi",
+    image: "/youtube-channel-logo.png",
+  },
+
   technicalTools: [
     "Python Programming",
     "SOLID WORKS",
     "ANSYS",
-    "AUTO CAD",
+    "AUTO CAD", 
   ],
 
   skills: [

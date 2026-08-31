@@ -54,7 +54,7 @@ const education = [
       "https://drive.google.com/file/d/1zV9opR7XI6RlbW_fppAqsIyrvG3e_jID/view?usp=drive_link",
   },
   {
-    year: "2007–2009",
+    year: "2010",
     degree: "Master of Engineering",
     institution: "GITAM Engineering College",
     field: "CAD/CAM",
@@ -62,10 +62,10 @@ const education = [
       "https://drive.google.com/file/d/1zV9opR7XI6RlbW_fppAqsIyrvG3e_jID/view?usp=drive_link",
     marksProof:
       "https://drive.google.com/file/d/11Z8AnTyeOosboc7Goq1L43miUQL4xqAl/view?usp=drive_link",
-    marks: "7.92 CGPA",
+    
   },
   {
-    year: "2001–2005",
+    year: "2005",
     degree: "Bachelor of Technology",
     institution: "SISTAM Engineering College, Srikakulam",
     field: "Mechanical Engineering",
@@ -73,10 +73,10 @@ const education = [
       "https://drive.google.com/file/d/1Y9KTMP0Ku-hv7BsPXQbXmxZQlFMoPTB/view?usp=drive_link",
     marksProof:
       "https://drive.google.com/file/d/1VI6zDS6c45rjbBvI1-lcno05B2XhgnRC/view?usp=drive_link",
-    marks: "67.72%",
+    
   },
   {
-    year: "1998–2000",
+    year: "2000",
     degree: "Intermediate",
     institution: "BVK Junior College, Visakhapatnam",
     field: "M.P.C",
@@ -282,11 +282,11 @@ export default function Home() {
 
             <div className="hero-stats">
               <div>
-                <strong>{publicationCount}+</strong>
+                <strong>40+</strong>
                 <span>PUBLICATIONS</span>
               </div>
               <div>
-                <strong>{peerReviewCount}</strong>
+                <strong>16+</strong>
                 <span>PEER REVIEWS</span>
               </div>
               <div>
@@ -334,6 +334,24 @@ export default function Home() {
                 ) : null
               )}
             </div>
+
+            <a
+              className="youtube-channel"
+              href={profile.youtubeChannel.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={profile.youtubeChannel.title}
+            >
+              <img
+                src={profile.youtubeChannel.image}
+                alt="Code & CAD with PK YouTube channel"
+              />
+              <span className="youtube-channel-text">
+                <strong>Code &amp; CAD with PK</strong>
+                <small>YouTube Channel</small>
+              </span>
+              <span className="youtube-arrow">↗</span>
+            </a>
           </aside>
         </div>
       </section>
@@ -356,9 +374,7 @@ export default function Home() {
             {education.map((item, index) => (
               <article className="education-card" key={`${item.degree}-${index}`}>
                 <div className="card-topline">
-                  <span className="card-number">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                  
                   <span className="card-year">{item.year}</span>
                 </div>
 
