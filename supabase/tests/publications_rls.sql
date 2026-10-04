@@ -12,7 +12,8 @@ insert into private.publications_admins (user_id)
 values ('00000000-0000-0000-0000-000000000001');
 insert into public.publications (id, title, year, journal, display_order)
 values (-1, 'RLS test fixture — not a real publication', '2026', 'Test only', 1000000);
-insert into public.publication_settings (hero_publications) values ('40+');
+insert into public.publication_settings (hero_publications) values ('40+')
+on conflict (id) do update set hero_publications = excluded.hero_publications;
 
 set local role anon;
 select is((select count(*)::integer from public.publications where id = -1), 1, 'Visitors can read publications');

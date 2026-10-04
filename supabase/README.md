@@ -23,9 +23,11 @@ Official references checked before implementation:
 ## Database
 
 The migration creates empty `publications`, singleton `publication_settings`,
-and protected `private.publications_admins` tables. It has not been applied to a
-remote project. It contains no publication seed, counter seed, or admin UUID.
-Deployment and data migration are separate later phases.
+and protected `private.publications_admins` tables. It was applied to the linked
+`phani-kumar-portfolio` project in Phase 2B. The migration contains no publication
+seed, counter seed, or admin UUID. Phase 2B separately initialized the independent
+setting to `40+`; publications and persistent admin membership remain empty.
+See `PHASE2B.md` for validation results. Publication migration is a later phase.
 
 Only a trusted database operator may provision or revoke admin membership by
 writing the verified Auth user UUID into `private.publications_admins`. There is
@@ -36,7 +38,7 @@ Public readers have SELECT only. Authenticated non-admin users can read but RLS
 rejects inserts and filters out rows for update/delete. Admins can mutate both
 public tables. Reordering is an admin UPDATE, with a deferrable unique ordering
 constraint for future atomic swaps. A transactional reorder action/RPC belongs
-to Phase 2B; none is exposed yet.
+to the later admin implementation; none is exposed yet.
 
 `source_order` is nullable for future manually added records. `display_order` is
 required, positive, and unique. Missing optional metadata is SQL NULL. A future
@@ -45,10 +47,10 @@ The independent hero counter is text and must later be seeded as `40+` without
 deriving it from the publication count. Original journal/details text remains
 verbatim. Google Scholar is the completeness reference; imports remain manual.
 
-Before enabling database-backed reads/writes, apply the migration to a test
-Supabase database and execute the RLS regression SQL in `tests/`. Then regenerate
-the handwritten database types from the actual schema and verify the imported
-37-record dataset and unchanged public rendering separately.
+The RLS regression SQL in `tests/` has passed against the connected database.
+Before enabling database-backed public reads/writes, regenerate the handwritten
+database types from the actual schema and verify the later imported 37-record
+dataset and unchanged public rendering separately.
 
 Local helper tests: `node --test tests/supabase-foundation.test.mjs`.
 Database tests: `supabase test db` in a disposable Supabase test project after
