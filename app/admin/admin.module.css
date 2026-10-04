@@ -3,9 +3,33 @@
 .panel h1 { color: var(--white); margin: 0 0 24px; }
 .form { display: grid; gap: 16px; }
 .field { display: grid; gap: 6px; }
-.field input { width: 100%; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--white); font: inherit; }
+.field input, .field textarea, .field select { width: 100%; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--white); font: inherit; }
 .button { padding: 12px 18px; border: 0; border-radius: 8px; background: var(--teal); color: var(--bg); cursor: pointer; font: inherit; font-weight: 700; }
 .button:focus-visible, .field input:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
 .message { color: var(--text); }
 .email { overflow-wrap: anywhere; }
 .module { margin: 24px 0; padding: 16px; border: 1px solid var(--border); border-radius: 8px; }
+.management { max-width: 1100px; }
+.editor { max-width: 720px; }
+.toolbar, .controls, .reorder, .counterForm { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.toolbar { justify-content: space-between; margin: 24px 0; }
+.controls { margin-top: 16px; }
+.reorder { margin-left: auto; }
+.reorder input { width: 72px; padding: 8px; color: var(--white); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font: inherit; }
+.counterForm { margin-top: 24px; align-items: end; }
+.counterForm .field { flex: 1; min-width: 180px; }
+.secondary, .danger { display: inline-block; border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; font: inherit; cursor: pointer; background: var(--bg-soft); color: var(--white); }
+.danger { color: #ffb3b3; border-color: #b96060; }
+.secondary:focus-visible, .danger:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+.button:disabled, .secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+.list { display: grid; gap: 20px; }
+.record { padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-soft); overflow-wrap: anywhere; }
+.record h3 { color: var(--white); font-size: 1.05rem; line-height: 1.5; margin: 12px 0; }
+.record summary { cursor: pointer; color: var(--teal); }
+.record details a { color: var(--teal); text-decoration: underline; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.8rem; }
+.badges span { padding: 4px 8px; background: var(--card-2); border-radius: 6px; }
+.error { color: #ffb3b3; }
+.success { color: var(--teal); }
+.note { color: var(--muted); font-size: 0.9rem; }
+@media (max-width: 600px) { .shell { padding: 24px 12px; } .panel { padding: 20px; } .reorder { margin-left: 0; width: 100%; } }

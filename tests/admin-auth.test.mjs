@@ -134,18 +134,25 @@ test("login UI has password sign-in only; no public signup route or signup actio
   assert.ok(!unknownError.includes('role="alert"'));
 });
 
-test("protected dashboard renders only the verified email and placeholder, without CRUD", async () => {
+test("protected dashboard renders the verified email, Publications controls and logout", async () => {
   let checks = 0;
+  const supabase = { from(table) { assert.ok(["publications", "publication_settings"].includes(table)); return { select() { return {
+    order: async () => ({ data: [], error: null }),
+    eq: () => ({ single: async () => ({ data: { hero_publications: "40+" }, error: null }) }),
+  }; } }; } };
   const Page = loadModule("app/admin/page.tsx", {
-    "../../lib/auth/admin-page": { requireAdminPage: async () => { checks++; return { user: { email: "admin@example.com" } }; } },
+    "../../lib/auth/admin-page": { requireAdminPage: async () => { checks++; return { user: { email: "admin@example.com" }, supabase }; } },
     "./actions": { logout: async () => {} },
+    "./publications/actions": { movePublication: async () => {}, updateHeroCounter: async () => {} },
     "./admin.module.css": { default: {} },
   }).default;
-  const html = renderToStaticMarkup(await Page());
+  const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({}) }));
   assert.equal(checks, 1);
   assert.ok(html.includes("Admin Dashboard"));
   assert.ok(html.includes("admin@example.com"));
-  assert.ok(html.includes("Publications module"));
+  assert.ok(html.includes("Publications (0)"));
+  assert.ok(html.includes("Add publication"));
+  assert.ok(html.includes("View public website"));
+  assert.ok(html.includes("Google Scholar reference"));
   assert.ok(html.includes("Logout"));
-  assert.ok(!/Add publication|Edit|Delete|Reorder/i.test(html));
 });

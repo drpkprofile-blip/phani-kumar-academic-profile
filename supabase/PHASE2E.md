@@ -56,10 +56,11 @@ the selected UUID, 37 publications and independent hero counter `40+`.
   followed by denied access, cookie chunks, remote logout failure and no signup UI.
 - Production HTTP checks passed for anonymous and forged-cookie redirects, no
   dashboard content leak, no-store headers, password login and no signup route.
-- The real first-admin password login is a private browser handoff. Automated
-  login/logout coverage uses isolated Auth/cookie doubles; it does not access the
-  account's password. The direct first-admin browser sign-in/logout check is
-  pending private password entry, and is not represented as an observed success.
+- The initial real-account browser check was pending at the Phase 2E checkpoint.
+  During Phase 2F verification, the real allowlisted account successfully loaded
+  the protected dashboard; Logout returned to login, and reopening `/admin` in
+  that same browser redirected to login. The live check is now complete. The
+  password was entered privately and was never accessed by the test tooling.
 - Real anonymous public reads and production public markup still match Phase 2C.
 - Lint, TypeScript and production build passed. Only the two existing public-page
   image lint warnings remain.

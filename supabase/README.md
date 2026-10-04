@@ -2,8 +2,9 @@
 
 The public Publications section and its independent hero counter now read
 Supabase server-side. Other sections still read committed `data/` files.
-Phase 2E adds `/admin/login` and an allowlist-protected `/admin` placeholder.
-No publication CRUD or Google Scholar scraping exists. See `PHASE2E.md`.
+Phase 2E adds `/admin/login`; Phase 2F replaces the allowlist-protected `/admin`
+placeholder with Publications management. No other admin module or Google Scholar
+scraping exists. See `PHASE2E.md` and `PHASE2F.md`.
 Phase 2C imported only the existing 37 committed publication records.
 
 ## Integration
@@ -41,8 +42,9 @@ management function. Membership must never be exposed as an admin-editable table
 Public readers have SELECT only. Authenticated non-admin users can read but RLS
 rejects inserts and filters out rows for update/delete. Admins can mutate both
 public tables. Reordering is an admin UPDATE, with a deferrable unique ordering
-constraint for future atomic swaps. A transactional reorder action/RPC belongs
-to the later admin implementation; none is exposed yet.
+constraint for atomic swaps. Phase 2F exposes three SECURITY INVOKER management
+RPCs for save, confirmed delete and transactional reorder. They independently
+check the private admin allowlist and retain existing RLS enforcement.
 
 `source_order` is nullable for future manually added records. `display_order` is
 required, positive, and unique. Missing optional metadata is SQL NULL. A future

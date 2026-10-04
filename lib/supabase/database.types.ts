@@ -91,6 +91,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_publication: {
+        Args: {
+          p_confirmed: boolean
+          p_expected_updated_at: string
+          p_id: number
+        }
+        Returns: number
+      }
+      admin_move_publication: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
+      admin_save_publication: {
+        Args: {
+          p_expected_updated_at?: string
+          p_id?: number
+          p_publication?: Json
+        }
+        Returns: number
+      }
       is_publications_admin: { Args: never; Returns: boolean }
     }
     Enums: {
