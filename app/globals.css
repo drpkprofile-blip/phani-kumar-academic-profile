@@ -691,6 +691,17 @@ main {
   border-color: var(--border-strong);
 }
 
+.identity-socials .citations-link {
+  color: var(--teal);
+  border-color: var(--border-strong);
+  font-weight: 700;
+}
+
+.identity-socials .citations-link:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
 /* ---------- RESEARCH ---------- */
 
 .research-grid {

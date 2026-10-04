@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Google Scholar Citations
+
+The Citations button in Research Profile → Connect & Research opens the citation
+table and graph screenshot in a new tab, where the browser supports image zoom.
+The screenshot was captured from the linked Google Scholar profile on 4 October 2026.
+
+To update it, replace only `public/google-scholar-citations.jpg` with the new JPEG
+screenshot using the same filename. No code changes are needed. Rebuild and
+redeploy the site to update an existing production deployment.
+
+Validation: `npm run lint`, `npx tsc --noEmit`, and `npm run build`.
+
 ## Getting Started
 
 First, run the development server:

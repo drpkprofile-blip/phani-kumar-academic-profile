@@ -436,6 +436,16 @@ export default function Home() {
               </div>
 
               <div className="identity-socials">
+                <a
+                  href="/google-scholar-citations.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="citations-link"
+                  aria-label="Citations: open Google Scholar citation screenshot in a new tab"
+                  title="View Google Scholar citation table and graph"
+                >
+                  Citations ↗
+                </a>
                 {profile.profileLinks.map((link) =>
                   link.href ? (
                     <a
