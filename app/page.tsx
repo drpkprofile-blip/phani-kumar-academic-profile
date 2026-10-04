@@ -7,11 +7,7 @@ import { peerReviews } from "../data/peer-reviews";
 import { counters, recordCounts } from "../data/counters";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
-import {
-  activities,
-  activityTypes,
-  activityYears,
-} from "../data/activities";
+import { getPublicActivities } from "../lib/activities";
 import { certifications } from "../data/certifications";
 import { profile } from "../data/profile";
 
@@ -62,6 +58,7 @@ function PublicationPdfLink({
 
 export default async function Home() {
   const { publications: sortedPublications, heroPublications } = await getPublicPublications();
+  const { activities, activityTypes, activityYears } = await getPublicActivities();
 
   return (
     <main id="top">
@@ -403,7 +400,7 @@ export default async function Home() {
               <p>{pageCopy.activitiesDescription}</p>
             </div>
             <div className="big-stat">
-              <strong>{recordCounts.activities}</strong>
+              <strong>{activities.length}</strong>
               <span>{pageCopy.academicActivities}</span>
             </div>
           </div>
