@@ -5,7 +5,7 @@ export async function proxy(request: NextRequest) {
   return updateSession(request);
 }
 
-// Only future authentication/admin routes; public pages and assets are excluded.
+// Authentication/admin routes only; public pages and assets are excluded.
 export const config = {
   matcher: ["/admin/:path*", "/auth/:path*"],
 };

@@ -1,0 +1,11 @@
+.shell { min-height: 100vh; padding: 64px 24px; display: grid; place-items: center; }
+.panel { width: 100%; max-width: 480px; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
+.panel h1 { color: var(--white); margin: 0 0 24px; }
+.form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field input { width: 100%; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--white); font: inherit; }
+.button { padding: 12px 18px; border: 0; border-radius: 8px; background: var(--teal); color: var(--bg); cursor: pointer; font: inherit; font-weight: 700; }
+.button:focus-visible, .field input:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+.message { color: var(--text); }
+.email { overflow-wrap: anywhere; }
+.module { margin: 24px 0; padding: 16px; border: 1px solid var(--border); border-radius: 8px; }

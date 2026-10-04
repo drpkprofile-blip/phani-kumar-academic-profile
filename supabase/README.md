@@ -1,8 +1,9 @@
 # Publications foundation — Phase 2A
 
 The public Publications section and its independent hero counter now read
-Supabase server-side. Other sections still read committed `data/` files. No login
-pages, admin UI, or Google Scholar scraping exist.
+Supabase server-side. Other sections still read committed `data/` files.
+Phase 2E adds `/admin/login` and an allowlist-protected `/admin` placeholder.
+No publication CRUD or Google Scholar scraping exists. See `PHASE2E.md`.
 Phase 2C imported only the existing 37 committed publication records.
 
 ## Integration

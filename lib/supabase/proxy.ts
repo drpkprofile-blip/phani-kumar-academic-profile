@@ -4,7 +4,7 @@ import { getSupabaseConfig } from "./config";
 import type { Database } from "./database.types";
 
 export async function updateSession(request: NextRequest) {
-  // No project is needed to build or serve the current static website.
+  // Unconfigured builds remain usable; admin pages independently deny access.
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     return NextResponse.next({ request });
   }
@@ -12,6 +12,7 @@ export async function updateSession(request: NextRequest) {
   const { url, publishableKey } = getSupabaseConfig();
   let response = NextResponse.next({ request });
   const supabase = createServerClient<Database>(url, publishableKey, {
+    cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" },
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll(cookiesToSet, headers) {
