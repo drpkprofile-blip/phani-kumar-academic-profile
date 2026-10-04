@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import nextEnv from "@next/env";
+import { createClient } from "@supabase/supabase-js";
+import { root } from "./publication-seed.mjs";
+import { mapActivities, readCommittedActivities } from "./activity-seed.mjs";
+
+nextEnv.loadEnvConfig(root);
+assert.ok(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.startsWith("sb_publishable_"));
+const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+const source = readCommittedActivities();
+const expected = mapActivities(source.activities);
+const result = await client.from("activities").select(Object.keys(expected[0]).join(",")).order("id");
+assert.ifError(result.error);
+assert.deepEqual(result.data,expected,"All 46 rows and every field must match committed source");
+assert.equal(new Set(result.data.map(a=>a.id)).size,46);
+const missing = Object.fromEntries(["date_text","duration_text","details","proof_url"].map(k=>[k,result.data.filter(a=>a[k]===null).length]));
+assert.deepEqual(missing,{date_text:5,duration_text:8,details:35,proof_url:45});
+const counts = Object.fromEntries(source.categories.map(t=>[t,result.data.filter(a=>a.activity_type===t).length]));
+assert.deepEqual(Object.values(counts),[6,13,1,2,10,5,3,3,1,1,1]);
+assert.equal(new Set(result.data.map(a=>`${a.year}:${a.display_order}`)).size,46);
+assert.ok(result.data.every(a=>a.display_order>0));
+const visible = await client.from("activities").select("id,year,display_order").order("year",{ascending:false}).order("display_order");
+assert.ifError(visible.error);
+assert.deepEqual(visible.data.map(a=>a.id),[...expected].sort((a,b)=>Number(b.year)-Number(a.year)||a.display_order-b.display_order).map(a=>a.id));
+const categories = await client.from("activity_categories").select("label,display_order").order("display_order");
+assert.ifError(categories.error);
+assert.deepEqual(categories.data,source.categories.map((label,i)=>({label,display_order:i+1})));
+console.log(JSON.stringify({verifiedRows:46,fieldsPerRow:Object.keys(expected[0]).length,mismatches:0,categoryCounts:counts,missingValues:missing,proofsPopulated:1,ordering:"Exact year groups and within-year source order"},null,2));
