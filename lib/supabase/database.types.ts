@@ -14,6 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_type: string
+          created_at: string
+          date_text: string | null
+          details: string | null
+          display_order: number
+          duration_text: string | null
+          id: number
+          institution: string
+          proof_url: string | null
+          source_order: number | null
+          title: string
+          updated_at: string
+          year: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          date_text?: string | null
+          details?: string | null
+          display_order: number
+          duration_text?: string | null
+          id?: number
+          institution: string
+          proof_url?: string | null
+          source_order?: number | null
+          title: string
+          updated_at?: string
+          year: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          date_text?: string | null
+          details?: string | null
+          display_order?: number
+          duration_text?: string | null
+          id?: number
+          institution?: string
+          proof_url?: string | null
+          source_order?: number | null
+          title?: string
+          updated_at?: string
+          year?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_activity_type_fkey"
+            columns: ["activity_type"]
+            isOneToOne: false
+            referencedRelation: "activity_categories"
+            referencedColumns: ["label"]
+          },
+        ]
+      }
+      activity_categories: {
+        Row: {
+          created_at: string
+          display_order: number
+          label: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order: number
+          label: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          label?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       publication_settings: {
         Row: {
           created_at: string
