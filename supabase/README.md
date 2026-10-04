@@ -1,7 +1,8 @@
 # Publications foundation — Phase 2A
 
-The public website still reads the committed `data/` files. No login pages,
-admin UI, public website database reads, or Google Scholar scraping exist.
+The public Publications section and its independent hero counter now read
+Supabase server-side. Other sections still read committed `data/` files. No login
+pages, admin UI, or Google Scholar scraping exist.
 Phase 2C imported only the existing 37 committed publication records.
 
 ## Integration
@@ -13,8 +14,9 @@ Next.js 16.3.3 uses `proxy.ts`, asynchronous `cookies()`, and cookie-based
 
 The configuration template is `.env.example`. The connected project's public URL
 and `sb_publishable_...` key belong in ignored `.env.local`. No privileged key is
-needed by this foundation. Client configuration is evaluated only when called,
-so the existing website builds without any Supabase environment values.
+needed by these public reads. When configuration is absent, the Publications read
+layer uses the committed reference data so builds/tests remain usable. Configured
+reads never silently fall back on database errors. See `PHASE2D.md`.
 
 Official references checked before implementation:
 - https://supabase.com/docs/guides/auth/server-side/creating-a-client
@@ -49,10 +51,9 @@ deriving it from the publication count. Original journal/details text remains
 verbatim. Google Scholar is the completeness reference; imports remain manual.
 
 The RLS regression SQL in `tests/` has passed against the connected database.
-Before enabling database-backed public reads/writes, regenerate the handwritten
-database types from the actual schema and verify the later imported 37-record
-dataset and unchanged public rendering separately. Phase 2C already verifies the
-database dataset against every field of the committed source.
+Phase 2D regenerated database types from the actual public schema and verified
+anonymous reads and unchanged rendering against all 37 committed records.
+Phase 2C verifies the database dataset against every field of the committed source.
 
 Local helper tests: `node --test tests/supabase-foundation.test.mjs`.
 Database tests: `supabase test db` in a disposable Supabase test project after

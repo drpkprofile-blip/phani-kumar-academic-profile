@@ -6,7 +6,7 @@ import { achievements } from "../data/achievements";
 import { peerReviews } from "../data/peer-reviews";
 import { counters, recordCounts } from "../data/counters";
 import { pageCopy, pageLinks } from "../data/page-content";
-import { publications } from "../data/publications";
+import { getPublicPublications } from "../lib/publications";
 import {
   activities,
   activityTypes,
@@ -60,10 +60,8 @@ function PublicationPdfLink({
   );
 }
 
-export default function Home() {
-  const sortedPublications = [...publications].sort(
-    (a, b) => Number(b.year) - Number(a.year) || a.id - b.id
-  );
+export default async function Home() {
+  const { publications: sortedPublications, heroPublications } = await getPublicPublications();
 
   return (
     <main id="top">
@@ -111,7 +109,7 @@ export default function Home() {
 
             <div className="hero-stats">
               <div>
-                <strong>{counters.heroPublications}</strong>
+                <strong>{heroPublications}</strong>
                 <span>{pageCopy.publicationsLabel}</span>
               </div>
               <div>
@@ -341,7 +339,7 @@ export default function Home() {
               <p>{pageCopy.publicationsDescription}</p>
             </div>
             <div className="big-stat">
-              <strong>{recordCounts.publications}{pageCopy.counterSuffix}</strong>
+              <strong>{sortedPublications.length}{pageCopy.counterSuffix}</strong>
               <span>{pageCopy.researchPublicationsLabel}</span>
             </div>
           </div>
