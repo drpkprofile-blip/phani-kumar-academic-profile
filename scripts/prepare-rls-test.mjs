@@ -7,10 +7,11 @@ const management = process.argv.includes("--management");
 const activities = process.argv.includes("--activities");
 const certifications = process.argv.includes("--certifications");
 const achievements = process.argv.includes("--achievements");
+const achievementManagement = process.argv.includes("--management") && achievements;
 const selected = [activities, certifications, achievements].filter(Boolean).length;
 if (selected > 1) throw new Error("Select only one RLS test module.");
 const testName = achievements
-  ? "achievements_rls"
+  ? achievementManagement ? "achievements_management" : "achievements_rls"
   : certifications
     ? management ? "certifications_management" : "certifications_rls"
     : activities

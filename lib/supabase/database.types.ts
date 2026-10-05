@@ -269,6 +269,18 @@ export type Database = {
         Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
         Returns: number
       }
+      admin_save_achievement: {
+        Args: { p_achievement?: Json; p_expected_updated_at?: string; p_id?: number }
+        Returns: number
+      }
+      admin_delete_achievement: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: number
+      }
+      admin_move_achievement: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
       admin_move_certification: {
         Args: { p_expected_order: number[]; p_id: number; p_position: number }
         Returns: undefined
