@@ -14,6 +14,7 @@ import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { formatAcademicDate } from "../lib/date-format";
+import ActivityBrowser from "./activity-browser";
 
 function ExternalLink({
   url,
@@ -422,75 +423,17 @@ export default async function Home() {
               <span>{pageCopy.academicActivities}</span>
             </div>
           </div>
-
-          <div className="activity-filter-note">
-            <span>{pageCopy.all}</span>
-            {activityTypes.map((type) => (
-              <span key={type}>{type.toUpperCase()}</span>
-            ))}
-          </div>
-
-          <div className="activity-years">
-            {activityYears.map((year) => {
-              const yearActivities = activities.filter(
-                (activity) => activity.year === year
-              );
-
-              return (
-                <div className="activity-year-block" key={year}>
-                  <div className="year-heading">
-                    <span>{year}</span>
-                    <small>{yearActivities.length}{pageCopy.activityCountSuffix}</small>
-                  </div>
-
-                  <div className="activity-grid">
-                    {yearActivities.map((activity, index) => (
-                      <article
-                        className="activity-card"
-                        key={`${year}-${activity.title}-${index}`}
-                      >
-                        <div className="activity-card-top">
-                          <span className="activity-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="activity-type">{activity.type}</span>
-                        </div>
-
-                        <h3>{activity.title}</h3>
-                        <p className="activity-institution">
-                          {activity.institution}
-                        </p>
-
-                        {activity.date && (
-                          <p className="activity-date">{activity.date}</p>
-                        )}
-
-                        {activity.duration && (
-                          <p className="activity-duration">
-                            {activity.duration}
-                          </p>
-                        )}
-
-                        {activity.details && (
-                          <p className="activity-details">
-                            {activity.details}
-                          </p>
-                        )}
-
-                        <div className="proof-row">
-                          {activity.proofUrl ? (
-                            <ExternalLink url={activity.proofUrl}>{pageCopy.certificateProof}</ExternalLink>
-                          ) : (
-                            <span className="link-pending">{pageCopy.proofLinkWillBeUpdatedSoon}</span>
-                          )}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <ActivityBrowser
+            activities={activities}
+            activityTypes={activityTypes}
+            activityYears={activityYears}
+            labels={{
+              all: pageCopy.all,
+              activityCountSuffix: pageCopy.activityCountSuffix,
+              certificateProof: pageCopy.certificateProof,
+              proofLinkWillBeUpdatedSoon: pageCopy.proofLinkWillBeUpdatedSoon,
+            }}
+          />
         </div>
       </section>
 

@@ -35,7 +35,7 @@ export default async function AdminProfileSettings({ searchParams }: { searchPar
     <section className={styles.module} aria-labelledby="profile-photo-title">
       <h2 id="profile-photo-title">Profile photo</h2>
       <p>Current photo: <a href={profile.photo} target="_blank" rel="noopener noreferrer">View image</a></p>
-      <form action={uploadProfilePhoto} className={styles.form} encType="multipart/form-data">
+      <form action={uploadProfilePhoto} className={styles.form}>
         <label className={styles.field} htmlFor="profile-photo-upload">Upload replacement (PNG, JPEG or WebP; max 8 MB)
           <input id="profile-photo-upload" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required />
         </label>

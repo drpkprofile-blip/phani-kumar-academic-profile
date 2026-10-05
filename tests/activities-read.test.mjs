@@ -26,7 +26,12 @@ test("Activities queries enforce year/position and category order; exact baselin
     const helper=reader();const data=await helper.getPublicActivities();
     assert.deepEqual(helper.calls,["activities",["activities","year",{ascending:false}],["activities","display_order",{ascending:true}],"activity_categories",["activity_categories","display_order",{ascending:true}]]);
     const html=await render(data);
-    assert.equal(html,JSON.parse(readFileSync(`${root}/supabase/baselines/activities.json`,"utf8")).sectionHtml);
+    const baselineHtml=JSON.parse(readFileSync(`${root}/supabase/baselines/activities.json`,"utf8")).sectionHtml;
+    const comparableHtml=html
+      .replace(/<div class="activity-filter-note"[^>]*>/,"<div class=\"activity-filter-note\">")
+      .replace(/<button[^>]*>(.*?)<\/button>/g,"<span>$1</span>")
+      .replace('<div class="activity-years" aria-live="polite">','<div class="activity-years">');
+    assert.equal(comparableHtml,baselineHtml);
     assert.equal((html.match(/class="activity-card"/g)||[]).length,46);
     assert.equal((html.match(/Proof link will be updated soon/g)||[]).length,45);
     assert.equal((html.match(/Certificate \/ Proof/g)||[]).length,1);
@@ -60,6 +65,10 @@ test("Missing Activities configuration renders exact fallback with no client cal
   await configured(async()=>{
     delete process.env.NEXT_PUBLIC_SUPABASE_URL;const helper=reader();
     const html=await render(await helper.getPublicActivities());assert.deepEqual(helper.calls,[]);
-    assert.equal(html,JSON.parse(readFileSync(`${root}/supabase/baselines/activities.json`,"utf8")).sectionHtml);
+    const comparableHtml=html
+      .replace(/<div class="activity-filter-note"[^>]*>/,"<div class=\"activity-filter-note\">")
+      .replace(/<button[^>]*>(.*?)<\/button>/g,"<span>$1</span>")
+      .replace('<div class="activity-years" aria-live="polite">','<div class="activity-years">');
+    assert.equal(comparableHtml,JSON.parse(readFileSync(`${root}/supabase/baselines/activities.json`,"utf8")).sectionHtml);
   });
 });

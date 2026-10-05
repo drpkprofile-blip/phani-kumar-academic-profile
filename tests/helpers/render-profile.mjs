@@ -16,6 +16,7 @@ export function loadModule(path, mocks = {}, source) {
   new Function("exports", "require", compiled)(exports, (name) => {
     if (name === "server-only") return {};
     if (name in mocks) return mocks[name];
+    if (name === "./activity-browser") return loadModule("app/activity-browser.tsx", mocks);
     // Isolate unrelated publication tests from Activities network reads.
     if (name === "../lib/activities") return { getPublicActivities: async () => loadModule("data/activities.ts") };
     if (name.startsWith(".")) return loadModule(`${resolve(dirname(absolute), name)}.ts`, mocks);

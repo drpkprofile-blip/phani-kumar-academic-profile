@@ -13,7 +13,7 @@ create table public.profile_settings (
   description text not null check (description ~ '[^[:space:]]'),
   email text not null check (email ~ '[^[:space:]]'),
   phone text not null check (phone ~ '[^[:space:]]'),
-  photo_url text not null check (((photo_url like '/%' and photo_url not like '//%' and position(chr(92) in photo_url) = 0 and photo_url !~ '[[:space:]]') or photo_url ~ '^https://[^/[:space:]]+[^[:space:]]*$'),
+  photo_url text not null check (((photo_url like '/%' and photo_url not like '//%' and position(chr(92) in photo_url) = 0 and photo_url !~ '[[:space:]]') or photo_url ~ '^https://[^/[:space:]]+[^[:space:]]*$')),
   academic_identity jsonb not null check (jsonb_typeof(academic_identity) = 'array'),
   profile_links jsonb not null check (jsonb_typeof(profile_links) = 'array'),
   youtube_channel jsonb not null check (jsonb_typeof(youtube_channel) = 'object'),

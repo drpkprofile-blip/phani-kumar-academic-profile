@@ -25,6 +25,12 @@ test("academic month-year formatting is readable while year-only and descriptive
   const { formatAcademicDate } = loadModule("lib/date-format.ts");
   assert.equal(formatAcademicDate("February 2026"), "02/2026");
   assert.equal(formatAcademicDate("June 2026"), "06/2026");
+  assert.equal(formatAcademicDate("9/1983"), "09/1983");
+  assert.equal(formatAcademicDate("09/1983"), "09/1983");
+  assert.equal(formatAcademicDate("22 June 1983"), "22/06/1983");
+  assert.equal(formatAcademicDate("1983-06-22"), "22/06/1983");
+  assert.equal(formatAcademicDate("06/22/1983"), "22/06/1983");
+  assert.equal(formatAcademicDate("01/02/1983"), "01/02/1983");
   assert.equal(formatAcademicDate("2010"), "2010");
   assert.equal(formatAcademicDate("Aug 2012 – Present"), "Aug 2012 – Present");
   assert.equal(formatAcademicDate("012026"), "01/2026");
@@ -105,10 +111,13 @@ test("dashboard links to protected profile settings and photo route uses an auth
   const dashboard = readFileSync(`${root}/app/admin/page.tsx`, "utf8");
   const page = readFileSync(`${root}/app/admin/profile/page.tsx`, "utf8");
   const actions = readFileSync(`${root}/app/admin/profile/actions.ts`, "utf8");
+  const config = readFileSync(`${root}/next.config.ts`, "utf8");
   assert.match(dashboard, /href="\/admin\/profile"/);
   assert.match(page, /requireAdminPage\(\)/);
   assert.match(page, /uploadProfilePhoto/);
+  assert.doesNotMatch(page, /encType=/);
   assert.match(actions, /requireAdminPage\(\)/);
   assert.match(actions, /from\("profile-assets"\)\.upload/);
   assert.match(actions, /file\.size > 8 \* 1024 \* 1024/);
+  assert.match(config, /serverActions:\s*\{\s*bodySizeLimit:\s*"9mb"/);
 });
