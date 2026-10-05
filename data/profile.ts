@@ -85,9 +85,15 @@ export const profile = {
     },
     {
       label: "IRINS",
-      href: "",
+      href: "https://vidwan.inflibnet.ac.in/profile/262584",
     },
   ] satisfies ProfileLink[],
+
+  googleScholarMetrics: {
+    citationsText: "179 (142)",
+    hIndexText: "8 (8)",
+    i10IndexText: "5 (4)",
+  },
 
   youtubeChannel: {
     title: "Code & CAD with PK",

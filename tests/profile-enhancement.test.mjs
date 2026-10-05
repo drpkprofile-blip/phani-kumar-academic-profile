@@ -5,6 +5,8 @@ import { root } from "../scripts/publication-seed.mjs";
 import { loadModule } from "./helpers/render-profile.mjs";
 
 const migration = readFileSync(`${root}/supabase/migrations/20261005001800_profile_settings_and_photo_storage.sql`, "utf8");
+const citationsMigration = readFileSync(`${root}/supabase/migrations/20261005001900_manage_google_scholar_citation_image.sql`, "utf8");
+const scholarMigration = readFileSync(`${root}/supabase/migrations/20261005002000_google_scholar_metrics_and_irins.sql`, "utf8");
 
 test("profile settings migration seeds the committed profile and locks writes to the existing admin allowlist", () => {
   assert.match(migration, /create table public\.profile_settings/);
@@ -19,6 +21,23 @@ test("profile settings migration seeds the committed profile and locks writes to
   assert.match(migration, /Allowlisted admins upload profile photo[\s\S]*public\.is_publications_admin\(\)/);
   assert.match(migration, /Allowlisted admins replace profile photo[\s\S]*public\.is_publications_admin\(\)/);
   assert.doesNotMatch(migration, /service.role|service_role|secret key/i);
+});
+
+test("Google Scholar citation screenshot has public read and protected replacement storage", () => {
+  assert.match(citationsMigration, /citations_image_url text not null default '\/google-scholar-citations\.jpg'/);
+  assert.match(citationsMigration, /Public Google Scholar citation image is readable[\s\S]*profile\/google-scholar-citations/);
+  assert.match(citationsMigration, /Allowlisted admins upload Google Scholar citation image[\s\S]*is_publications_admin\(\)/);
+  assert.match(citationsMigration, /Allowlisted admins replace Google Scholar citation image[\s\S]*is_publications_admin\(\)/);
+  assert.match(citationsMigration, /Allowlisted admins remove Google Scholar citation image[\s\S]*is_publications_admin\(\)/);
+  assert.doesNotMatch(citationsMigration, /service.role|service_role|secret key/i);
+});
+
+test("Scholar metrics use the supplied values and IRINS points to the supplied Vidwan profile", () => {
+  assert.match(scholarMigration, /google_scholar_citations_text text not null default '179 \(142\)'/);
+  assert.match(scholarMigration, /google_scholar_h_index_text text not null default '8 \(8\)'/);
+  assert.match(scholarMigration, /google_scholar_i10_index_text text not null default '5 \(4\)'/);
+  assert.match(scholarMigration, /https:\/\/vidwan\.inflibnet\.ac\.in\/profile\/262584/);
+  assert.match(scholarMigration, /where settings\.singleton[\s\S]*profile_links @> '\[\{"label":"IRINS"\}\]'/);
 });
 
 test("academic month-year formatting is readable while year-only and descriptive date ranges remain exact", () => {
@@ -47,6 +66,8 @@ test("profile form preserves exact supplied URLs and values and validates only H
     experience_counter_text: "20+", youtube_title: "Code & CAD with PK",
     youtube_href: "https://youtube.com/@codeandcadwithpk?si=vaESyvrIBw5tMVYi",
     youtube_image: "/youtube-channel-logo.png", technical_tools: "SOLID WORKS\nANSYS",
+    google_scholar_citations_text: "179 (142)", google_scholar_h_index_text: "8 (8)",
+    google_scholar_i10_index_text: "5 (4)",
     skills: "Research advisement", research_interests: "Tribology\nMachine Learning",
     academic_identity: JSON.stringify([{ label: "ORCID ID", value: "0000-0002-4097-2635", href: "" }]),
     profile_links: JSON.stringify([{ label: "ResearchGate", href: "https://www.researchgate.net/profile/Phani-Simhadri?ev=hdr_xprf" }]),
@@ -59,6 +80,13 @@ test("profile form preserves exact supplied URLs and values and validates only H
   assert.equal(row.profile_links[0].href, values.profile_links && JSON.parse(values.profile_links)[0].href);
   assert.equal(row.academic_identity[0].value, "0000-0002-4097-2635");
   assert.deepEqual(row.technical_tools, ["SOLID WORKS", "ANSYS"]);
+  assert.equal(row.google_scholar_citations_text, "179 (142)");
+  assert.equal(row.google_scholar_h_index_text, "8 (8)");
+  assert.equal(row.google_scholar_i10_index_text, "5 (4)");
+
+  form.set("google_scholar_citations_text", "not a count");
+  assert.ok(parseProfileSettingsForm(form).errors.google_scholar_citations_text);
+  form.set("google_scholar_citations_text", values.google_scholar_citations_text);
 
   form.set("profile_links", JSON.stringify([{ label: "Unsafe", href: "javascript:alert(1)" }]));
   assert.ok(parseProfileSettingsForm(form).errors.profile_links);
@@ -73,6 +101,8 @@ test("public profile reader maps the singleton row and falls back during an unap
     institution: "ANITS", profile_label: "ACADEMIC PROFILE", description: "Managed biography",
     email: "person@example.edu", phone: "+91 1234567890",
     photo_url: "https://example.supabase.co/storage/v1/object/public/profile-assets/profile/profile-photo?v=1",
+    citations_image_url: "https://example.supabase.co/storage/v1/object/public/profile-assets/profile/google-scholar-citations?v=1",
+    google_scholar_citations_text: "179 (142)", google_scholar_h_index_text: "8 (8)", google_scholar_i10_index_text: "5 (4)",
     academic_identity: [{ label: "ORCID ID", value: "0000-0002-4097-2635", href: "" }],
     profile_links: [{ label: "Scholar", href: "https://scholar.google.com/example?key=value" }],
     youtube_channel: { title: "Channel", href: "https://youtube.com/@channel", image: "/youtube-channel-logo.png" },
@@ -92,6 +122,8 @@ test("public profile reader maps the singleton row and falls back during an unap
     const result = await helper.getPublicProfileSettings();
     assert.equal(result.profile.name, "Managed name");
     assert.equal(result.profile.photo, row.photo_url);
+    assert.equal(result.profile.citationsImageUrl, row.citations_image_url);
+    assert.deepEqual(result.profile.googleScholarMetrics, { citationsText: "179 (142)", hIndexText: "8 (8)", i10IndexText: "5 (4)" });
     assert.equal(result.profile.academicIdentity[0].value, "0000-0002-4097-2635");
     assert.equal(result.profile.profileLinks[0].href, row.profile_links[0].href);
     assert.equal(result.experienceCounterText, "20+");
@@ -104,6 +136,8 @@ test("public profile reader maps the singleton row and falls back during an unap
   }) } });
   const fallback = await missingTable.getPublicProfileSettings();
   assert.equal(fallback.profile.name, "Dr. Phani Kumar Simhadri");
+  assert.equal(fallback.profile.citationsImageUrl, "/google-scholar-citations.jpg");
+  assert.deepEqual(fallback.profile.googleScholarMetrics, { citationsText: "179 (142)", hIndexText: "8 (8)", i10IndexText: "5 (4)" });
   assert.equal(fallback.experienceCounterText, "20+");
 });
 
@@ -111,13 +145,20 @@ test("dashboard links to protected profile settings and photo route uses an auth
   const dashboard = readFileSync(`${root}/app/admin/page.tsx`, "utf8");
   const page = readFileSync(`${root}/app/admin/profile/page.tsx`, "utf8");
   const actions = readFileSync(`${root}/app/admin/profile/actions.ts`, "utf8");
+  const profileActions = actions;
   const config = readFileSync(`${root}/next.config.ts`, "utf8");
   assert.match(dashboard, /href="\/admin\/profile"/);
   assert.match(page, /requireAdminPage\(\)/);
   assert.match(page, /uploadProfilePhoto/);
+  assert.match(page, /uploadCitationImage/);
+  assert.match(page, /View citation screenshot/);
+  assert.match(page, /google_scholar_citations_text/);
   assert.doesNotMatch(page, /encType=/);
   assert.match(actions, /requireAdminPage\(\)/);
   assert.match(actions, /from\("profile-assets"\)\.upload/);
   assert.match(actions, /file\.size > 8 \* 1024 \* 1024/);
+  assert.match(profileActions, /upload\("profile\/google-scholar-citations"/);
+  assert.match(profileActions, /citations_image_url: imageUrl/);
+  assert.match(profileActions, /uploadCitationImage/);
   assert.match(config, /serverActions:\s*\{\s*bodySizeLimit:\s*"9mb"/);
 });

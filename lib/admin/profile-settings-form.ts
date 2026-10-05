@@ -5,7 +5,9 @@ export type ProfileSettingsValues = {
   designation: string; department: string; institution: string; profile_label: string;
   description: string; email: string; phone: string;
   experience_counter_text: string; youtube_title: string; youtube_href: string;
-  youtube_image: string; technical_tools: string[]; skills: string[];
+  youtube_image: string; google_scholar_citations_text: string;
+  google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
+  technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
 };
 
@@ -15,6 +17,7 @@ const scalarFields = [
   "name", "first_name", "last_name", "qualifications", "designation", "department",
   "institution", "profile_label", "description", "email", "phone",
   "experience_counter_text", "youtube_title", "youtube_href", "youtube_image",
+  "google_scholar_citations_text", "google_scholar_h_index_text", "google_scholar_i10_index_text",
 ] as const;
 
 function safeHttpUrl(value: string): boolean {
@@ -55,17 +58,23 @@ export function parseProfileSettingsForm(form: FormData): { values: ProfileSetti
   const values = Object.fromEntries(scalarFields.map((field) => [field, form.get(field)])) as Record<(typeof scalarFields)[number], FormDataEntryValue | null>;
   const errors: ProfileSettingsErrors = {};
   for (const field of scalarFields) {
-    if (typeof values[field] !== "string" || values[field].length > (field === "description" ? 8000 : 2048)) {
+    if (typeof values[field] !== "string" || values[field].length > (field === "description" ? 8000 : field.startsWith("google_scholar_") ? 64 : 2048)) {
       errors[field as keyof ProfileSettingsValues] = "Enter a valid value within the field limit.";
     }
   }
-  const requiredFields = ["name", "first_name", "last_name", "qualifications", "designation", "department", "institution", "profile_label", "description", "email", "phone", "experience_counter_text", "youtube_title"] as const;
+  const requiredFields = ["name", "first_name", "last_name", "qualifications", "designation", "department", "institution", "profile_label", "description", "email", "phone", "experience_counter_text", "youtube_title", "google_scholar_citations_text", "google_scholar_h_index_text", "google_scholar_i10_index_text"] as const;
   for (const field of requiredFields) {
     const value = values[field];
     if (typeof value !== "string" || !value.trim()) errors[field] = "This field is required.";
   }
   if (typeof values.email === "string" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errors.email = "Enter a valid email address.";
   if (typeof values.experience_counter_text === "string" && values.experience_counter_text.length > 64) errors.experience_counter_text = "Use at most 64 characters.";
+  for (const field of ["google_scholar_citations_text", "google_scholar_h_index_text", "google_scholar_i10_index_text"] as const) {
+    const value = values[field];
+    if (typeof value === "string" && value.trim() && !/^\d+(?:\s*\(\d+\))?$/.test(value.trim())) {
+      errors[field] = "Use a count with an optional parenthetical value, for example 179 (142).";
+    }
+  }
   for (const field of ["youtube_href", "youtube_image"] as const) {
     const value = values[field];
     const localPath = typeof value === "string" && value.startsWith("/") && !value.startsWith("//") && !value.includes("\\");
@@ -100,6 +109,9 @@ export function profileSettingsToRow(values: ProfileSettingsValues) {
     profile_label: values.profile_label, description: values.description,
     email: values.email, phone: values.phone,
     experience_counter_text: values.experience_counter_text,
+    google_scholar_citations_text: values.google_scholar_citations_text,
+    google_scholar_h_index_text: values.google_scholar_h_index_text,
+    google_scholar_i10_index_text: values.google_scholar_i10_index_text,
     academic_identity: values.academic_identity, profile_links: values.profile_links,
     youtube_channel: { title: values.youtube_title, href: values.youtube_href, image: values.youtube_image },
     technical_tools: values.technical_tools, skills: values.skills, research_interests: values.research_interests,

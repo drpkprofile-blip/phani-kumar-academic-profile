@@ -104,6 +104,10 @@ export type Database = {
       profile_settings: {
         Row: {
           academic_identity: Json
+          citations_image_url: string
+          google_scholar_citations_text: string
+          google_scholar_h_index_text: string
+          google_scholar_i10_index_text: string
           created_at: string
           department: string
           description: string
@@ -128,6 +132,10 @@ export type Database = {
         }
         Insert: {
           academic_identity: Json
+          citations_image_url?: string
+          google_scholar_citations_text?: string
+          google_scholar_h_index_text?: string
+          google_scholar_i10_index_text?: string
           created_at?: string
           department: string
           description: string
@@ -152,6 +160,10 @@ export type Database = {
         }
         Update: {
           academic_identity?: Json
+          citations_image_url?: string
+          google_scholar_citations_text?: string
+          google_scholar_h_index_text?: string
+          google_scholar_i10_index_text?: string
           created_at?: string
           department?: string
           description?: string

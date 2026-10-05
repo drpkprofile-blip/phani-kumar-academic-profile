@@ -2,6 +2,7 @@ import "server-only";
 
 import { profile as referenceProfile, type AcademicIdentity, type ProfileLink } from "../data/profile";
 import { counters } from "../data/counters";
+import { pageLinks } from "../data/page-content";
 import { createClient } from "./supabase/server";
 import type { Database, Json } from "./supabase/database.types";
 
@@ -9,6 +10,8 @@ export type ManagedProfile = {
   name: string; firstName: string; lastName: string; qualifications: string;
   designation: string; department: string; institution: string; profileLabel: string;
   description: string; email: string; phone: string; address: string; photo: string;
+  citationsImageUrl: string;
+  googleScholarMetrics: { citationsText: string; hIndexText: string; i10IndexText: string };
   academicIdentity: AcademicIdentity[]; profileLinks: ProfileLink[];
   youtubeChannel: { title: string; href: string; image: string };
   technicalTools: string[]; skills: string[]; researchInterests: string[];
@@ -19,6 +22,11 @@ type ProfileSettingsRow = Database["public"]["Tables"]["profile_settings"]["Row"
 export type PublicProfileSettings = {
   profile: ManagedProfile;
   experienceCounterText: string;
+};
+
+const referenceManagedProfile: ManagedProfile = {
+  ...(referenceProfile as unknown as ManagedProfile),
+  citationsImageUrl: pageLinks.citationsImage,
 };
 
 function jsonArray<T>(value: Json, fallback: T[]): T[] {
@@ -46,6 +54,12 @@ function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
       phone: row.phone,
       address: referenceProfile.address,
       photo: row.photo_url,
+      citationsImageUrl: row.citations_image_url,
+      googleScholarMetrics: {
+        citationsText: row.google_scholar_citations_text,
+        hIndexText: row.google_scholar_h_index_text,
+        i10IndexText: row.google_scholar_i10_index_text,
+      },
       academicIdentity: jsonArray<AcademicIdentity>(row.academic_identity, [...referenceProfile.academicIdentity]),
       profileLinks: jsonArray<ProfileLink>(row.profile_links, [...referenceProfile.profileLinks]),
       youtubeChannel: {
@@ -64,7 +78,7 @@ function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
 export async function getPublicProfileSettings(): Promise<PublicProfileSettings> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     return {
-      profile: referenceProfile as unknown as ManagedProfile,
+      profile: referenceManagedProfile,
       experienceCounterText: counters.experienceYears,
     };
   }
@@ -77,7 +91,7 @@ export async function getPublicProfileSettings(): Promise<PublicProfileSettings>
     .single();
   if (error?.code === "PGRST205" || error?.code === "42P01") {
     return {
-      profile: referenceProfile as unknown as ManagedProfile,
+      profile: referenceManagedProfile,
       experienceCounterText: counters.experienceYears,
     };
   }

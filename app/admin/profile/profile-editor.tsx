@@ -11,7 +11,9 @@ type ProfileEditorValues = {
   designation: string; department: string; institution: string; profile_label: string;
   description: string; email: string; phone: string;
   experience_counter_text: string; youtube_title: string; youtube_href: string;
-  youtube_image: string; technical_tools: string[]; skills: string[];
+  youtube_image: string; google_scholar_citations_text: string;
+  google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
+  technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
 };
 
@@ -31,6 +33,9 @@ const fields: Array<{ name: keyof Omit<ProfileEditorValues, "technical_tools" | 
   { name: "youtube_title", label: "YouTube channel title" },
   { name: "youtube_href", label: "YouTube channel URL" },
   { name: "youtube_image", label: "YouTube image path or URL" },
+  { name: "google_scholar_citations_text", label: "Google Scholar citations (All / Since 2021)" },
+  { name: "google_scholar_h_index_text", label: "Google Scholar h-index (All / Since 2021)" },
+  { name: "google_scholar_i10_index_text", label: "Google Scholar i10-index (All / Since 2021)" },
 ];
 
 function RowEditor<T extends { label: string; href?: string }>({
@@ -81,6 +86,7 @@ export default function ProfileEditor({ initial }: { initial: ProfileEditorValue
     {listField("technical_tools", "Technical tools", state.values?.technical_tools ?? initial.technical_tools)}
     {listField("skills", "Skills", state.values?.skills ?? initial.skills)}
     <p className={styles.note}>Links accept HTTP or HTTPS. Leave a link blank when none is supplied. The experience counter stays independent of record counts.</p>
+    <p className={styles.note}>Enter each metric as All (Since 2021), for example 179 (142), matching the citation table. Metrics are manual and are never imported automatically.</p>
     <button className={styles.button} type="submit" disabled={pending}>{pending ? "Saving…" : "Save profile settings"}</button>
   </form>;
 }

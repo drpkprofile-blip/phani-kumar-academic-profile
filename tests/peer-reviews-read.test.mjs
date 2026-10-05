@@ -108,6 +108,7 @@ test("configured Peer Reviews render matches the saved static baseline exactly",
       Array.from({ length: 11 }, (_, index) => String(index + 1).padStart(2, "0")));
     assert.deepEqual([...html.matchAll(/class="review-year">(\d{4})</g)].map((match) => match[1]),
       ["2026", "2026", "2026", "2026", "2026", "2025", "2025", "2025", "2025", "2025", "2024"]);
+    assert.equal((html.match(/class="review-meta-separator" aria-hidden="true">·</g) ?? []).length, 11);
     assert.match(html, /<strong>16<\/strong><span>REVIEWS COMPLETED<\/span>/);
   });
 });

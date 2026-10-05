@@ -50,3 +50,25 @@ export async function uploadProfilePhoto(form: FormData): Promise<void> {
   revalidatePath("/admin/profile");
   redirect("/admin/profile?photo=saved");
 }
+
+export async function uploadCitationImage(form: FormData): Promise<void> {
+  const { supabase } = await requireAdminPage();
+  const file = form.get("citationImage");
+  if (!(file instanceof File) || file.size === 0 || file.size > 8 * 1024 * 1024
+    || !["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    redirect("/admin/profile?citations=invalid");
+  }
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  if (!validImage(file, bytes)) redirect("/admin/profile?citations=invalid");
+  const { error: uploadError } = await supabase.storage.from("profile-assets").upload("profile/google-scholar-citations", bytes, {
+    contentType: file.type, cacheControl: "0", upsert: true,
+  });
+  if (uploadError) redirect("/admin/profile?citations=error");
+  const { data } = supabase.storage.from("profile-assets").getPublicUrl("profile/google-scholar-citations");
+  const imageUrl = `${data.publicUrl}?v=${Date.now()}`;
+  const { error: updateError } = await supabase.from("profile_settings").update({ citations_image_url: imageUrl }).eq("singleton", true);
+  if (updateError) redirect("/admin/profile?citations=error");
+  revalidatePath("/");
+  revalidatePath("/admin/profile");
+  redirect("/admin/profile?citations=saved");
+}

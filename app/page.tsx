@@ -14,6 +14,7 @@ import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { formatAcademicDate } from "../lib/date-format";
+import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
 
 function ExternalLink({
@@ -63,6 +64,13 @@ function PublicationPdfLink({
 
 export default async function Home() {
   const { profile, experienceCounterText } = await getPublicProfileSettings();
+  const googleScholarUrl = profile.profileLinks.find((link) => link.label === "Google Scholar" && link.href)?.href
+    ?? profile.academicIdentity.find((item) => item.label === "Google Scholar ID" && item.href)?.href;
+  const scholarMetrics = {
+    citations: primaryScholarMetric(profile.googleScholarMetrics.citationsText),
+    hIndex: primaryScholarMetric(profile.googleScholarMetrics.hIndexText),
+    i10Index: primaryScholarMetric(profile.googleScholarMetrics.i10IndexText),
+  };
   const { publications: sortedPublications, heroPublications } = await getPublicPublications();
   const { activities, activityTypes, activityYears } = await getPublicActivities();
   const certifications = await getPublicCertifications();
@@ -272,16 +280,9 @@ export default async function Home() {
                 <h3>{pageCopy.connectResearch}</h3>
               </div>
 
-              <div className="identity-socials">
-                <a
-                  href={pageLinks.citationsImage}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="citations-link"
-                  aria-label={pageCopy.citationsAccessibleLabel}
-                  title={pageCopy.citationsTitle}
-                >{pageCopy.citations}</a>
-                {profile.profileLinks.map((link) =>
+              <div className="identity-links-content">
+                <div className="identity-socials">
+                {profile.profileLinks.filter((link) => link.label !== "Google Scholar").map((link) =>
                   link.href ? (
                     <a
                       key={link.label}
@@ -294,6 +295,23 @@ export default async function Home() {
                     <span key={link.label}>{link.label}</span>
                   )
                 )}
+                </div>
+                <div className="scholar-metrics-card" aria-labelledby="scholar-metrics-title">
+                <div className="scholar-metrics-heading">
+                  <h4 id="scholar-metrics-title">Google Scholar</h4>
+                  {googleScholarUrl && <a href={googleScholarUrl} target="_blank" rel="noopener noreferrer">Open profile ↗</a>}
+                </div>
+                <dl className="scholar-metrics-list">
+                  <div><dt>Citations</dt><dd>{scholarMetrics.citations}</dd></div>
+                  <div><dt>h-index</dt><dd>{scholarMetrics.hIndex}</dd></div>
+                  <div><dt>i10-index</dt><dd>{scholarMetrics.i10Index}</dd></div>
+                </dl>
+                <a className="scholar-citation-preview" href={profile.citationsImageUrl} target="_blank" rel="noopener noreferrer"
+                  aria-label={pageCopy.citationsAccessibleLabel} title={pageCopy.citationsTitle}>
+                  <Image src={profile.citationsImageUrl} alt="Google Scholar citation graph and table" fill sizes="(max-width: 760px) 100vw, 560px" unoptimized />
+                  <span>{pageCopy.citationsTitle} ↗</span>
+                </a>
+                </div>
               </div>
             </div>
           </div>
@@ -551,6 +569,7 @@ export default async function Home() {
                     <span className="review-number">
                       {String(index + 1).padStart(2, "0")}
                     </span>
+                    {year && <span className="review-meta-separator" aria-hidden="true">·</span>}
                     {year && <span className="review-year">{year}</span>}
                   </div>
 
