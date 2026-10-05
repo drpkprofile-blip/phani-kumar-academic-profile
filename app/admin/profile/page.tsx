@@ -1,0 +1,48 @@
+import Link from "next/link";
+import { requireAdminPage } from "../../../lib/auth/admin-page";
+import { mapProfileSettingsRow } from "../../../lib/profile-settings";
+import { logout } from "../actions";
+import styles from "../admin.module.css";
+import ProfileEditor from "./profile-editor";
+import { uploadProfilePhoto } from "./actions";
+
+export default async function AdminProfileSettings({ searchParams }: { searchParams: Promise<{ success?: string; photo?: string }> }) {
+  const { user, supabase } = await requireAdminPage();
+  const { data, error } = await supabase.from("profile_settings").select("*").eq("singleton", true).single();
+  if (error || !data) throw new Error("Unable to load profile settings.");
+  const { profile, experienceCounterText } = mapProfileSettingsRow(data);
+  const query = await searchParams;
+  const initial = {
+    name: profile.name, first_name: profile.firstName, last_name: profile.lastName,
+    qualifications: profile.qualifications, designation: profile.designation,
+    department: profile.department, institution: profile.institution,
+    profile_label: profile.profileLabel, description: profile.description,
+    email: profile.email, phone: profile.phone,
+    experience_counter_text: experienceCounterText,
+    youtube_title: profile.youtubeChannel.title, youtube_href: profile.youtubeChannel.href,
+    youtube_image: profile.youtubeChannel.image,
+    technical_tools: profile.technicalTools, skills: profile.skills,
+    research_interests: profile.researchInterests,
+    academic_identity: profile.academicIdentity, profile_links: profile.profileLinks,
+  };
+  return <main className={styles.shell}><section className={`${styles.panel} ${styles.management}`} aria-labelledby="profile-settings-title">
+    <h1 id="profile-settings-title">Profile &amp; Links</h1><p className={styles.email}>{user.email}</p>
+    <div className={styles.toolbar}><Link className={styles.secondary} href="/admin">Admin Dashboard</Link><Link className={styles.secondary} href="/" prefetch={false}>Back to Public Website</Link><form action={logout}><button className={styles.secondary} type="submit">Logout</button></form></div>
+    {query.success === "saved" && <p role="status" className={styles.success}>Profile settings saved.</p>}
+    {query.photo === "saved" && <p role="status" className={styles.success}>Profile photo updated.</p>}
+    {query.photo === "invalid" && <p role="alert" className={styles.error}>Choose a valid PNG, JPEG or WebP image under 8 MB.</p>}
+    {query.photo === "error" && <p role="alert" className={styles.error}>Unable to update the profile photo. Please try again.</p>}
+    <section className={styles.module} aria-labelledby="profile-photo-title">
+      <h2 id="profile-photo-title">Profile photo</h2>
+      <p>Current photo: <a href={profile.photo} target="_blank" rel="noopener noreferrer">View image</a></p>
+      <form action={uploadProfilePhoto} className={styles.form} encType="multipart/form-data">
+        <label className={styles.field} htmlFor="profile-photo-upload">Upload replacement (PNG, JPEG or WebP; max 8 MB)
+          <input id="profile-photo-upload" name="photo" type="file" accept="image/png,image/jpeg,image/webp" required />
+        </label>
+        <button className={styles.button} type="submit">Update profile photo</button>
+      </form>
+    </section>
+    <h2>Public profile information</h2>
+    <ProfileEditor initial={initial} />
+  </section></main>;
+}

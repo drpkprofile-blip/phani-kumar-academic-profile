@@ -28,6 +28,10 @@ export async function compareProfile(publicData, activityData, certificationData
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
+    "../lib/profile-settings": { getPublicProfileSettings: async () => ({
+      profile: loadModule("data/profile.ts").profile,
+      experienceCounterText: loadModule("data/counters.ts").counters.experienceYears,
+    }) },
     "../lib/publications": { getPublicPublications: async () => publicData },
     ...(activityData ? { "../lib/activities": { getPublicActivities: async () => activityData } } : {}),
     "../lib/certifications": {

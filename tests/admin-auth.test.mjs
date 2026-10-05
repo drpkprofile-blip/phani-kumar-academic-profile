@@ -136,9 +136,9 @@ test("login UI has password sign-in only; no public signup route or signup actio
 
 test("protected dashboard renders the verified email, Publications controls and logout", async () => {
   let checks = 0;
-  const supabase = { from(table) { assert.ok(["publications", "publication_settings"].includes(table)); return { select() { return {
+  const supabase = { from(table) { assert.ok(["publications", "publication_settings", "profile_settings"].includes(table)); return { select() { return {
     order: async () => ({ data: [], error: null }),
-    eq: () => ({ single: async () => ({ data: { hero_publications: "40+" }, error: null }) }),
+    eq: () => ({ single: async () => ({ data: table === "publication_settings" ? { hero_publications: "40+" } : table === "profile_settings" ? { profile_links: [{ label: "Google Scholar", href: "https://scholar.google.com/example" }] } : {}, error: null }) }),
   }; } }; } };
   const Page = loadModule("app/admin/page.tsx", {
     "../../lib/auth/admin-page": { requireAdminPage: async () => { checks++; return { user: { email: "admin@example.com" }, supabase }; } },

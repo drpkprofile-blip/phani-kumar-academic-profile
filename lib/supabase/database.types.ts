@@ -101,6 +101,81 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_settings: {
+        Row: {
+          academic_identity: Json
+          created_at: string
+          department: string
+          description: string
+          designation: string
+          email: string
+          experience_counter_text: string
+          first_name: string
+          institution: string
+          last_name: string
+          name: string
+          phone: string
+          photo_url: string
+          profile_label: string
+          profile_links: Json
+          qualifications: string
+          research_interests: Json
+          singleton: boolean
+          skills: Json
+          technical_tools: Json
+          updated_at: string
+          youtube_channel: Json
+        }
+        Insert: {
+          academic_identity: Json
+          created_at?: string
+          department: string
+          description: string
+          designation: string
+          email: string
+          experience_counter_text: string
+          first_name: string
+          institution: string
+          last_name: string
+          name: string
+          phone: string
+          photo_url: string
+          profile_label: string
+          profile_links: Json
+          qualifications: string
+          research_interests: Json
+          singleton?: boolean
+          skills: Json
+          technical_tools: Json
+          updated_at?: string
+          youtube_channel: Json
+        }
+        Update: {
+          academic_identity?: Json
+          created_at?: string
+          department?: string
+          description?: string
+          designation?: string
+          email?: string
+          experience_counter_text?: string
+          first_name?: string
+          institution?: string
+          last_name?: string
+          name?: string
+          phone?: string
+          photo_url?: string
+          profile_label?: string
+          profile_links?: Json
+          qualifications?: string
+          research_interests?: Json
+          singleton?: boolean
+          skills?: Json
+          technical_tools?: Json
+          updated_at?: string
+          youtube_channel?: Json
+        }
+        Relationships: []
+      }
       professional_memberships: {
         Row: {
           chapter: string | null

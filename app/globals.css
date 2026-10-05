@@ -1692,3 +1692,208 @@ main {
     grid-template-columns: 1fr;
   }
 }
+
+/* Refined academic profile finish: quiet color, clearer section rhythm, and responsive accents. */
+body {
+  background:
+    radial-gradient(ellipse at 12% 8%, rgba(24, 111, 126, 0.16), transparent 34rem),
+    radial-gradient(ellipse at 90% 24%, rgba(39, 86, 135, 0.12), transparent 38rem),
+    linear-gradient(rgba(9, 36, 51, 0.19) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9, 36, 51, 0.19) 1px, transparent 1px),
+    var(--bg);
+}
+
+.logo {
+  background: linear-gradient(145deg, rgba(56, 214, 204, 0.12), rgba(56, 214, 204, 0.015));
+  box-shadow: inset 0 0 18px rgba(56, 214, 204, 0.06);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: 58px;
+}
+
+.hero::before {
+  position: absolute;
+  z-index: -1;
+  top: -210px;
+  right: -120px;
+  width: min(58vw, 760px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(56, 214, 204, 0.1);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(19, 103, 117, 0.14), rgba(19, 103, 117, 0.025) 52%, transparent 70%);
+  content: "";
+  pointer-events: none;
+}
+
+.hero-container {
+  position: relative;
+}
+
+.hero h1 {
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.hero-stats {
+  border-color: rgba(56, 214, 204, 0.2);
+}
+
+.hero-stats > div {
+  position: relative;
+}
+
+.hero-stats > div::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+  content: "";
+}
+
+.profile-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(155deg, rgba(15, 44, 61, 0.98), rgba(7, 25, 38, 0.98));
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.3), 0 0 40px rgba(56, 214, 204, 0.055);
+}
+
+.profile-card::before {
+  position: absolute;
+  inset: 0 18% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 214, 204, 0.7), transparent);
+  content: "";
+}
+
+.photo-frame {
+  position: relative;
+  border-color: rgba(56, 214, 204, 0.27);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::after {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal), transparent);
+  content: "";
+}
+
+.section-heading-row {
+  position: relative;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(30, 86, 104, 0.55);
+}
+
+.section-heading-row h2 {
+  text-wrap: balance;
+}
+
+.big-stat {
+  background: linear-gradient(145deg, rgba(56, 214, 204, 0.07), rgba(13, 38, 55, 0.28));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.education-grid,
+.research-card,
+.publication-card,
+.activity-card,
+.experience-item,
+.certification-card,
+.review-card,
+.achievement-card,
+.professional-membership-card,
+.subject-taught-card,
+.project-guided-card,
+.identity-panel,
+.contact-box {
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+}
+
+.education-card:nth-child(4n + 1),
+.research-card:nth-child(4n + 1),
+.publication-card:nth-child(4n + 1),
+.activity-card:nth-child(4n + 1),
+.certification-card:nth-child(4n + 1),
+.achievement-card:nth-child(4n + 1) {
+  background-image: linear-gradient(145deg, rgba(56, 214, 204, 0.035), transparent 62%);
+}
+
+.research-card,
+.publication-card,
+.activity-card,
+.experience-item,
+.certification-card,
+.review-card,
+.achievement-card,
+.professional-membership-card,
+.subject-taught-card,
+.project-guided-card {
+  transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.research-card:hover,
+.publication-card:hover,
+.activity-card:hover,
+.certification-card:hover,
+.review-card:hover,
+.achievement-card:hover,
+.professional-membership-card:hover,
+.subject-taught-card:hover,
+.project-guided-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 214, 204, 0.38);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2), 0 0 20px rgba(56, 214, 204, 0.035);
+}
+
+.education-card h3,
+.research-card h3,
+.publication-card h3,
+.activity-card h3,
+.certification-card h3,
+.review-card h3,
+.achievement-card h3,
+.professional-membership-card h3,
+.subject-taught-card h3,
+.project-guided-card h3 {
+  text-wrap: pretty;
+}
+
+@media (max-width: 760px) {
+  .hero { padding-top: 34px; }
+  .hero h1.hero-name { max-width: 100%; white-space: normal; font-size: clamp(36px, 10vw, 48px); }
+  .hero::before { top: -90px; right: -220px; width: 620px; }
+  .section-heading-row { padding-bottom: 16px; }
+  .hero-stats > div { padding-right: 12px; margin-right: 12px; min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .research-card,
+  .publication-card,
+  .activity-card,
+  .certification-card,
+  .review-card,
+  .achievement-card,
+  .professional-membership-card,
+  .subject-taught-card,
+  .project-guided-card { transition: none; }
+  .research-card:hover,
+  .publication-card:hover,
+  .activity-card:hover,
+  .certification-card:hover,
+  .review-card:hover,
+  .achievement-card:hover,
+  .professional-membership-card:hover,
+  .subject-taught-card:hover,
+  .project-guided-card:hover { transform: none; }
+}

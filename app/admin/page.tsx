@@ -2,8 +2,8 @@ import { requireAdminPage } from "../../lib/auth/admin-page";
 import { logout } from "./actions";
 import styles from "./admin.module.css";
 import { movePublication, updateHeroCounter } from "./publications/actions";
-import { profile } from "../../data/profile";
 import Link from "next/link";
+import { profile as referenceProfile } from "../../data/profile";
 
 const successMessages: Record<string, string> = {
   added: "Publication added.", saved: "Publication saved.", deleted: "Publication deleted.",
@@ -23,12 +23,17 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
     supabase.from("publication_settings").select("hero_publications").eq("id", true).single(),
   ]);
   if (records.error || !records.data || settings.error || !settings.data) throw new Error("Unable to load Publications management.");
+  const { data: profileData, error: profileError } = await supabase.from("profile_settings").select("profile_links").eq("singleton", true).single();
+  if (profileError && profileError.code !== "PGRST205") throw new Error("Unable to load profile links.");
   const { success, error } = await searchParams;
   const successMessage = success && Object.hasOwn(successMessages, success) ? successMessages[success] : undefined;
   const errorMessage = error && Object.hasOwn(errorMessages, error) ? errorMessages[error] : undefined;
   const publications = records.data;
   const order = JSON.stringify(publications.map((p) => p.id));
-  const scholar = profile.profileLinks.find((link) => link.label === "Google Scholar");
+  const profileLinks = profileData && Array.isArray(profileData.profile_links)
+    ? profileData.profile_links as Array<{ label?: string; href?: string }>
+    : [...referenceProfile.profileLinks];
+  const scholar = profileLinks.find((link) => link.label === "Google Scholar");
   return (
     <main className={styles.shell}>
       <section className={`${styles.panel} ${styles.management}`} aria-labelledby="admin-dashboard-title">
@@ -39,6 +44,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           {scholar?.href && <a className={styles.secondary} href={scholar.href} target="_blank" rel="noopener noreferrer">Google Scholar reference ↗</a>}
           <form action={logout}><button className={styles.secondary} type="submit">Logout</button></form>
         </div>
+        <section className={styles.module} aria-label="Profile settings management">
+          <h2>Profile, Photo &amp; Links</h2><p>Manage public profile information, research links, contact details and the experience counter.</p>
+          <Link className={styles.button} href="/admin/profile">Manage Profile</Link>
+        </section>
         {successMessage && <p role="status" className={styles.success}>{successMessage}</p>}
         {errorMessage && <p role="alert" className={styles.error}>{errorMessage}</p>}
         <section className={styles.module} aria-label="Activities management">

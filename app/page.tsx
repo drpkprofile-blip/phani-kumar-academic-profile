@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { researchAreas } from "../data/research";
 import { education } from "../data/education";
 import { experience } from "../data/experience";
-import { counters } from "../data/counters";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
 import { getPublicActivities } from "../lib/activities";
@@ -12,7 +12,8 @@ import { getPublicProfessionalMemberships } from "../lib/professional-membership
 import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
-import { profile } from "../data/profile";
+import { getPublicProfileSettings } from "../lib/profile-settings";
+import { formatAcademicDate } from "../lib/date-format";
 
 function ExternalLink({
   url,
@@ -60,6 +61,7 @@ function PublicationPdfLink({
 }
 
 export default async function Home() {
+  const { profile, experienceCounterText } = await getPublicProfileSettings();
   const { publications: sortedPublications, heroPublications } = await getPublicPublications();
   const { activities, activityTypes, activityYears } = await getPublicActivities();
   const certifications = await getPublicCertifications();
@@ -131,7 +133,7 @@ export default async function Home() {
                 <span>{pageCopy.nptelRecords}</span>
               </div>
               <div>
-                <strong>{counters.experienceYears}</strong>
+                <strong>{experienceCounterText}</strong>
                 <span>{pageCopy.yearsExperience}</span>
               </div>
             </div>
@@ -144,7 +146,7 @@ export default async function Home() {
             </div>
 
             <div className="photo-frame">
-              <img src={profile.photo} alt={profile.name} />
+              <Image src={profile.photo} alt={profile.name} width={1200} height={1500} unoptimized />
             </div>
 
             <div className="profile-bottom">
@@ -179,9 +181,12 @@ export default async function Home() {
               rel="noopener noreferrer"
               title={profile.youtubeChannel.title}
             >
-              <img
+              <Image
                 src={profile.youtubeChannel.image}
                 alt={pageCopy.codeCadWithPkYoutubeChannel}
+                width={64}
+                height={64}
+                unoptimized
               />
               <span className="youtube-channel-text">
                 <strong>{pageCopy.codeCadWithPk}</strong>
@@ -209,7 +214,7 @@ export default async function Home() {
               <article className="education-card" key={`${item.degree}-${index}`}>
                 <div className="card-topline">
                   
-                  <span className="card-year">{item.year}</span>
+                  <span className="card-year">{formatAcademicDate(item.year)}</span>
                 </div>
 
                 <h3>{item.degree}</h3>
@@ -498,7 +503,7 @@ export default async function Home() {
               <p>{pageCopy.experienceDescription}</p>
             </div>
             <div className="big-stat">
-              <strong>{counters.experienceYears}</strong>
+              <strong>{experienceCounterText}</strong>
               <span>{pageCopy.yearsExperience}</span>
             </div>
           </div>
