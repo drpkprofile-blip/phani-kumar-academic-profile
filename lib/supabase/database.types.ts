@@ -70,6 +70,39 @@ export type Database = {
           },
         ]
       }
+      certifications: {
+        Row: {
+          certificate_url: string | null
+          created_at: string
+          display_order: number
+          fdp_url: string | null
+          id: number
+          source_order: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          certificate_url?: string | null
+          created_at?: string
+          display_order: number
+          fdp_url?: string | null
+          id?: number
+          source_order?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          certificate_url?: string | null
+          created_at?: string
+          display_order?: number
+          fdp_url?: string | null
+          id?: number
+          source_order?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       activity_categories: {
         Row: {
           created_at: string
