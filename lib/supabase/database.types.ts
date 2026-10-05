@@ -50,6 +50,54 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_memberships: {
+        Row: {
+          chapter: string | null
+          created_at: string
+          date_text: string | null
+          designation: string | null
+          display_order: number
+          id: number
+          membership_number: string | null
+          membership_type: string | null
+          organization_name: string
+          proof_url: string | null
+          source_order: number | null
+          updated_at: string
+          validity_text: string | null
+        }
+        Insert: {
+          chapter?: string | null
+          created_at?: string
+          date_text?: string | null
+          designation?: string | null
+          display_order: number
+          id?: number
+          membership_number?: string | null
+          membership_type?: string | null
+          organization_name: string
+          proof_url?: string | null
+          source_order?: number | null
+          updated_at?: string
+          validity_text?: string | null
+        }
+        Update: {
+          chapter?: string | null
+          created_at?: string
+          date_text?: string | null
+          designation?: string | null
+          display_order?: number
+          id?: number
+          membership_number?: string | null
+          membership_type?: string | null
+          organization_name?: string
+          proof_url?: string | null
+          source_order?: number | null
+          updated_at?: string
+          validity_text?: string | null
+        }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_type: string
@@ -272,6 +320,18 @@ export type Database = {
       admin_save_achievement: {
         Args: { p_achievement?: Json; p_expected_updated_at?: string; p_id?: number }
         Returns: number
+      }
+      admin_save_professional_membership: {
+        Args: { p_membership?: Json; p_expected_updated_at?: string; p_id?: number }
+        Returns: number
+      }
+      admin_delete_professional_membership: {
+        Args: { p_id: number; p_expected_updated_at: string; p_confirmed: boolean }
+        Returns: number
+      }
+      admin_move_professional_membership: {
+        Args: { p_id: number; p_position: number; p_expected_order: number[] }
+        Returns: undefined
       }
       admin_delete_achievement: {
         Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }

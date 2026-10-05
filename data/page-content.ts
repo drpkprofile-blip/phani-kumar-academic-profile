@@ -15,6 +15,7 @@ export const pageCopy = {
   "nptel": "NPTEL",
   "peerReviews": "Peer Reviews",
   "achievements": "Achievements",
+  "professionalBodies": "Professional Bodies",
   "contact": "Contact",
   "roleSeparator": "·",
   "exploreResearch": "Explore Research ↗",
@@ -88,6 +89,9 @@ export const pageCopy = {
   "achievement": "ACHIEVEMENT",
   "eventProof": "Event Proof",
   "section10Contact": "10 · CONTACT",
+  "professionalBodiesLabel": "PROFESSIONAL BODIES",
+  "professionalBodiesTitle": "Professional Bodies",
+  "professionalBodiesDescription": "Professional society memberships and affiliations.",
   "academicCollaboration": "Academic Collaboration",
   "contactDescription": "For academic collaboration, research discussion, student projects, technical consultation and professional communication, please use the contact details below.",
   "emailMe": "Email Me →",
@@ -110,6 +114,7 @@ export const pageLinks = {
   "certifications": "#certifications",
   "peerReviews": "#peer-reviews",
   "achievements": "#achievements",
+  "professionalBodies": "#professional-bodies",
   "contact": "#contact",
   "citationsImage": "/google-scholar-citations.jpg"
 } satisfies Record<string, string>;

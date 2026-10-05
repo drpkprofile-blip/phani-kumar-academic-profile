@@ -9,6 +9,7 @@ import { getPublicPublications } from "../lib/publications";
 import { getPublicActivities } from "../lib/activities";
 import { getPublicCertifications } from "../lib/certifications";
 import { getPublicAchievements } from "../lib/achievements";
+import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
 import { profile } from "../data/profile";
 
 function ExternalLink({
@@ -61,6 +62,7 @@ export default async function Home() {
   const { activities, activityTypes, activityYears } = await getPublicActivities();
   const certifications = await getPublicCertifications();
   const achievements = await getPublicAchievements();
+  const professionalMemberships = await getPublicProfessionalMemberships();
   const certificationCount = certifications.length;
 
   return (
@@ -80,6 +82,7 @@ export default async function Home() {
             <a href={pageLinks.certifications}>{pageCopy.nptel}</a>
             <a href={pageLinks.peerReviews}>{pageCopy.peerReviews}</a>
             <a href={pageLinks.achievements}>{pageCopy.achievements}</a>
+            <a href={pageLinks.professionalBodies}>{pageCopy.professionalBodies}</a>
             <a href={pageLinks.contact}>{pageCopy.contact}</a>
           </nav>
         </div>
@@ -641,6 +644,36 @@ export default async function Home() {
                     <ExternalLink url={achievement.extraProof}>{pageCopy.eventProof}</ExternalLink>
                   )}
                 </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="professional-bodies" className="section">
+        <div className="section-container">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-label">{pageCopy.professionalBodiesLabel}</p>
+              <h2>{pageCopy.professionalBodiesTitle}</h2>
+              <p>{pageCopy.professionalBodiesDescription}</p>
+            </div>
+          </div>
+
+          <div className="professional-membership-grid">
+            {professionalMemberships.map((membership) => (
+              <article className="professional-membership-card" key={`${membership.displayOrder}-${membership.organizationName}`}>
+                <div className="membership-topline">
+                  <span className="membership-number">{String(membership.displayOrder).padStart(2, "0")}</span>
+                  {membership.membershipType && <span className="membership-type">{membership.membershipType}</span>}
+                </div>
+                <h3>{membership.organizationName}</h3>
+                {membership.membershipNumber && <p>Membership no.: {membership.membershipNumber}</p>}
+                {membership.dateText && <p>{membership.dateText}</p>}
+                {membership.validityText && <p>{membership.validityText}</p>}
+                {membership.designation && <p>{membership.designation}</p>}
+                {membership.chapter && <p>{membership.chapter}</p>}
+                {membership.proofUrl && <div className="proof-row"><ExternalLink url={membership.proofUrl}>{pageCopy.proof}</ExternalLink></div>}
               </article>
             ))}
           </div>

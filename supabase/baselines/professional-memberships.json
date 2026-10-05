@@ -1,0 +1,18 @@
+{
+  "rows": [
+    {
+      "id": 1,
+      "organization_name": "Condition Monitoring Society of India (MCMSI)",
+      "membership_type": "Member",
+      "membership_number": null,
+      "date_text": null,
+      "validity_text": null,
+      "designation": null,
+      "chapter": null,
+      "proof_url": null,
+      "source_order": 1,
+      "display_order": 1
+    }
+  ],
+  "sectionHtml": "<section id=\"professional-bodies\" class=\"section\"><div class=\"section-container\"><div class=\"section-heading-row\"><div><p class=\"section-label\">PROFESSIONAL BODIES</p><h2>Professional Bodies</h2><p>Professional society memberships and affiliations.</p></div></div><div class=\"professional-membership-grid\"><article class=\"professional-membership-card\"><div class=\"membership-topline\"><span class=\"membership-number\">01</span><span class=\"membership-type\">Member</span></div><h3>Condition Monitoring Society of India (MCMSI)</h3></article></div></div></section>"
+}

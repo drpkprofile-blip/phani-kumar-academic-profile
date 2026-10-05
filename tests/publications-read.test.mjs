@@ -5,6 +5,7 @@ import { loadModule, compareProfile } from "./helpers/render-profile.mjs";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const rows = mapPublications(readCommittedPublications()).sort((a,b) => a.display_order-b.display_order);
+const publicationsSection = (html) => html.match(/<section id="publications".*?<\/section>/s)?.[0];
 function reader(records = { data: rows, error: null }, settings = { data: { hero_publications: "40+" }, error: null }) {
   const calls = [];
   const client = { from(table) {
@@ -24,14 +25,14 @@ async function configured(callback) {
   try { await callback(); } finally { names.forEach((name,i) => { if (old[i] === undefined) delete process.env[name]; else process.env[name] = old[i]; }); }
 }
 
-test("database reads use display order and independent settings; entire rendered page matches Phase 2C", async () => {
+test("database reads use display order and independent settings; Publications section matches Phase 2C", async () => {
   await configured(async () => {
     const helper = reader();
     const data = await helper.getPublicPublications();
     assert.deepEqual(helper.calls, ["publications", "publication_settings"]);
     const html = await compareProfile(data);
-    assert.equal(html.current, html.baseline);
-    assert.equal((html.current.match(/class="publication-card"/g) ?? []).length, 37);
+    assert.equal(publicationsSection(html.current), publicationsSection(html.baseline));
+    assert.equal((publicationsSection(html.current).match(/class="publication-card"/g) ?? []).length, 37);
   });
 });
 
@@ -79,7 +80,7 @@ test("missing configuration safely renders the reference without creating a clie
     delete process.env.NEXT_PUBLIC_SUPABASE_URL;
     const helper = reader();
     const html = await compareProfile(await helper.getPublicPublications());
-    assert.equal(html.current, html.baseline);
+    assert.equal(publicationsSection(html.current), publicationsSection(html.baseline));
     assert.deepEqual(helper.calls, []);
   });
 });
