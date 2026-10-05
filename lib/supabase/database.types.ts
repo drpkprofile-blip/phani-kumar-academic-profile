@@ -168,6 +168,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_save_activity: {
+        Args: { p_id?: number; p_activity?: Json; p_expected_updated_at?: string }
+        Returns: number
+      }
+      admin_delete_activity: {
+        Args: { p_id: number; p_expected_updated_at: string; p_confirmed: boolean }
+        Returns: number
+      }
+      admin_move_activity: {
+        Args: { p_id: number; p_year: string; p_position: number; p_expected_order: number[] }
+        Returns: undefined
+      }
       admin_delete_publication: {
         Args: {
           p_confirmed: boolean

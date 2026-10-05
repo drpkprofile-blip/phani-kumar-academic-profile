@@ -41,6 +41,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
         </div>
         {successMessage && <p role="status" className={styles.success}>{successMessage}</p>}
         {errorMessage && <p role="alert" className={styles.error}>{errorMessage}</p>}
+        <section className={styles.module} aria-label="Activities management">
+          <h2>Activities</h2><p>Manage FDPs, workshops, conferences and other academic activities.</p>
+          <Link className={styles.button} href="/admin/activities">Manage Activities</Link>
+        </section>
         <form action={updateHeroCounter} className={styles.counterForm}>
           <input type="hidden" name="previous_counter" value={settings.data.hero_publications} />
           <label className={styles.field} htmlFor="hero_publications">Independent hero Publications counter

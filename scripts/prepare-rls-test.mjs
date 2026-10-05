@@ -5,7 +5,7 @@ import { root } from "./publication-seed.mjs";
 // The original authorization tests and their rollback are preserved.
 const management = process.argv.includes("--management");
 const activities = process.argv.includes("--activities");
-const testName = activities ? "activities_rls" : management ? "publications_management" : "publications_rls";
+const testName = activities ? management ? "activities_management" : "activities_rls" : management ? "publications_management" : "publications_rls";
 let sql = readFileSync(`${root}/supabase/tests/${testName}.sql`, "utf8");
 sql = sql.replace(/select plan\((\d+)\);/, (_, count) => `create temporary table phase2c_tap (result text);\ngrant select, insert on table phase2c_tap to anon, authenticated;\ninsert into phase2c_tap select plan(${count});`);
 sql = sql.replace(/^select (is\(|ok\(|throws_ok\(|lives_ok\()/gm, (_, call) => `insert into phase2c_tap select ${call}`);
