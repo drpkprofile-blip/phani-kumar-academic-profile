@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          extra_proof_url: string | null
+          id: number
+          proof_url: string | null
+          source_order: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order: number
+          extra_proof_url?: string | null
+          id?: number
+          proof_url?: string | null
+          source_order?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          extra_proof_url?: string | null
+          id?: number
+          proof_url?: string | null
+          source_order?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_type: string

@@ -4,6 +4,8 @@ import nextEnv from "@next/env";
 import { createClient } from "@supabase/supabase-js";
 import { root } from "./publication-seed.mjs";
 import { mapAchievements, readCommittedAchievements } from "./achievement-seed.mjs";
+import { loadModule, compareProfile } from "../tests/helpers/render-profile.mjs";
+import { readCommittedPublications } from "./publication-seed.mjs";
 
 nextEnv.loadEnvConfig(root);
 assert.ok(process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -34,6 +36,18 @@ assert.equal(result.data[1].extra_proof_url, expected[1].extra_proof_url,
 assert.equal(result.data[3].proof_url, expected[3].proof_url,
   "Research Seed Money Drive-folder URL must be retained exactly");
 
+const mapped = result.data.map((row) => loadModule("lib/achievements.ts", {
+  "./supabase/server": { createClient: async () => ({}) },
+}).mapAchievement(row));
+const rendered = await compareProfile({
+  publications: readCommittedPublications().sort((a, b) => Number(b.year) - Number(a.year) || a.id - b.id),
+  heroPublications: "40+",
+}, undefined, undefined, mapped);
+const section = (html) => html.match(/<section id="achievements".*?<\/section>/s)?.[0];
+const baseline = JSON.parse(readFileSync(`${root}/supabase/baselines/achievements.json`, "utf8"));
+assert.equal(section(rendered.current), baseline.sectionHtml,
+  "Public Achievements section rendered from live Supabase rows must match the saved Phase 8C baseline");
+
 const snapshotPath = `${root}/supabase/.temp/achievements-repeat-before.json`;
 if (process.argv.includes("--capture-repeat-snapshot")) {
   mkdirSync(`${root}/supabase/.temp`, { recursive: true });
@@ -52,4 +66,5 @@ console.log(JSON.stringify({
   extraProofUrls: 1,
   missingExtraProofUrls: 3,
   displayOrder: result.data.map((record) => record.display_order),
+  renderedMatchesBaseline: true,
 }, null, 2));

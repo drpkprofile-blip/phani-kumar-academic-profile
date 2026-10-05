@@ -24,7 +24,7 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData, certificationData) {
+export async function compareProfile(publicData, activityData, certificationData, achievementData) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
@@ -32,6 +32,9 @@ export async function compareProfile(publicData, activityData, certificationData
     ...(activityData ? { "../lib/activities": { getPublicActivities: async () => activityData } } : {}),
     "../lib/certifications": {
       getPublicCertifications: async () => certificationData ?? loadModule("data/certifications.ts").certifications,
+    },
+    "../lib/achievements": {
+      getPublicAchievements: async () => achievementData ?? loadModule("data/achievements.ts").achievements,
     },
   }).default;
   return {
