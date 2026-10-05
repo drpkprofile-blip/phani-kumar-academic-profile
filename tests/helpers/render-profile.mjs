@@ -24,12 +24,15 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData) {
+export async function compareProfile(publicData, activityData, certificationData) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
     "../lib/publications": { getPublicPublications: async () => publicData },
     ...(activityData ? { "../lib/activities": { getPublicActivities: async () => activityData } } : {}),
+    "../lib/certifications": {
+      getPublicCertifications: async () => certificationData ?? loadModule("data/certifications.ts").certifications,
+    },
   }).default;
   return {
     baseline: renderToStaticMarkup(await oldPage()),

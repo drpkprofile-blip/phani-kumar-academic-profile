@@ -4,11 +4,11 @@ import { education } from "../data/education";
 import { experience } from "../data/experience";
 import { achievements } from "../data/achievements";
 import { peerReviews } from "../data/peer-reviews";
-import { counters, recordCounts } from "../data/counters";
+import { counters } from "../data/counters";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
 import { getPublicActivities } from "../lib/activities";
-import { certifications } from "../data/certifications";
+import { getPublicCertifications } from "../lib/certifications";
 import { profile } from "../data/profile";
 
 function ExternalLink({
@@ -59,6 +59,8 @@ function PublicationPdfLink({
 export default async function Home() {
   const { publications: sortedPublications, heroPublications } = await getPublicPublications();
   const { activities, activityTypes, activityYears } = await getPublicActivities();
+  const certifications = await getPublicCertifications();
+  const certificationCount = certifications.length;
 
   return (
     <main id="top">
@@ -114,7 +116,7 @@ export default async function Home() {
                 <span>{pageCopy.peerReviewsLabel}</span>
               </div>
               <div>
-                <strong>{recordCounts.certifications}{pageCopy.counterSuffix}</strong>
+                <strong>{certificationCount}{pageCopy.counterSuffix}</strong>
                 <span>{pageCopy.nptelRecords}</span>
               </div>
               <div>
@@ -519,7 +521,7 @@ export default async function Home() {
               <p>{pageCopy.certificationsDescription}</p>
             </div>
             <div className="big-stat">
-              <strong>{recordCounts.certifications}{pageCopy.counterSuffix}</strong>
+              <strong>{certificationCount}{pageCopy.counterSuffix}</strong>
               <span>{pageCopy.nptelRecords}</span>
             </div>
           </div>
