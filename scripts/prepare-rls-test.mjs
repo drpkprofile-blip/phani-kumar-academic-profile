@@ -6,11 +6,14 @@ import { root } from "./publication-seed.mjs";
 const management = process.argv.includes("--management");
 const activities = process.argv.includes("--activities");
 const certifications = process.argv.includes("--certifications");
-const selected = [activities, certifications].filter(Boolean).length;
+const achievements = process.argv.includes("--achievements");
+const selected = [activities, certifications, achievements].filter(Boolean).length;
 if (selected > 1) throw new Error("Select only one RLS test module.");
-const testName = certifications
-  ? management ? "certifications_management" : "certifications_rls"
-  : activities
+const testName = achievements
+  ? "achievements_rls"
+  : certifications
+    ? management ? "certifications_management" : "certifications_rls"
+    : activities
     ? management ? "activities_management" : "activities_rls"
     : management ? "publications_management" : "publications_rls";
 let sql = readFileSync(`${root}/supabase/tests/${testName}.sql`, "utf8");

@@ -1,0 +1,31 @@
+{
+  "sourceSha256": "07a361caddd735ba5bc568328aa1acc6e7084c784e308e90086a0c7082ddf830",
+  "achievements": [
+    {
+      "number": "01",
+      "title": "Best Paper Award",
+      "text": "Received the Best Paper Award at the International Conference on ICANITS-2026.",
+      "proof": "https://drive.google.com/file/d/1TzMj1rdlHN1mUZZqJ7dZEY4Jw9wt0aTT/view?usp=drive_link"
+    },
+    {
+      "number": "02",
+      "title": "NPTEL Discipline Star",
+      "text": "Received NPTEL Discipline Star Certificate from IIT Madras in 2026 and attended the NPTEL Star Event at IIT Tirupati.",
+      "proof": "https://drive.google.com/file/d/1G2s4OHeQUODHIHDrkOWu2pY1U6kQY0bf/view?usp=drive_link",
+      "extraProof": "https://drive.google.com/file/d/1SslACwcOG3n2UaOmu1QdAqh-4-JoPOvH/view?usp=drive_link"
+    },
+    {
+      "number": "03",
+      "title": "NPTEL Believer Certificate",
+      "text": "Received NPTEL Believer Certificate from IIT Madras in 2022.",
+      "proof": "https://drive.google.com/file/d/1Bh3tLtVVGmn9-REa0eZm5wesd6T5ggE2/view?usp=drive_link"
+    },
+    {
+      "number": "04",
+      "title": "Research Seed Money",
+      "text": "Sanctioned Rs. 1,50,000/- from ANITS for research on contact stresses and wear rate of plastic gears mounted on shafts with misalignment.",
+      "proof": "https://drive.google.com/drive/folders/1MndZ9k4UZH06eGZS1id8HpoVXMWl8pXm?usp=drive_link"
+    }
+  ],
+  "sectionHtml": "<section id=\"achievements\" class=\"section\"><div class=\"section-container\"><div class=\"section-heading-row\"><div><p class=\"section-label\">09 · ACHIEVEMENTS</p><h2>Academic Achievements</h2><p>Awards, academic recognition and research funding with supporting proof documents.</p></div><div class=\"section-index\">09</div></div><div class=\"achievement-grid\"><article class=\"achievement-card\"><div class=\"achievement-top\"><span class=\"achievement-number\">01</span><span class=\"achievement-label\">ACHIEVEMENT</span></div><h3>Best Paper Award</h3><p>Received the Best Paper Award at the International Conference on ICANITS-2026.</p><div class=\"proof-row achievement-links\"><a href=\"https://drive.google.com/file/d/1TzMj1rdlHN1mUZZqJ7dZEY4Jw9wt0aTT/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"proof-link\">Proof ↗</a></div></article><article class=\"achievement-card\"><div class=\"achievement-top\"><span class=\"achievement-number\">02</span><span class=\"achievement-label\">ACHIEVEMENT</span></div><h3>NPTEL Discipline Star</h3><p>Received NPTEL Discipline Star Certificate from IIT Madras in 2026 and attended the NPTEL Star Event at IIT Tirupati.</p><div class=\"proof-row achievement-links\"><a href=\"https://drive.google.com/file/d/1G2s4OHeQUODHIHDrkOWu2pY1U6kQY0bf/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"proof-link\">Proof ↗</a><a href=\"https://drive.google.com/file/d/1SslACwcOG3n2UaOmu1QdAqh-4-JoPOvH/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"proof-link\">Event Proof ↗</a></div></article><article class=\"achievement-card\"><div class=\"achievement-top\"><span class=\"achievement-number\">03</span><span class=\"achievement-label\">ACHIEVEMENT</span></div><h3>NPTEL Believer Certificate</h3><p>Received NPTEL Believer Certificate from IIT Madras in 2022.</p><div class=\"proof-row achievement-links\"><a href=\"https://drive.google.com/file/d/1Bh3tLtVVGmn9-REa0eZm5wesd6T5ggE2/view?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"proof-link\">Proof ↗</a></div></article><article class=\"achievement-card\"><div class=\"achievement-top\"><span class=\"achievement-number\">04</span><span class=\"achievement-label\">ACHIEVEMENT</span></div><h3>Research Seed Money</h3><p>Sanctioned Rs. 1,50,000/- from ANITS for research on contact stresses and wear rate of plastic gears mounted on shafts with misalignment.</p><div class=\"proof-row achievement-links\"><a href=\"https://drive.google.com/drive/folders/1MndZ9k4UZH06eGZS1id8HpoVXMWl8pXm?usp=drive_link\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"proof-link\">Proof ↗</a></div></article></div></div></section>"
+}
