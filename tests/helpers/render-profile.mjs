@@ -24,7 +24,7 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false) {
+export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
@@ -42,6 +42,11 @@ export async function compareProfile(publicData, activityData, certificationData
     },
     "../lib/subjects-taught": { getPublicSubjectsTaught: async () => subjectData ?? [] },
     "../lib/projects-guided": { getPublicProjectsGuided: async () => projectsGuidedData ?? [] },
+    "../lib/peer-reviews": { getPublicPeerReviews: async () => peerReviewData ?? {
+      peerReviews: loadModule("data/peer-reviews.ts").peerReviews,
+      heroCounterText: loadModule("data/counters.ts").counters.heroPeerReviews,
+      completedReviewsCount: loadModule("data/counters.ts").counters.peerReviewCount,
+    } },
   }).default;
   const current = renderToStaticMarkup(await newPage());
   const baselineCompatibleCurrent = includeProjects ? current : current

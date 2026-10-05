@@ -50,6 +50,57 @@ export type Database = {
         }
         Relationships: []
       }
+      peer_reviews: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: number
+          review_text: string
+          source_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order: number
+          id?: number
+          review_text: string
+          source_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: number
+          review_text?: string
+          source_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      peer_review_settings: {
+        Row: {
+          completed_reviews_count: number
+          created_at: string
+          hero_counter_text: string
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          completed_reviews_count: number
+          created_at?: string
+          hero_counter_text: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          completed_reviews_count?: number
+          created_at?: string
+          hero_counter_text?: string
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       professional_memberships: {
         Row: {
           chapter: string | null

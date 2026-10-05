@@ -1,0 +1,74 @@
+{
+  "sourceSha256": "222d5dfa17c7bef4f7f4f22c6f5774ad2d95906ec1bd52d4992f3cae1655de00",
+  "rows": [
+    {
+      "id": 1,
+      "review_text": "Diffusion-Based Generative Augmentation for Dataset Construction in Door-State Detection of Temporary Electrical Distribution Boxes on Construction Sites, Engineering Research Express (2026)",
+      "source_order": 1,
+      "display_order": 1
+    },
+    {
+      "id": 2,
+      "review_text": "Adaptive MPC with EKF-Based Obstacle Prediction for AGV Navigation, Engineering Research Express (2026)",
+      "source_order": 2,
+      "display_order": 2
+    },
+    {
+      "id": 3,
+      "review_text": "Enhanced Lichtenberg Optimization Algorithm for the Optimal Design and Control of MRWBLDC Motors, Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering (2026)",
+      "source_order": 3,
+      "display_order": 3
+    },
+    {
+      "id": 4,
+      "review_text": "TIRP: A Topology-Informed Refinement Model for Multimodal Trajectory Prediction in Autonomous Driving, Measurement Science and Technology (2026)",
+      "source_order": 4,
+      "display_order": 4
+    },
+    {
+      "id": 5,
+      "review_text": "Parallel Hybrid Interval Type-2 Fuzzy NARX Network for Robust Line-Following Control of Autonomous Guided Vehicles, Measurement Science and Technology (2026)",
+      "source_order": 5,
+      "display_order": 5
+    },
+    {
+      "id": 6,
+      "review_text": "Effect of Stress Concentration Caused by 3D Surface Topography on Gear Bending Fatigue Life, Engineering Research Express (2025)",
+      "source_order": 6,
+      "display_order": 6
+    },
+    {
+      "id": 7,
+      "review_text": "Chaotic African Vultures Optimization Based Non-Linear FOPID Controller for Frequency Regulation in Standalone Microgrid System, Engineering Research Express (2025)",
+      "source_order": 7,
+      "display_order": 7
+    },
+    {
+      "id": 8,
+      "review_text": "CNN-BiLSTM-AM: A Hybrid Deep Learning Model for Real-Time Vehicle Longitudinal Control in Bench Testing, Engineering Research Express (2025)",
+      "source_order": 8,
+      "display_order": 8
+    },
+    {
+      "id": 9,
+      "review_text": "A Comparative Study on the Structural and Stress Performance of Phased and Non-Phased Gear Systems, Engineering Research Express (2025)",
+      "source_order": 9,
+      "display_order": 9
+    },
+    {
+      "id": 10,
+      "review_text": "Electric Vehicle Battery Pack State of Health Assessment by Signal Tracking Regularized Box Particle Filter, Engineering Research Express (2025)",
+      "source_order": 10,
+      "display_order": 10
+    },
+    {
+      "id": 11,
+      "review_text": "Effects of Discrete Fibre Reinforcements on the Wear Resistance Behaviour of Polyamide-Based Spur Gears, Physica Scripta (2024)",
+      "source_order": 11,
+      "display_order": 11
+    }
+  ],
+  "heroCounterText": "16+",
+  "completedReviewsCount": 16,
+  "sectionHtml": "<section id=\"peer-reviews\" class=\"section\"><div class=\"section-container\"><div class=\"section-heading-row\"><div><p class=\"section-label\">08 · PEER REVIEWS</p><h2>Journal Peer Reviews</h2><p>Manuscript review contributions for Web of Science indexed journals.</p></div><div class=\"big-stat\"><strong>16</strong><span>REVIEWS COMPLETED</span></div></div><div class=\"review-grid\"><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">01</span><span class=\"review-year\">2026</span></div><h3>Diffusion-Based Generative Augmentation for Dataset Construction in Door-State Detection of Temporary Electrical Distribution Boxes on Construction Sites</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">02</span><span class=\"review-year\">2026</span></div><h3>Adaptive MPC with EKF-Based Obstacle Prediction for AGV Navigation</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">03</span><span class=\"review-year\">2026</span></div><h3>Enhanced Lichtenberg Optimization Algorithm for the Optimal Design and Control of MRWBLDC Motors, Proceedings of the Institution of Mechanical Engineers</h3><p class=\"review-journal\">Part G: Journal of Aerospace Engineering</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">04</span><span class=\"review-year\">2026</span></div><h3>TIRP: A Topology-Informed Refinement Model for Multimodal Trajectory Prediction in Autonomous Driving</h3><p class=\"review-journal\">Measurement Science and Technology</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">05</span><span class=\"review-year\">2026</span></div><h3>Parallel Hybrid Interval Type-2 Fuzzy NARX Network for Robust Line-Following Control of Autonomous Guided Vehicles</h3><p class=\"review-journal\">Measurement Science and Technology</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">06</span><span class=\"review-year\">2025</span></div><h3>Effect of Stress Concentration Caused by 3D Surface Topography on Gear Bending Fatigue Life</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">07</span><span class=\"review-year\">2025</span></div><h3>Chaotic African Vultures Optimization Based Non-Linear FOPID Controller for Frequency Regulation in Standalone Microgrid System</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">08</span><span class=\"review-year\">2025</span></div><h3>CNN-BiLSTM-AM: A Hybrid Deep Learning Model for Real-Time Vehicle Longitudinal Control in Bench Testing</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">09</span><span class=\"review-year\">2025</span></div><h3>A Comparative Study on the Structural and Stress Performance of Phased and Non-Phased Gear Systems</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">10</span><span class=\"review-year\">2025</span></div><h3>Electric Vehicle Battery Pack State of Health Assessment by Signal Tracking Regularized Box Particle Filter</h3><p class=\"review-journal\">Engineering Research Express</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article><article class=\"review-card\"><div class=\"review-card-top\"><span class=\"review-number\">11</span><span class=\"review-year\">2024</span></div><h3>Effects of Discrete Fibre Reinforcements on the Wear Resistance Behaviour of Polyamide-Based Spur Gears</h3><p class=\"review-journal\">Physica Scripta</p><div class=\"review-status\"><span>PEER REVIEW</span><span>JOURNAL MANUSCRIPT</span></div></article></div></div></section>"
+}

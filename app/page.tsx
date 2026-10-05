@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { researchAreas } from "../data/research";
 import { education } from "../data/education";
 import { experience } from "../data/experience";
-import { peerReviews } from "../data/peer-reviews";
 import { counters } from "../data/counters";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
@@ -12,6 +11,7 @@ import { getPublicAchievements } from "../lib/achievements";
 import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
 import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
+import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { profile } from "../data/profile";
 
 function ExternalLink({
@@ -67,6 +67,7 @@ export default async function Home() {
   const professionalMemberships = await getPublicProfessionalMemberships();
   const subjectsTaught = await getPublicSubjectsTaught();
   const projectsGuided = await getPublicProjectsGuided();
+  const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
 
   return (
@@ -122,7 +123,7 @@ export default async function Home() {
                 <span>{pageCopy.publicationsLabel}</span>
               </div>
               <div>
-                <strong>{counters.heroPeerReviews}</strong>
+                <strong>{heroPeerReviews}</strong>
                 <span>{pageCopy.peerReviewsLabel}</span>
               </div>
               <div>
@@ -577,7 +578,7 @@ export default async function Home() {
               <p>{pageCopy.peerReviewsDescription}</p>
             </div>
             <div className="big-stat">
-              <strong>{counters.peerReviewCount}</strong>
+              <strong>{peerReviewCount}</strong>
               <span>{pageCopy.reviewsCompleted}</span>
             </div>
           </div>
