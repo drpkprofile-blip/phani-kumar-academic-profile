@@ -24,7 +24,7 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData) {
+export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
@@ -40,6 +40,7 @@ export async function compareProfile(publicData, activityData, certificationData
       getPublicProfessionalMemberships: async () => professionalMembershipData
         ?? loadModule("data/professional-memberships.ts").professionalMemberships.map((record, index) => ({ ...record, displayOrder: index + 1 })),
     },
+    "../lib/subjects-taught": { getPublicSubjectsTaught: async () => subjectData ?? [] },
   }).default;
   return {
     baseline: renderToStaticMarkup(await oldPage()),

@@ -98,6 +98,54 @@ export type Database = {
         }
         Relationships: []
       }
+      subjects_taught: {
+        Row: {
+          academic_year: string | null
+          branch: string | null
+          course_code: string | null
+          created_at: string
+          display_order: number
+          id: number
+          program: string | null
+          proof_url: string | null
+          semester: string | null
+          source_order: number | null
+          subject_name: string
+          subject_type: string | null
+          updated_at: string
+        }
+        Insert: {
+          academic_year?: string | null
+          branch?: string | null
+          course_code?: string | null
+          created_at?: string
+          display_order: number
+          id?: number
+          program?: string | null
+          proof_url?: string | null
+          semester?: string | null
+          source_order?: number | null
+          subject_name: string
+          subject_type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string | null
+          branch?: string | null
+          course_code?: string | null
+          created_at?: string
+          display_order?: number
+          id?: number
+          program?: string | null
+          proof_url?: string | null
+          semester?: string | null
+          source_order?: number | null
+          subject_name?: string
+          subject_type?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_type: string
@@ -331,6 +379,18 @@ export type Database = {
       }
       admin_move_professional_membership: {
         Args: { p_id: number; p_position: number; p_expected_order: number[] }
+        Returns: undefined
+      }
+      admin_save_subject_taught: {
+        Args: { p_expected_updated_at?: string; p_id?: number; p_subject?: Json }
+        Returns: number
+      }
+      admin_delete_subject_taught: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: number
+      }
+      admin_move_subject_taught: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
         Returns: undefined
       }
       admin_delete_achievement: {

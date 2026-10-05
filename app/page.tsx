@@ -10,6 +10,7 @@ import { getPublicActivities } from "../lib/activities";
 import { getPublicCertifications } from "../lib/certifications";
 import { getPublicAchievements } from "../lib/achievements";
 import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
+import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { profile } from "../data/profile";
 
 function ExternalLink({
@@ -63,6 +64,7 @@ export default async function Home() {
   const certifications = await getPublicCertifications();
   const achievements = await getPublicAchievements();
   const professionalMemberships = await getPublicProfessionalMemberships();
+  const subjectsTaught = await getPublicSubjectsTaught();
   const certificationCount = certifications.length;
 
   return (
@@ -83,6 +85,7 @@ export default async function Home() {
             <a href={pageLinks.peerReviews}>{pageCopy.peerReviews}</a>
             <a href={pageLinks.achievements}>{pageCopy.achievements}</a>
             <a href={pageLinks.professionalBodies}>{pageCopy.professionalBodies}</a>
+            <a href={pageLinks.subjectsTaught}>{pageCopy.subjectsTaught}</a>
             <a href={pageLinks.contact}>{pageCopy.contact}</a>
           </nav>
         </div>
@@ -677,6 +680,41 @@ export default async function Home() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="subjects-taught" className="section">
+        <div className="section-container">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-label">{pageCopy.subjectsTaughtLabel}</p>
+              <h2>{pageCopy.subjectsTaughtTitle}</h2>
+              <p>{pageCopy.subjectsTaughtDescription}</p>
+            </div>
+          </div>
+
+          {subjectsTaught.length === 0 ? (
+            <div className="subjects-empty-state" role="status">{pageCopy.subjectsTaughtEmpty}</div>
+          ) : (
+            <div className="subjects-taught-grid">
+              {subjectsTaught.map((subject) => (
+                <article className="subject-taught-card" key={subject.id}>
+                  <div className="subject-taught-topline">
+                    <span>{String(subject.displayOrder).padStart(2, "0")}</span>
+                    {subject.subjectType && <span>{subject.subjectType}</span>}
+                  </div>
+                  <h3>{subject.subjectName}</h3>
+                  {[subject.courseCode && `${pageCopy.courseCode}: ${subject.courseCode}`,
+                    subject.program && `${pageCopy.program}: ${subject.program}`,
+                    subject.branch && `${pageCopy.branch}: ${subject.branch}`,
+                    subject.semester && `${pageCopy.semester}: ${subject.semester}`,
+                    subject.academicYear && `${pageCopy.academicYear}: ${subject.academicYear}`]
+                    .filter(Boolean).map((detail) => <p key={detail}>{detail}</p>)}
+                  {subject.proofUrl && <div className="proof-row"><ExternalLink url={subject.proofUrl}>{pageCopy.proof}</ExternalLink></div>}
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
