@@ -9,7 +9,7 @@ const certifications = process.argv.includes("--certifications");
 const selected = [activities, certifications].filter(Boolean).length;
 if (selected > 1) throw new Error("Select only one RLS test module.");
 const testName = certifications
-  ? "certifications_rls"
+  ? management ? "certifications_management" : "certifications_rls"
   : activities
     ? management ? "activities_management" : "activities_rls"
     : management ? "publications_management" : "publications_rls";

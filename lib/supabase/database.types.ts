@@ -225,6 +225,18 @@ export type Database = {
         Args: { p_expected_order: number[]; p_id: number; p_position: number }
         Returns: undefined
       }
+      admin_save_certification: {
+        Args: { p_certification?: Json; p_expected_updated_at?: string; p_id?: number }
+        Returns: number
+      }
+      admin_delete_certification: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: number
+      }
+      admin_move_certification: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
       admin_save_publication: {
         Args: {
           p_expected_updated_at?: string

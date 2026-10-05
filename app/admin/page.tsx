@@ -45,6 +45,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <h2>Activities</h2><p>Manage FDPs, workshops, conferences and other academic activities.</p>
           <Link className={styles.button} href="/admin/activities">Manage Activities</Link>
         </section>
+        <section className={styles.module} aria-label="Certifications management">
+          <h2>Certifications / NPTEL</h2><p>Manage NPTEL certificate and FDP links.</p>
+          <Link className={styles.button} href="/admin/certifications">Manage Certifications</Link>
+        </section>
         <form action={updateHeroCounter} className={styles.counterForm}>
           <input type="hidden" name="previous_counter" value={settings.data.hero_publications} />
           <label className={styles.field} htmlFor="hero_publications">Independent hero Publications counter
