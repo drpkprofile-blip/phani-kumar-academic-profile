@@ -502,6 +502,22 @@ export type Database = {
         Args: { p_expected_updated_at?: string; p_id?: number; p_project?: Json }
         Returns: number
       }
+      admin_save_peer_review: {
+        Args: { p_expected_updated_at?: string; p_id?: number; p_review_text?: string }
+        Returns: number
+      }
+      admin_delete_peer_review: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: number
+      }
+      admin_move_peer_review: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
+      admin_update_peer_review_settings: {
+        Args: { p_completed_reviews_count: number; p_expected_updated_at: string; p_hero_counter_text: string }
+        Returns: undefined
+      }
       admin_delete_project_guided: {
         Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
         Returns: number
