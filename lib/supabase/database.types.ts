@@ -146,6 +146,60 @@ export type Database = {
         }
         Relationships: []
       }
+      projects_guided: {
+        Row: {
+          academic_year: string | null
+          batch: string | null
+          branch: string | null
+          co_guide_names: string[] | null
+          created_at: string
+          degree_program: string | null
+          display_order: number
+          guide_name: string | null
+          id: number
+          project_level: string | null
+          project_title: string
+          proof_url: string | null
+          source_order: number | null
+          student_names: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          academic_year?: string | null
+          batch?: string | null
+          branch?: string | null
+          co_guide_names?: string[] | null
+          created_at?: string
+          degree_program?: string | null
+          display_order: number
+          guide_name?: string | null
+          id?: number
+          project_level?: string | null
+          project_title: string
+          proof_url?: string | null
+          source_order?: number | null
+          student_names?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string | null
+          batch?: string | null
+          branch?: string | null
+          co_guide_names?: string[] | null
+          created_at?: string
+          degree_program?: string | null
+          display_order?: number
+          guide_name?: string | null
+          id?: number
+          project_level?: string | null
+          project_title?: string
+          proof_url?: string | null
+          source_order?: number | null
+          student_names?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_type: string
@@ -390,6 +444,18 @@ export type Database = {
         Returns: number
       }
       admin_move_subject_taught: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
+      admin_save_project_guided: {
+        Args: { p_expected_updated_at?: string; p_id?: number; p_project?: Json }
+        Returns: number
+      }
+      admin_delete_project_guided: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: number
+      }
+      admin_move_project_guided: {
         Args: { p_expected_order: number[]; p_id: number; p_position: number }
         Returns: undefined
       }

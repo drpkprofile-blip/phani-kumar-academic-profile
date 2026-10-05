@@ -11,6 +11,7 @@ import { getPublicCertifications } from "../lib/certifications";
 import { getPublicAchievements } from "../lib/achievements";
 import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
 import { getPublicSubjectsTaught } from "../lib/subjects-taught";
+import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { profile } from "../data/profile";
 
 function ExternalLink({
@@ -65,6 +66,7 @@ export default async function Home() {
   const achievements = await getPublicAchievements();
   const professionalMemberships = await getPublicProfessionalMemberships();
   const subjectsTaught = await getPublicSubjectsTaught();
+  const projectsGuided = await getPublicProjectsGuided();
   const certificationCount = certifications.length;
 
   return (
@@ -86,6 +88,7 @@ export default async function Home() {
             <a href={pageLinks.achievements}>{pageCopy.achievements}</a>
             <a href={pageLinks.professionalBodies}>{pageCopy.professionalBodies}</a>
             <a href={pageLinks.subjectsTaught}>{pageCopy.subjectsTaught}</a>
+            <a href={pageLinks.projectsGuided}>{pageCopy.projectsGuided}</a>
             <a href={pageLinks.contact}>{pageCopy.contact}</a>
           </nav>
         </div>
@@ -711,6 +714,40 @@ export default async function Home() {
                     subject.academicYear && `${pageCopy.academicYear}: ${subject.academicYear}`]
                     .filter(Boolean).map((detail) => <p key={detail}>{detail}</p>)}
                   {subject.proofUrl && <div className="proof-row"><ExternalLink url={subject.proofUrl}>{pageCopy.proof}</ExternalLink></div>}
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section id="projects-guided" className="section">
+        <div className="section-container">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-label">{pageCopy.projectsGuidedLabel}</p>
+              <h2>{pageCopy.projectsGuidedTitle}</h2>
+              <p>{pageCopy.projectsGuidedDescription}</p>
+            </div>
+          </div>
+
+          {projectsGuided.length === 0 ? (
+            <div className="projects-guided-empty-state" role="status">{pageCopy.projectsGuidedEmpty}</div>
+          ) : (
+            <div className="projects-guided-grid">
+              {projectsGuided.map((project) => (
+                <article className="project-guided-card" key={project.id}>
+                  <div className="project-guided-topline">
+                    <span>{String(project.displayOrder).padStart(2, "0")}</span>
+                    {project.projectLevel && <span>{project.projectLevel}</span>}
+                  </div>
+                  <h3>{project.projectTitle}</h3>
+                  {[project.degreeProgram, project.branch, project.academicYear, project.batch]
+                    .filter(Boolean).map((detail, index) => <p key={`${index}-${detail}`}>{detail}</p>)}
+                  {project.studentNames && <p><strong>{pageCopy.students}:</strong> {project.studentNames.join(", ")}</p>}
+                  {project.guideName && <p><strong>{pageCopy.guide}:</strong> {project.guideName}</p>}
+                  {project.coGuideNames && <p><strong>{pageCopy.coGuides}:</strong> {project.coGuideNames.join(", ")}</p>}
+                  {project.proofUrl && <div className="proof-row"><ExternalLink url={project.proofUrl}>{pageCopy.proof}</ExternalLink></div>}
                 </article>
               ))}
             </div>

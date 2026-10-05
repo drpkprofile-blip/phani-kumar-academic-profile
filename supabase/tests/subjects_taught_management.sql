@@ -54,10 +54,10 @@ select throws_ok(format('select public.admin_delete_subject_taught(%s,(select up
 select lives_ok(format('select public.admin_delete_subject_taught(%s,(select updated_at from public.subjects_taught where id=%s),true)',
   (select max(id) from subjects_created),(select max(id) from subjects_created)),
   'Admin can delete after confirmation');
-select is((select display_order from public.subjects_taught where id=(select id from subjects_created)),1,
+select is((select display_order from public.subjects_taught where id=(select min(id) from subjects_created)),1,
   'Delete resequences remaining positions safely');
 select lives_ok(format('select public.admin_delete_subject_taught(%s,(select updated_at from public.subjects_taught where id=%s),true)',
-  (select id from subjects_created),(select id from subjects_created)),'Admin can delete final test subject');
+  (select min(id) from subjects_created),(select min(id) from subjects_created)),'Admin can delete final test subject');
 select is((select count(*)::integer from public.subjects_taught),0,'Rollback fixture leaves table empty before transaction rollback');
 select ok(not exists(select 1 from subjects_before b full join public.subjects_taught s using(id)
   where b.id is null or s.id is null or to_jsonb(b) is distinct from to_jsonb(s)),

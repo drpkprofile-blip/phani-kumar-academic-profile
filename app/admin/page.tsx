@@ -61,6 +61,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <h2>Subjects Taught</h2><p>Manage subjects and optional programme details.</p>
           <Link className={styles.button} href="/admin/subjects-taught">Manage Subjects Taught</Link>
         </section>
+        <section className={styles.module} aria-label="Projects Guided management">
+          <h2>Projects Guided</h2><p>Manage guided UG and PG project records and supporting proof links.</p>
+          <Link className={styles.button} href="/admin/projects-guided">Manage Projects Guided</Link>
+        </section>
         <form action={updateHeroCounter} className={styles.counterForm}>
           <input type="hidden" name="previous_counter" value={settings.data.hero_publications} />
           <label className={styles.field} htmlFor="hero_publications">Independent hero Publications counter
