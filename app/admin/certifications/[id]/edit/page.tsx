@@ -14,6 +14,7 @@ export default async function EditCertification({ params }: { params: Promise<{ 
     <h1>Edit certification</h1>
     <CertificationForm id={certification.id} updatedAt={certification.updated_at} initial={{
       title: certification.title,
+      year: certification.year?.toString() ?? "",
       certificate_url: certification.certificate_url ?? "",
       fdp_url: certification.fdp_url ?? "",
     }} />

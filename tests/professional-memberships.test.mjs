@@ -10,7 +10,7 @@ const mapped = mapProfessionalMemberships(source);
 const formModule = loadModule("lib/admin/professional-membership-form.ts");
 function form(overrides = {}) {
   const data = new FormData();
-  for (const [key, value] of Object.entries({ id: "", updated_at: "", organization_name: "Condition Monitoring Society of India (MCMSI)", membership_type: "Member",
+  for (const [key, value] of Object.entries({ id: "", updated_at: "", organization_name: "Condition Monitoring Society of India (MCMSI)", year: "", membership_type: "Member",
     membership_number: "", date_text: "", validity_text: "", designation: "", chapter: "", proof_url: "", ...overrides })) data.set(key, value);
   return data;
 }
@@ -47,8 +47,14 @@ test("membership form preserves nonblank values and maps blank optional fields t
   assert.equal(parsed.data.organization_name, "  Society wording  ");
   assert.equal(parsed.data.membership_number, "  A-1  ");
   assert.equal(parsed.data.membership_type, "Member");
+  assert.equal(parsed.data.year, null);
   assert.equal(parsed.data.proof_url, proof);
   for (const field of ["date_text", "validity_text", "designation", "chapter"]) assert.equal(parsed.data[field], null);
+});
+
+test("membership year is optional, validated, and stored only when explicitly supplied", () => {
+  assert.equal(formModule.parseProfessionalMembershipForm(form({ year: "2024" })).data.year, 2024);
+  for (const year of ["24", "1799", "2201", "202A"]) assert.ok(formModule.parseProfessionalMembershipForm(form({ year })).errors.year);
 });
 
 test("membership form rejects blank organization and invalid, unsafe, or credential-bearing proof URLs", () => {
@@ -70,7 +76,7 @@ test("admin create sends approved fields only and edit cannot move the record", 
   const add = harness();
   await redirected(() => add.saveProfessionalMembership({}, form({ proof_url: "", display_order: "99", source_order: "100" })), "/admin/professional-memberships?success=added");
   assert.deepEqual(add.calls[0], { name: "admin_save_professional_membership", args: { p_membership: {
-    organization_name: "Condition Monitoring Society of India (MCMSI)", membership_type: "Member", membership_number: null,
+    organization_name: "Condition Monitoring Society of India (MCMSI)", year: null, membership_type: "Member", membership_number: null,
     date_text: null, validity_text: null, designation: null, chapter: null, proof_url: null,
   } } });
   assert.deepEqual(add.paths, [["/"], ["/admin", "layout"]]);
@@ -93,10 +99,12 @@ test("delete is confirmed and reorder submits a unique complete order snapshot",
 test("membership database RLS and management SQL cover public reads and admin-only writes", () => {
   const foundation = readFileSync(`${root}/supabase/migrations/20261005000700_professional_memberships_foundation.sql`, "utf8");
   const management = readFileSync(`${root}/supabase/migrations/20261005000800_professional_memberships_management.sql`, "utf8");
+  const yearMigration = readFileSync(`${root}/supabase/migrations/20261006000300_professional_membership_year.sql`, "utf8");
   const rlsTest = readFileSync(`${root}/supabase/tests/professional_memberships_rls.sql`, "utf8");
   const managementTest = readFileSync(`${root}/supabase/tests/professional_memberships_management.sql`, "utf8");
   for (const phrase of ["organization_name text not null", "is_publications_admin()", "for select to anon, authenticated", "deferrable initially immediate"]) assert.ok(foundation.includes(phrase));
   for (const phrase of ["security invoker", "is_publications_admin()", "professional_memberships_display_order_unique deferred", "admin_save_professional_membership", "admin_delete_professional_membership", "admin_move_professional_membership"]) assert.ok(management.includes(phrase));
+  for (const phrase of ["add column year integer", "year_value", "is_publications_admin()", "year=year_value"]) assert.ok(yearMigration.includes(phrase));
   for (const phrase of ["Anonymous visitors can read memberships", "Anonymous membership insert is denied", "Authenticated non-admin membership insert is denied", "Existing allowlisted admin is recognized", "optional metadata", "deferrable constraint"]) assert.ok(rlsTest.includes(phrase));
   for (const phrase of ["Blank organization name is rejected", "Invalid proof URL is rejected", "source order NULL", "Editing metadata preserves display position", "transactionally", "explicit confirmation", "timestamps are unchanged"]) assert.ok(managementTest.includes(phrase));
 });

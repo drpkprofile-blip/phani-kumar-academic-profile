@@ -36,7 +36,9 @@ export async function getPublicPublications(): Promise<{
 
   const supabase = await createClient();
   const [records, settings] = await Promise.all([
-    supabase.from("publications").select("*").order("display_order", { ascending: true }),
+    supabase.from("publications").select("*")
+      .order("year", { ascending: false })
+      .order("display_order", { ascending: true }),
     supabase.from("publication_settings").select("hero_publications").eq("id", true).single(),
   ]);
   if (records.error || !records.data) throw new Error("Unable to read public Publications from Supabase");

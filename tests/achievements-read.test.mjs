@@ -81,6 +81,17 @@ test("NULL proof fields become undefined and configured database errors are visi
   });
 });
 
+test("Achievements with an explicit year sort newest-first and undated descriptions stay last", async () => {
+  await configured(async () => {
+    const original = rows.map((row) => ({ ...row, created_at: "", updated_at: "" }));
+    const shuffled = [original[3], original[2], original[0], original[1]];
+    const ordered = await reader({ data: shuffled, error: null }).getPublicAchievements();
+    assert.deepEqual(ordered.map(({ title, number }) => [title, number]), [
+      [source[0].title, "01"], [source[1].title, "02"], [source[2].title, "03"], [source[3].title, "04"],
+    ]);
+  });
+});
+
 test("Supabase Achievements render exactly matches the saved Phase 8C baseline", async () => {
   await configured(async () => {
     const helper = reader();

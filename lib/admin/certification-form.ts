@@ -1,4 +1,4 @@
-export const certificationFields = ["title", "certificate_url", "fdp_url"] as const;
+export const certificationFields = ["title", "year", "certificate_url", "fdp_url"] as const;
 export type CertificationField = typeof certificationFields[number];
 export type CertificationValues = Record<CertificationField, string>;
 export type CertificationFormState = {
@@ -15,6 +15,15 @@ export function parseCertificationForm(form: FormData) {
   const errors: CertificationFormState["errors"] = {};
 
   if (!values.title.trim()) errors.title = "Enter a nonblank title.";
+
+  let year: number | null = null;
+  if (values.year.trim()) {
+    if (!/^\d{4}$/.test(values.year) || Number(values.year) < 1800 || Number(values.year) > 2200) {
+      errors.year = "Enter a valid four-digit year.";
+    } else {
+      year = Number(values.year);
+    }
+  }
 
   const optionalUrl = (value: string, field: "certificate_url" | "fdp_url") => {
     if (!value.trim()) return null;
@@ -36,7 +45,7 @@ export function parseCertificationForm(form: FormData) {
   return {
     values,
     errors,
-    data: { title: values.title, certificate_url: certificateUrl, fdp_url: fdpUrl },
+    data: { title: values.title, year, certificate_url: certificateUrl, fdp_url: fdpUrl },
   };
 }
 

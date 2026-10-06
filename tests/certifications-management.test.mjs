@@ -7,7 +7,7 @@ import { loadModule } from "./helpers/render-profile.mjs";
 const validation = loadModule("lib/admin/certification-form.ts");
 function form(overrides = {}) {
   const values = new FormData();
-  for (const [name, value] of Object.entries({ id: "", updated_at: "", title: "Test certification", certificate_url: "", fdp_url: "", ...overrides })) {
+  for (const [name, value] of Object.entries({ id: "", updated_at: "", title: "Test certification", year: "", certificate_url: "", fdp_url: "", ...overrides })) {
     values.set(name, value);
   }
   return values;
@@ -17,7 +17,9 @@ function actionHarness({ denied = false, error = null } = {}) {
   const calls = [];
   const revalidated = [];
   const redirect = (path) => { throw Object.assign(new Error("Redirect"), { path }); };
-  const supabase = { rpc: async (name, args) => { calls.push({ name, args }); return { data: 100, error }; } };
+  const supabase = {
+    rpc: async (name, args) => { calls.push({ name, args }); return { data: 100, error }; },
+  };
   return {
     calls,
     revalidated,
@@ -42,14 +44,16 @@ test("certification form normalizes only empty URLs to NULL and preserves suppli
     title: "  Exact title  ", certificate_url: url, fdp_url: "  ",
   }));
   assert.deepEqual(parsed.errors, {});
-  assert.deepEqual(parsed.data, { title: "  Exact title  ", certificate_url: url, fdp_url: null });
+  assert.deepEqual(parsed.data, { title: "  Exact title  ", year: null, certificate_url: url, fdp_url: null });
   assert.deepEqual(validation.parseCertificationForm(form({ certificate_url: "\t", fdp_url: " " })).data,
-    { title: "Test certification", certificate_url: null, fdp_url: null });
+    { title: "Test certification", year: null, certificate_url: null, fdp_url: null });
 });
 
 test("certification form rejects blank titles and invalid or non-HTTP URLs", () => {
   for (const overrides of [
     { title: " \t " },
+    { year: "012026" },
+    { year: "1799" },
     { certificate_url: "javascript:alert(1)" },
     { fdp_url: "ftp://example.test/file" },
     { certificate_url: "https://user:secret@example.test/file" },
@@ -70,11 +74,11 @@ test("admin create stores nullable URLs and lets the database assign source and 
   const helper = actionHarness();
   const url = "https://example.test/certificate?usp=drive_link&x=1";
   await redirected(() => helper.saveCertification({}, form({
-    certificate_url: url, fdp_url: "", source_order: "55", display_order: "2",
+    year: "2026", certificate_url: url, fdp_url: "", source_order: "55", display_order: "2",
   })), "/admin/certifications?success=added");
   assert.equal(helper.calls[0].name, "admin_save_certification");
   assert.deepEqual(helper.calls[0].args, {
-    p_certification: { title: "Test certification", certificate_url: url, fdp_url: null },
+    p_certification: { title: "Test certification", year: 2026, certificate_url: url, fdp_url: null },
   });
   assert.deepEqual(helper.revalidated, [["/"], ["/admin", "layout"]]);
 });
@@ -83,10 +87,10 @@ test("admin edit sends only title and URLs and does not send a display position"
   const helper = actionHarness();
   const timestamp = "2026-10-05T00:00:00Z";
   await redirected(() => helper.saveCertification({}, form({
-    id: "9", updated_at: timestamp, title: "Edited title", certificate_url: "", fdp_url: "https://example.test/fdp?x=2",
+    id: "9", updated_at: timestamp, title: "Edited title", year: "2025", certificate_url: "", fdp_url: "https://example.test/fdp?x=2",
   })), "/admin/certifications?success=saved");
   assert.deepEqual(helper.calls[0].args, {
-    p_certification: { title: "Edited title", certificate_url: null, fdp_url: "https://example.test/fdp?x=2" },
+    p_certification: { title: "Edited title", year: 2025, certificate_url: null, fdp_url: "https://example.test/fdp?x=2" },
     p_id: 9, p_expected_updated_at: timestamp,
   });
 });
@@ -125,6 +129,10 @@ test("Certifications database suite covers read-only visitors, admin CRUD, safe 
   for (const phrase of ["original 13 certifications are present", "Anonymous certification actions are denied", "Authenticated non-admin certification actions are denied", "Admin can create a certification", "Admin can edit title and links", "Admin can transactionally reorder", "Deleting a record compacts", "original 13 records and their metadata, order and timestamps remain unchanged"]) {
     assert.ok(databaseTests.includes(phrase), `Missing database test: ${phrase}`);
   }
+  const yearMigration = readFileSync("supabase/migrations/20261006000200_certification_year.sql", "utf8");
+  assert.match(yearMigration, /add column year integer/);
+  assert.match(yearMigration, /year is null or year between 1800 and 2200/);
+  assert.match(yearMigration, /admin_save_certification[\s\S]*certification_year[\s\S]*update public\.certifications set title=certification_title,year=certification_year/);
 });
 
 test("protected Certifications routes and admin dashboard link are present", () => {

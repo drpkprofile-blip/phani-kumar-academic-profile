@@ -113,6 +113,15 @@ test("configured Peer Reviews render matches the saved static baseline exactly",
   });
 });
 
+test("Peer Reviews sort by the explicit trailing year without changing stored text", async () => {
+  await withConfiguration(async () => {
+    const shuffled = [rows[10], rows[5], rows[0], rows[8]];
+    const result = await reader({ data: shuffled, error: null }).getPublicPeerReviews();
+    assert.deepEqual(result.peerReviews, [rows[0].review_text, rows[5].review_text, rows[8].review_text, rows[10].review_text]);
+    assert.ok(result.peerReviews.every((review) => source.includes(review)));
+  });
+});
+
 test("missing Supabase configuration uses static strings and both fallback counters", async () => {
   await withConfiguration(async () => {
     delete process.env.NEXT_PUBLIC_SUPABASE_URL;

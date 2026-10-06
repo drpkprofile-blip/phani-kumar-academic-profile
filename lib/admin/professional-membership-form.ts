@@ -1,5 +1,5 @@
 export const professionalMembershipFields = [
-  "organization_name", "membership_type", "membership_number", "date_text",
+  "organization_name", "year", "membership_type", "membership_number", "date_text",
   "validity_text", "designation", "chapter", "proof_url",
 ] as const;
 export type ProfessionalMembershipField = typeof professionalMembershipFields[number];
@@ -16,6 +16,12 @@ export function parseProfessionalMembershipForm(form: FormData) {
   ])) as ProfessionalMembershipValues;
   const errors: ProfessionalMembershipFormState["errors"] = {};
   if (!values.organization_name.trim()) errors.organization_name = "Enter a nonblank organization name.";
+
+  let year: number | null = null;
+  if (values.year.trim()) {
+    if (!/^\d{4}$/.test(values.year) || Number(values.year) < 1800 || Number(values.year) > 2200) errors.year = "Enter a valid four-digit year.";
+    else year = Number(values.year);
+  }
 
   let proofUrl: string | null = null;
   if (values.proof_url.trim()) {
@@ -35,6 +41,7 @@ export function parseProfessionalMembershipForm(form: FormData) {
     errors,
     data: {
       organization_name: values.organization_name,
+      year,
       membership_type: nullable(values.membership_type),
       membership_number: nullable(values.membership_number),
       date_text: nullable(values.date_text),

@@ -14,10 +14,11 @@ const reader = (result = { data: expected.map((row) => ({ ...row, created_at: ""
       calls.push(["from", table]);
       return { select(columns) {
         calls.push(["select", columns]);
-        return { order(field, options) {
+        const query = { order(field, options) {
           calls.push(["order", field, options]);
-          return Promise.resolve(result);
-        } };
+          return query;
+        }, then(resolve) { return Promise.resolve(result).then(resolve); } };
+        return query;
       } };
     },
   };
@@ -35,9 +36,20 @@ const render = async (records) => {
 
 test("public membership reader queries display order and maps the approved row shape", async () => withConfig(async () => {
   const helper = reader(); const records = await helper.getPublicProfessionalMemberships();
-  assert.deepEqual(helper.calls, [["from","professional_memberships"],["select","*"],["order","display_order",{ascending:true}]]);
-  assert.deepEqual(records, [{ displayOrder: 1, organizationName: "Condition Monitoring Society of India (MCMSI)", membershipType: "Member",
+  assert.deepEqual(helper.calls, [["from","professional_memberships"],["select","*"],["order","year",{ascending:false,nullsFirst:false}],["order","display_order",{ascending:true}]]);
+  assert.deepEqual(records, [{ displayOrder: 1, year: undefined, organizationName: "Condition Monitoring Society of India (MCMSI)", membershipType: "Member",
     membershipNumber: undefined, dateText: undefined, validityText: undefined, designation: undefined, chapter: undefined, proofUrl: undefined }]);
+}));
+
+test("year-aware memberships sort newest explicit year first while undated records remain last", async () => withConfig(async () => {
+  const rows = [
+    { ...expected[0], id: 1, display_order: 1, year: null },
+    { ...expected[0], id: 2, display_order: 2, year: 2022 },
+    { ...expected[0], id: 3, display_order: 3, year: 2025 },
+  ].sort((a, b) => (b.year ?? -Infinity) - (a.year ?? -Infinity) || a.display_order - b.display_order);
+  const records = await reader({ data: rows.map((row) => ({ ...row, created_at: "", updated_at: "" })), error: null }).getPublicProfessionalMemberships();
+  assert.deepEqual(records.map((record) => record.year), [2025, 2022, undefined]);
+  assert.deepEqual(records.map((record) => record.displayOrder), [1, 2, 3]);
 }));
 
 test("nullable database values safely map to undefined and configured errors fail visibly", async () => withConfig(async () => {

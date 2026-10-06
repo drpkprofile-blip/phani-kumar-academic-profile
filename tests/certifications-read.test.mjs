@@ -16,12 +16,14 @@ function reader(records = { data: expected, error: null }) {
       return {
         select(columns) {
           calls.push(["select", columns]);
-          return {
+          const query = {
             order(field, options) {
               calls.push(["order", field, options]);
-              return Promise.resolve(records);
+              return query;
             },
+            then(resolve, reject) { return Promise.resolve(records).then(resolve, reject); },
           };
+          return query;
         },
       };
     },
@@ -44,18 +46,37 @@ async function configured(callback) {
   }
 }
 
-test("configured public reader selects certifications strictly by display_order", async () => {
+test("configured public reader sorts verified course year newest-first then display order", async () => {
   await configured(async () => {
     const helper = reader();
     const records = await helper.getPublicCertifications();
     assert.deepEqual(helper.calls, [
       ["from", "certifications"],
       ["select", "*"],
+      ["order", "year", { ascending: false, nullsFirst: false }],
       ["order", "display_order", { ascending: true }],
     ]);
     assert.deepEqual(records, readCommittedCertifications().map(({ number, title, certificateUrl, fdpUrl }) => ({
-      number, title, certificateUrl: certificateUrl ?? undefined, fdpUrl: fdpUrl ?? undefined,
+      number, title, year: undefined, certificateUrl: certificateUrl ?? undefined, fdpUrl: fdpUrl ?? undefined,
     })));
+  });
+});
+
+test("year-aware NPTEL results keep unknown-year records last and renumber visible cards", async () => {
+  await configured(async () => {
+    const records = [
+      { ...expected[0], year: null, display_order: 1 },
+      { ...expected[1], year: 2024, display_order: 2 },
+      { ...expected[2], year: 2026, display_order: 3 },
+    ];
+    const helper = reader({
+      data: [...records].sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || a.display_order - b.display_order),
+      error: null,
+    });
+    const result = await helper.getPublicCertifications();
+    assert.deepEqual(result.map(({ title, year, number }) => [title, year, number]), [
+      [records[2].title, 2026, 1], [records[1].title, 2024, 2], [records[0].title, undefined, 3],
+    ]);
   });
 });
 

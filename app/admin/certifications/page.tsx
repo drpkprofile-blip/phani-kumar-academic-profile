@@ -40,7 +40,7 @@ export default async function CertificationsManagement({ searchParams }: {
         <div className={styles.list}>
           {certifications.map((certification, index) => (
             <article key={certification.id} className={styles.record}>
-              <div className={styles.badges}><span>#{String(index + 1).padStart(2, "0")}</span><span>NPTEL</span></div>
+              <div className={styles.badges}><span>#{String(index + 1).padStart(2, "0")}</span><span>NPTEL</span>{certification.year && <span>{certification.year}</span>}</div>
               <h2>{certification.title}</h2>
               <p>{certification.certificate_url ? "Certificate link supplied" : "Certificate link will be updated soon"}</p>
               {certification.fdp_url && <p>FDP link supplied</p>}

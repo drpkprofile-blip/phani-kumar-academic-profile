@@ -43,7 +43,9 @@ export async function getPublicProjectsGuided(): Promise<PublicGuidedProject[]> 
     return [];
   }
   const supabase = await createClient();
-  const { data, error } = await supabase.from("projects_guided").select("*").order("display_order", { ascending: true });
+  const { data, error } = await supabase.from("projects_guided").select("*")
+    .order("academic_year", { ascending: false, nullsFirst: false })
+    .order("display_order", { ascending: true });
   if (error || !data) throw new Error("Unable to read public Projects Guided from Supabase");
-  return data.map(mapProjectGuided);
+  return data.map((row, index) => ({ ...mapProjectGuided(row), displayOrder: index + 1 }));
 }

@@ -199,6 +199,7 @@ export type Database = {
           membership_number: string | null
           membership_type: string | null
           organization_name: string
+          year: number | null
           proof_url: string | null
           source_order: number | null
           updated_at: string
@@ -214,6 +215,7 @@ export type Database = {
           membership_number?: string | null
           membership_type?: string | null
           organization_name: string
+          year?: number | null
           proof_url?: string | null
           source_order?: number | null
           updated_at?: string
@@ -229,6 +231,7 @@ export type Database = {
           membership_number?: string | null
           membership_type?: string | null
           organization_name?: string
+          year?: number | null
           proof_url?: string | null
           source_order?: number | null
           updated_at?: string
@@ -403,6 +406,7 @@ export type Database = {
           id: number
           source_order: number | null
           title: string
+          year: number | null
           updated_at: string
         }
         Insert: {
@@ -413,6 +417,7 @@ export type Database = {
           id?: number
           source_order?: number | null
           title: string
+          year?: number | null
           updated_at?: string
         }
         Update: {
@@ -423,6 +428,7 @@ export type Database = {
           id?: number
           source_order?: number | null
           title?: string
+          year?: number | null
           updated_at?: string
         }
         Relationships: []

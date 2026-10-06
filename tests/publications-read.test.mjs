@@ -10,10 +10,21 @@ function reader(records = { data: rows, error: null }, settings = { data: { hero
   const calls = [];
   const client = { from(table) {
     calls.push(table);
-    return { select() { return {
-      order(field, options) { assert.equal(field, "display_order"); assert.deepEqual(options, { ascending: true }); return Promise.resolve(records); },
-      eq(field, value) { assert.equal(field, "id"); assert.equal(value, true); return { single: async () => settings }; },
-    }; } };
+    return { select() {
+      const query = {
+        order(field, options) {
+        assert.ok(["year", "display_order"].includes(field));
+        if (field === "year") assert.deepEqual(options, { ascending: false });
+        else assert.deepEqual(options, { ascending: true });
+          return query;
+        },
+        then(resolve, reject) { return Promise.resolve(records).then(resolve, reject); },
+      };
+      return {
+        ...query,
+        eq(field, value) { assert.equal(field, "id"); assert.equal(value, true); return { single: async () => settings }; },
+      };
+    } };
   } };
   return { ...loadModule("lib/publications.ts", { "./supabase/server": { createClient: async () => client } }), calls };
 }

@@ -31,6 +31,9 @@ export default function CertificationForm({ id, updatedAt, initial }: {
       <label className={styles.field} htmlFor="title">Title (required)
         <textarea {...props("title")} rows={3} required />{hint("title")}
       </label>
+      <label className={styles.field} htmlFor="year">Year (optional; enter a verified year only)
+        <input {...props("year")} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} />{hint("year")}
+      </label>
       <label className={styles.field} htmlFor="certificate_url">Certificate URL (optional)
         <input {...props("certificate_url")} type="url" />{hint("certificate_url")}
       </label>

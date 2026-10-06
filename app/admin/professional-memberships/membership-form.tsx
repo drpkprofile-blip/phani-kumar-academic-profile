@@ -7,6 +7,7 @@ import styles from "../admin.module.css";
 
 const fields: Array<{ name: keyof ProfessionalMembershipValues; label: string; multiline?: boolean }> = [
   { name: "organization_name", label: "Organization name (required)" },
+  { name: "year", label: "Year (optional, only when verified)" },
   { name: "membership_type", label: "Membership type (optional)" },
   { name: "membership_number", label: "Membership number (optional)" },
   { name: "date_text", label: "Date text (optional)" },

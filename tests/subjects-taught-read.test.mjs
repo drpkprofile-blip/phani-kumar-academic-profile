@@ -8,10 +8,11 @@ function reader(result) {
     calls.push(["from", table]);
     return { select(columns) {
       calls.push(["select", columns]);
-      return { order(field, options) {
+      const query = { order(field, options) {
         calls.push(["order", field, options]);
-        return Promise.resolve(result);
-      } };
+        return query;
+      }, then(resolve, reject) { return Promise.resolve(result).then(resolve, reject); } };
+      return query;
     } };
   } };
   return { ...loadModule("lib/subjects-taught.ts", { "./supabase/server": { createClient: async () => client } }), calls };
@@ -32,15 +33,16 @@ const row = {
   source_order: null, display_order: 2, created_at: "2026-10-05T00:00:00Z", updated_at: "2026-10-05T00:00:00Z",
 };
 
-test("configured public reader orders strictly by display_order and maps all fields", async () => {
+test("configured public reader orders by academic year then display order and maps all fields", async () => {
   await withConfiguration(async () => {
     const helper = reader({ data: [row], error: null });
     assert.deepEqual(await helper.getPublicSubjectsTaught(), [{
-      id: 18, displayOrder: 2, subjectName: "Heat Transfer", courseCode: "ME401", program: "B.Tech",
+      id: 18, displayOrder: 1, subjectName: "Heat Transfer", courseCode: "ME401", program: "B.Tech",
       branch: "Mechanical", semester: "VII", academicYear: "2026-27", subjectType: "Theory",
       proofUrl: "https://example.test/proof?keep=1",
     }]);
-    assert.deepEqual(helper.calls, [["from", "subjects_taught"], ["select", "*"], ["order", "display_order", { ascending: true }]]);
+    assert.deepEqual(helper.calls, [["from", "subjects_taught"], ["select", "*"],
+      ["order", "academic_year", { ascending: false, nullsFirst: false }], ["order", "display_order", { ascending: true }]]);
   });
 });
 

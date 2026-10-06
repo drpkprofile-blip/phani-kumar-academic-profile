@@ -39,7 +39,9 @@ export async function getPublicSubjectsTaught(): Promise<PublicSubjectTaught[]> 
     return [];
   }
   const supabase = await createClient();
-  const { data, error } = await supabase.from("subjects_taught").select("*").order("display_order", { ascending: true });
+  const { data, error } = await supabase.from("subjects_taught").select("*")
+    .order("academic_year", { ascending: false, nullsFirst: false })
+    .order("display_order", { ascending: true });
   if (error || !data) throw new Error("Unable to read public Subjects Taught from Supabase");
-  return data.map(mapSubjectTaught);
+  return data.map((row, index) => ({ ...mapSubjectTaught(row), displayOrder: index + 1 }));
 }

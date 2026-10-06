@@ -52,6 +52,7 @@ export default function PublicationForm({ id, updatedAt, initial }: {
         <input {...props("impact_factor")} type="number" min="0" step="any" />{hint("impact_factor")}
       </label>
       <p>Leave missing metadata blank. No fields are filled from Google Scholar.</p>
+      {!id && <p>The public list sorts by year, newest first. A new record appears first within its year; you can adjust the order from the admin dashboard.</p>}
       <div className={styles.controls}>
         <button className={styles.button} type="submit" disabled={pending}>{pending ? "Saving…" : id ? "Save publication" : "Add publication"}</button>
         <a className={styles.secondary} href="/admin">Cancel</a>

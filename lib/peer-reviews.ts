@@ -19,6 +19,14 @@ export function mapPeerReview(row: PeerReviewRow): PeerReview {
   return row.review_text;
 }
 
+function sortPeerReviewsByExplicitYear(reviews: PeerReview[]): PeerReview[] {
+  return reviews.map((review, index) => ({
+    review,
+    index,
+    year: Number(review.match(/\((\d{4})\)$/)?.[1] ?? 0),
+  })).sort((a, b) => b.year - a.year || a.index - b.index).map(({ review }) => review);
+}
+
 export function mapPeerReviewSettings(row: PeerReviewSettingsRow) {
   return {
     heroCounterText: row.hero_counter_text,
@@ -30,7 +38,7 @@ export async function getPublicPeerReviews(): Promise<PublicPeerReviews> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     console.warn("Supabase public configuration missing; using the committed Peer Reviews reference.");
     return {
-      peerReviews: [...referencePeerReviews],
+      peerReviews: sortPeerReviewsByExplicitYear([...referencePeerReviews]),
       heroCounterText: counters.heroPeerReviews,
       completedReviewsCount: counters.peerReviewCount,
     };
@@ -57,7 +65,7 @@ export async function getPublicPeerReviews(): Promise<PublicPeerReviews> {
   }
 
   return {
-    peerReviews: reviewsResult.data.map(mapPeerReview),
+    peerReviews: sortPeerReviewsByExplicitYear(reviewsResult.data.map(mapPeerReview)),
     ...mapPeerReviewSettings(settingsResult.data),
   };
 }

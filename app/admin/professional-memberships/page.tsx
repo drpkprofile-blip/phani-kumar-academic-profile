@@ -20,7 +20,7 @@ export default async function ProfessionalMembershipsAdmin({ searchParams }: { s
     {success && Object.hasOwn(successes, success) && <p role="status" className={styles.success}>{successes[success]}</p>}
     {errorCode && Object.hasOwn(errors, errorCode) && <p role="alert" className={styles.error}>{errors[errorCode]}</p>}
     <div className={styles.list}>{records.map((record, index) => <article className={styles.record} key={record.id}>
-      <div className={styles.badges}><span>#{String(record.display_order).padStart(2, "0")}</span>{record.membership_type && <span>{record.membership_type}</span>}</div>
+      <div className={styles.badges}><span>#{String(index + 1).padStart(2, "0")}</span>{record.year && <span>{record.year}</span>}{record.membership_type && <span>{record.membership_type}</span>}</div>
       <h2>{record.organization_name}</h2>
       {[record.membership_number && `Membership no.: ${record.membership_number}`, record.date_text, record.validity_text, record.designation, record.chapter]
         .filter(Boolean).map((detail) => <p key={detail}>{detail}</p>)}

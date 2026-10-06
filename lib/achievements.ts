@@ -16,10 +16,21 @@ export function mapAchievement(row: AchievementRow): Achievement {
   };
 }
 
+function explicitYear(text: string): number {
+  const match = text.match(/\b(?:19|20)\d{2}\b/);
+  return match ? Number(match[0]) : 0;
+}
+
+function orderAchievements<T extends { title: string; description: string }>(rows: T[]): T[] {
+  return rows.map((row, index) => ({ row, index, year: explicitYear(row.description) }))
+    .sort((a, b) => b.year - a.year || a.index - b.index)
+    .map(({ row }) => row);
+}
+
 export async function getPublicAchievements(): Promise<Achievement[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     console.warn("Supabase public configuration missing; using the committed Achievements reference.");
-    return [...referenceAchievements];
+    return [...referenceAchievements].sort((a, b) => explicitYear(b.text) - explicitYear(a.text));
   }
 
   const supabase = await createClient();
@@ -29,5 +40,5 @@ export async function getPublicAchievements(): Promise<Achievement[]> {
     .order("display_order", { ascending: true });
 
   if (error || !data) throw new Error("Unable to read public Achievements from Supabase");
-  return data.map(mapAchievement);
+  return orderAchievements(data).map((row, index) => ({ ...mapAchievement(row), number: String(index + 1).padStart(2, "0") }));
 }

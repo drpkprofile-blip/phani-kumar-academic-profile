@@ -1,4 +1,5 @@
 export type ProfessionalMembership = {
+  year?: number;
   organizationName: string;
   membershipType?: string;
   membershipNumber?: string;

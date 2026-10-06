@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { researchAreas } from "../data/research";
-import { education } from "../data/education";
+import { educationNewestFirst as education } from "../data/education";
 import { experience } from "../data/experience";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
@@ -448,6 +448,7 @@ export default async function Home() {
                     {String(certificate.number).padStart(2, "0")}
                   </span>
                   <span className="card-badge">{pageCopy.nptel}</span>
+                  {certificate.year && <span className="card-badge">{certificate.year}</span>}
                 </div>
 
                 <h3>{certificate.title}</h3>
@@ -576,6 +577,7 @@ export default async function Home() {
                   {membership.membershipType && <span className="membership-type">{membership.membershipType}</span>}
                 </div>
                 <h3>{membership.organizationName}</h3>
+                {membership.year && <span className="card-badge">{membership.year}</span>}
                 {membership.membershipNumber && <p>Membership no.: {membership.membershipNumber}</p>}
                 {membership.dateText && <p>{membership.dateText}</p>}
                 {membership.validityText && <p>{membership.validityText}</p>}

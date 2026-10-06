@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
-select plan(31);
+select plan(33);
 
 create temporary table phase2f_baseline as select * from public.publications;
 create temporary table phase2f_fixtures(slot integer primary key, id integer);
@@ -30,7 +30,9 @@ set local role authenticated;
 select lives_ok($$insert into phase2f_fixtures select 1,public.admin_save_publication(p_publication => '{"title":"PHASE2F TEMPORARY TEST A — not a real publication","year":"2026","journal":"Test only","indexing":[]}')$$,'Admin can add with missing optional fields');
 select lives_ok($$insert into phase2f_fixtures select 2,public.admin_save_publication(null,'{"title":"PHASE2F TEMPORARY TEST B — not a real publication","year":"2026","journal":"Test only","indexing":[]}')$$,'Second add receives its own automatic position');
 select ok((select doi is null and article_url is null and proof_url is null and publication_type is null and impact_factor is null and source_order is null and indexing='{}'::text[] from public.publications where id=(select id from phase2f_fixtures where slot=1)),'Missing optional values are NULL and badges empty');
-select is((select display_order from public.publications where id=(select id from phase2f_fixtures where slot=1)),(select coalesce(max(display_order),0)+1 from phase2f_baseline),'New record appends after existing positions');
+select is((select display_order from public.publications where id=(select id from phase2f_fixtures where slot=1)),2,'The first new record is shifted behind a later insertion');
+select is((select display_order from public.publications where id=(select id from phase2f_fixtures where slot=2)),1,'The latest inserted publication appears first');
+select ok(not exists(select 1 from phase2f_baseline b join public.publications p using(id) where p.display_order <> b.display_order + 2),'Existing publications retain relative order and shift by two positions');
 select is((select count(*)::integer from public.publications),(select count(*)::integer+2 from phase2f_baseline),'Publication count updates after add');
 select lives_ok($$select public.admin_save_publication(id,'{"title":"PHASE2F TEMPORARY TEST A edited","year":"2025","journal":"Exact edited test details","indexing":["Second","First"],"doi":"10.test/fixture","article_url":"https://example.com/article","proof_url":"https://example.com/proof.pdf","publication_type":"Book Chapter","impact_factor":0}',updated_at) from public.publications where id=(select id from phase2f_fixtures where slot=1)$$,'Admin can edit supplied fields');
 select ok((select title='PHASE2F TEMPORARY TEST A edited' and year='2025' and journal='Exact edited test details' and indexing=array['Second','First'] and doi='10.test/fixture' and article_url='https://example.com/article' and proof_url='https://example.com/proof.pdf' and publication_type='Book Chapter' and impact_factor=0 from public.publications where id=(select id from phase2f_fixtures where slot=1)),'Every supplied field and badge order preserved, including zero impact factor');
@@ -48,7 +50,7 @@ select is((select hero_publications from public.publication_settings),'PHASE2F t
 select lives_ok($$select public.admin_delete_publication(id,updated_at,true) from public.publications where id=(select id from phase2f_fixtures where slot=1)$$,'Admin can delete confirmed test record');
 select lives_ok($$select public.admin_delete_publication(id,updated_at,true) from public.publications where id=(select id from phase2f_fixtures where slot=2)$$,'Admin can remove second temporary record');
 select is((select count(*)::integer from public.publications),(select count(*)::integer from phase2f_baseline),'Original publication count restored');
-select ok(not exists(select 1 from phase2f_baseline b full join public.publications p using(id) where to_jsonb(b) is distinct from to_jsonb(p)),'Every original row including timestamps remains untouched');
+select ok(not exists(select 1 from phase2f_baseline b full join public.publications p using(id) where (to_jsonb(b) - 'updated_at') is distinct from (to_jsonb(p) - 'updated_at')),'Original publication data and final order are restored after temporary rows are removed');
 reset role;
 delete from private.publications_admins where user_id='00000000-0000-0000-0000-000000000101';
 set local role authenticated;

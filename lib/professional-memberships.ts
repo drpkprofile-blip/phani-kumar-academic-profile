@@ -9,6 +9,7 @@ type MembershipRow = Database["public"]["Tables"]["professional_memberships"]["R
 export function mapProfessionalMembership(row: MembershipRow): ProfessionalMembership & { displayOrder: number } {
   return {
     displayOrder: row.display_order,
+    year: row.year ?? undefined,
     organizationName: row.organization_name,
     membershipType: row.membership_type ?? undefined,
     membershipNumber: row.membership_number ?? undefined,
@@ -26,7 +27,9 @@ export async function getPublicProfessionalMemberships(): Promise<Array<Professi
     return referenceMemberships.map((membership, index) => ({ ...membership, displayOrder: index + 1 }));
   }
   const supabase = await createClient();
-  const { data, error } = await supabase.from("professional_memberships").select("*").order("display_order", { ascending: true });
+  const { data, error } = await supabase.from("professional_memberships").select("*")
+    .order("year", { ascending: false, nullsFirst: false })
+    .order("display_order", { ascending: true });
   if (error || !data) throw new Error("Unable to read public Professional Bodies from Supabase");
-  return data.map(mapProfessionalMembership);
+  return data.map((row, index) => ({ ...mapProfessionalMembership(row), displayOrder: index + 1 }));
 }
