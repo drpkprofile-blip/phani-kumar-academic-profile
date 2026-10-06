@@ -16,6 +16,7 @@ import { getPublicProfileSettings } from "../lib/profile-settings";
 import { formatAcademicDate } from "../lib/date-format";
 import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
+import PublicationBrowser from "./publication-browser";
 
 function ExternalLink({
   url,
@@ -38,27 +39,6 @@ function ExternalLink({
       className={className}
     >
       {children}{pageCopy.linkArrowWithSpace}</a>
-  );
-}
-
-function PublicationPdfLink({
-  url,
-}: {
-  url?: string;
-}) {
-  if (!url) {
-    return (
-      <span className="pdf-pending" title={pageCopy.googleDrivePdfLinkWillBeAddedHere}>{pageCopy.pdfProofWillBeUpdatedSoon}</span>
-    );
-  }
-
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="pdf-link"
-    >{pageCopy.pdfProof}</a>
   );
 }
 
@@ -378,53 +358,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="publication-grid">
-            {sortedPublications.map((publication) => {
-              const articleUrl =
-                publication.url ||
-                (publication.doi
-                  ? `https://doi.org/${publication.doi}`
-                  : undefined);
-
-              return (
-                <article className="publication-card" key={publication.id}>
-                  <div className="publication-tags">
-                    <span>{publication.year}</span>
-
-                    {publication.indexing.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-
-                    {publication.impactFactor !== undefined && (
-                      <span>{pageCopy.if}{publication.impactFactor}</span>
-                    )}
-                  </div>
-
-                  <h3>{publication.title}</h3>
-                  <p className="publication-journal">{publication.journal}</p>
-
-                  {publication.doi && (
-                    <p className="publication-doi">{pageCopy.doi}{publication.doi}</p>
-                  )}
-
-                  <div className="publication-actions">
-                    {articleUrl ? (
-                      <a
-                        href={articleUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="article-link"
-                      >{pageCopy.viewArticle}</a>
-                    ) : (
-                      <span className="article-pending">{pageCopy.articleLinkWillBeUpdatedSoon}</span>
-                    )}
-
-                    <PublicationPdfLink url={publication.proof} />
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+          <PublicationBrowser publications={sortedPublications} />
         </div>
       </section>
 

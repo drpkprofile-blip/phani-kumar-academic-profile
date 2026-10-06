@@ -17,6 +17,7 @@ export function loadModule(path, mocks = {}, source) {
     if (name === "server-only") return {};
     if (name in mocks) return mocks[name];
     if (name === "./activity-browser") return loadModule("app/activity-browser.tsx", mocks);
+    if (name === "./publication-browser") return loadModule("app/publication-browser.tsx", mocks);
     // Isolate unrelated publication tests from Activities network reads.
     if (name === "../lib/activities") return { getPublicActivities: async () => loadModule("data/activities.ts") };
     if (name.startsWith(".")) return loadModule(`${resolve(dirname(absolute), name)}.ts`, mocks);
@@ -57,8 +58,12 @@ export async function compareProfile(publicData, activityData, certificationData
   const baselineCompatibleCurrent = includeProjects ? current : current
     .replace(/<a href="#projects-guided">Projects Guided<\/a>/, "")
     .replace(/<section id="projects-guided"[\s\S]*?<\/section>/, "");
+  // The year controls are the intentional UI addition under test. Keep existing
+  // baseline comparisons focused on the unchanged publication cards and page.
+  const baselineCompatibleWithPublicationFilters = baselineCompatibleCurrent
+    .replace(/<div class="publication-filter-note"[^>]*>[\s\S]*?<\/div>/, "");
   return {
     baseline: renderToStaticMarkup(await oldPage()),
-    current: baselineCompatibleCurrent,
+    current: baselineCompatibleWithPublicationFilters,
   };
 }
