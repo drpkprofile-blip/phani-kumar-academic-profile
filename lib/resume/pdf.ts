@@ -126,6 +126,20 @@ function twoColumnList(doc: InstanceType<typeof PDFDocument>, items: string[]) {
   }
 }
 
+function singleColumnList(doc: InstanceType<typeof PDFDocument>, items: string[]) {
+  if (!items.length) return;
+  const width = widthOf(doc);
+  doc.font("Helvetica").fontSize(8.8).fillColor(colors.ink);
+  for (const item of items) {
+    const text = `- ${displayText(item)}`;
+    const height = doc.heightOfString(text, { width, lineGap: 3 });
+    ensureRoom(doc, height + 5);
+    doc.text(text, doc.page.margins.left, doc.y, { width, lineGap: 3 });
+    doc.y += 3;
+  }
+  doc.moveDown(0.2);
+}
+
 function drawContactRow(doc: InstanceType<typeof PDFDocument>, items: Array<{ label: string; href: string }>) {
   let x = doc.page.margins.left;
   let y = doc.y;
@@ -262,11 +276,11 @@ export async function renderResumePdf(
       : model.profile.researchInterests).map((value) => value.trim()).filter(Boolean))];
     if (researchFocus.length) {
       section(doc, "Research Interests");
-      twoColumnList(doc, researchFocus);
+      singleColumnList(doc, researchFocus);
     }
     if (model.profile.technicalTools.length) {
       section(doc, "Technical Tools");
-      twoColumnList(doc, model.profile.technicalTools);
+      singleColumnList(doc, model.profile.technicalTools);
     }
 
     section(doc, "Academic Appointments");

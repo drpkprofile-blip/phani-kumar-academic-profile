@@ -137,7 +137,7 @@ test("academic CV includes every publication and activity beyond the former sele
   assert.match(textRuns, /Presented a technical session/);
 });
 
-test("PDF separates research interests and technical tools into readable two-column bullets", async () => {
+test("PDF separates research interests and technical tools into one-per-line bullets", async () => {
   const { renderResumePdf } = loadModule("lib/resume/pdf.ts");
   const model = {
     ...emptyModel,
@@ -196,7 +196,7 @@ test("resume data uses the user-supplied UG/PG project totals instead of empty d
   assert.equal(model.activities.length, 4);
 });
 
-test("editable Word CV includes photo, Scholar figure, full records, two-column lists, and signature space", async () => {
+test("editable Word CV includes photo, Scholar figure, full records, spaced lists, and signature space", async () => {
   const { renderResumeDocx } = loadModule("lib/resume/docx.ts");
   const images = {
     profilePhoto: { data: readFileSync(`${root}/public/phani-photo.png`), type: "png", width: 800, height: 960 },
@@ -233,6 +233,11 @@ test("editable Word CV includes photo, Scholar figure, full records, two-column 
   assert.match(documentXml, /TECHNICAL TOOLS/);
   assert.match(documentXml, /Tribology/);
   assert.match(documentXml, /ANSYS/);
+  const paragraphs = [...documentXml.matchAll(/<w:p(?:\s[^>]*)?>([\s\S]*?)<\/w:p>/g)]
+    .map((match) => match[1].replace(/<[^>]+>/g, ""));
+  for (const item of ["Polymer Composite Gears", "Tribology", "Python Programming", "SOLID WORKS", "ANSYS", "AUTO CAD"]) {
+    assert.ok(paragraphs.some((paragraph) => paragraph === item), `${item} should appear in its own Word paragraph`);
+  }
   assert.match(documentXml, /Complete activity/);
   assert.match(documentXml, /Complete activity 11/);
   assert.match(documentXml, /Presented a technical session/);

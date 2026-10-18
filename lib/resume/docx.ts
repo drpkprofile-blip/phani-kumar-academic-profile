@@ -132,6 +132,15 @@ function twoColumnList(items: string[]) {
   })];
 }
 
+function singleColumnList(items: string[]) {
+  return items.map((item) => new Paragraph({
+    bullet: { level: 0 },
+    indent: { left: 240, hanging: 120 },
+    spacing: { after: 100, line: 270 },
+    children: [new TextRun({ text: text(item), color: ink, size: 17 })],
+  }));
+}
+
 function contacts(model: ResumeModel) {
   const links = [
     { label: "Email", href: `mailto:${model.profile.email}` },
@@ -207,8 +216,8 @@ export async function renderResumeDocx(model: ResumeModel, images: ResumeImages 
   body.push(section("Professional Summary"), p(model.profile.description));
   const focus = [...new Set((model.researchAreas.length ? model.researchAreas.map((area) => area.title) : model.profile.researchInterests)
     .map((value) => value.trim()).filter(Boolean))];
-  if (focus.length) body.push(section("Research Interests"), ...twoColumnList(focus));
-  if (model.profile.technicalTools.length) body.push(section("Technical Tools"), ...twoColumnList(model.profile.technicalTools));
+  if (focus.length) body.push(section("Research Interests"), ...singleColumnList(focus));
+  if (model.profile.technicalTools.length) body.push(section("Technical Tools"), ...singleColumnList(model.profile.technicalTools));
 
   body.push(section("Academic Appointments"));
   for (const item of model.experience) body.push(...entry(`${item.role} | ${item.period}`, [item.institution, item.department].filter(Boolean).join(" | ")));
