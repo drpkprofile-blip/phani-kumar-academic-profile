@@ -2,11 +2,24 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { root } from "../scripts/publication-seed.mjs";
-import { loadModule } from "./helpers/render-profile.mjs";
+import { compareProfile, loadModule } from "./helpers/render-profile.mjs";
 
 const migration = readFileSync(`${root}/supabase/migrations/20261005001800_profile_settings_and_photo_storage.sql`, "utf8");
 const citationsMigration = readFileSync(`${root}/supabase/migrations/20261005001900_manage_google_scholar_citation_image.sql`, "utf8");
 const scholarMigration = readFileSync(`${root}/supabase/migrations/20261005002000_google_scholar_metrics_and_irins.sql`, "utf8");
+
+test("public research interests and technical tools render as spaced responsive tags", async () => {
+  const rendered = await compareProfile({ publications: [], heroPublications: "38+" });
+  const research = rendered.current.match(/<section id="research"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(research, "research section should render");
+  for (const item of ["Polymer Composite Gears", "Tribology", "Contact Stress Analysis", "Advanced Engineering Systems", "Python Programming", "SOLID WORKS", "ANSYS", "AUTO CAD"]) {
+    assert.ok(research.includes(item), `research section should retain ${item}`);
+  }
+  const css = readFileSync(`${root}/app/globals.css`, "utf8");
+  assert.match(css, /\.tag-list\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;[^}]*gap:\s*8px/s);
+  assert.match(css, /\.tag-list span\s*\{[^}]*overflow-wrap:\s*anywhere/s);
+  assert.match(css, /\.research-footer-grid\s*\{\s*grid-template-columns:\s*1fr/s);
+});
 
 test("profile settings migration seeds the committed profile and locks writes to the existing admin allowlist", () => {
   assert.match(migration, /create table public\.profile_settings/);
