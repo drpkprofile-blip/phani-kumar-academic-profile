@@ -1415,6 +1415,31 @@ main {
   font-size: 13px;
 }
 
+.admin-shortcut {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 40;
+  border: 1px solid rgba(56, 214, 204, 0.55);
+  border-radius: 999px;
+  padding: 9px 15px;
+  background: rgba(7, 24, 35, 0.94);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.admin-shortcut:hover,
+.admin-shortcut:focus-visible {
+  border-color: var(--teal);
+  color: var(--white);
+  background: #123344;
+  transform: translateY(-2px);
+}
+
 /* ---------- RESPONSIVE ---------- */
 
 @media (max-width: 1250px) {
@@ -1736,6 +1761,12 @@ main {
   .footer > div {
     flex-direction: column;
   }
+
+  .admin-shortcut {
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    padding: 8px 13px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1948,6 +1979,32 @@ main {
   background: var(--card);
   color: var(--muted);
   text-align: center;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 22px;
+}
+
+.gallery-card {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(145deg, var(--card), var(--card-2));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .14);
+}
+
+.gallery-card a { display: block; overflow: hidden; background: var(--bg-soft); }
+.gallery-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .2s ease; }
+.gallery-card a:hover img, .gallery-card a:focus-visible img { transform: scale(1.025); }
+.gallery-card figcaption { padding: 16px 18px 18px; color: var(--text); line-height: 1.6; overflow-wrap: anywhere; }
+.gallery-empty-state { padding: 30px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); color: var(--muted); text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-card img { transition: none; }
 }
 
 @media (max-width: 1000px) {

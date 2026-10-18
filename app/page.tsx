@@ -11,9 +11,10 @@ import { getPublicAchievements } from "../lib/achievements";
 import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
 import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
-import { countGuidedProjectsByLevel } from "../lib/project-guided-counts";
+import { getPublicGuidedProjectCounts } from "../lib/projects-guided-settings";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { getPublicProfileSettings } from "../lib/profile-settings";
+import { getPublicGalleryItems } from "../lib/gallery";
 import { formatAcademicDate } from "../lib/date-format";
 import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
@@ -60,7 +61,8 @@ export default async function Home() {
   const professionalMemberships = await getPublicProfessionalMemberships();
   const subjectsTaught = await getPublicSubjectsTaught();
   const projectsGuided = await getPublicProjectsGuided();
-  const guidedProjectCounts = countGuidedProjectsByLevel(projectsGuided);
+  const guidedProjectCounts = await getPublicGuidedProjectCounts();
+  const galleryItems = await getPublicGalleryItems();
   const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
 
@@ -84,6 +86,7 @@ export default async function Home() {
             { href: pageLinks.professionalBodies, label: pageCopy.professionalBodies },
             { href: pageLinks.subjectsTaught, label: pageCopy.subjectsTaught },
             { href: pageLinks.projectsGuided, label: pageCopy.projectsGuided },
+            { href: pageLinks.gallery, label: pageCopy.gallery },
             { href: pageLinks.contact, label: pageCopy.contact },
           ]} />
         </div>
@@ -111,7 +114,7 @@ export default async function Home() {
               <a href={pageLinks.contact} className="button button-secondary">{pageCopy.contactMe}</a>
             </div>
 
-            <div className={`hero-stats${guidedProjectCounts.total > 0 ? " hero-stats--guided" : ""}`}>
+            <div className="hero-stats hero-stats--guided">
               <div>
                 <strong>{heroPublications}</strong>
                 <span>{pageCopy.publicationsLabel}</span>
@@ -128,18 +131,8 @@ export default async function Home() {
                 <strong>{experienceCounterText}</strong>
                 <span>{pageCopy.yearsExperience}</span>
               </div>
-              {guidedProjectCounts.total > 0 && (
-                <>
-                  <div>
-                    <strong>{guidedProjectCounts.ug}</strong>
-                    <span>UG PROJECTS GUIDED</span>
-                  </div>
-                  <div>
-                    <strong>{guidedProjectCounts.pg}</strong>
-                    <span>PG PROJECTS GUIDED</span>
-                  </div>
-                </>
-              )}
+              <div><strong>{guidedProjectCounts.ug}+</strong><span>UG PROJECTS GUIDED</span></div>
+              <div><strong>{guidedProjectCounts.pg}+</strong><span>PG PROJECTS GUIDED</span></div>
             </div>
           </div>
 
@@ -674,6 +667,33 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="gallery" className="section gallery-section">
+        <div className="section-container">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-label">{pageCopy.galleryLabel}</p>
+              <h2>{pageCopy.galleryTitle}</h2>
+              <p>{pageCopy.galleryDescription}</p>
+            </div>
+            <div className="section-index">{String(galleryItems.length).padStart(2, "0")}</div>
+          </div>
+          {galleryItems.length === 0 ? (
+            <div className="gallery-empty-state" role="status">{pageCopy.galleryEmpty}</div>
+          ) : (
+            <div className="gallery-grid">
+              {galleryItems.map((item) => (
+                <figure className="gallery-card" key={item.id}>
+                  <a href={item.imageUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open full-size photo: ${item.description}`}>
+                    <Image src={item.imageUrl} alt={item.description} width={1200} height={900} unoptimized />
+                  </a>
+                  <figcaption>{item.description}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       <section id="contact" className="section contact-section">
         <div className="section-container">
           <div className="contact-box">
@@ -726,6 +746,7 @@ export default async function Home() {
         </div>
         <a href={pageLinks.top}>{pageCopy.backToHome}</a>
       </footer>
+      <a className="admin-shortcut" href="/admin/login">Admin</a>
     </main>
   );
 }

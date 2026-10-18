@@ -18,6 +18,7 @@ export const pageCopy = {
   "professionalBodies": "Professional Bodies",
   "subjectsTaught": "Subjects Taught",
   "projectsGuided": "Projects Guided",
+  "gallery": "Gallery",
   "contact": "Contact",
   "roleSeparator": "·",
   "exploreResearch": "Explore Research ↗",
@@ -102,6 +103,10 @@ export const pageCopy = {
   "projectsGuidedTitle": "Projects Guided",
   "projectsGuidedDescription": "UG and PG projects guided across academic programmes.",
   "projectsGuidedEmpty": "No guided projects have been added yet.",
+  "galleryLabel": "PHOTO GALLERY",
+  "galleryTitle": "Academic & Professional Gallery",
+  "galleryDescription": "Moments from teaching, research, conferences and academic life.",
+  "galleryEmpty": "Photos will be added to the gallery soon.",
   "students": "Students",
   "guide": "Guide",
   "coGuides": "Co-guides",
@@ -136,6 +141,7 @@ export const pageLinks = {
   "professionalBodies": "#professional-bodies",
   "subjectsTaught": "#subjects-taught",
   "projectsGuided": "#projects-guided",
+  "gallery": "#gallery",
   "contact": "#contact",
   "citationsImage": "/google-scholar-citations.jpg"
 } satisfies Record<string, string>;

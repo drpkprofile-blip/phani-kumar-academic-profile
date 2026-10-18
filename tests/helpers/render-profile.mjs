@@ -27,7 +27,7 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData) {
+export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData, galleryData = [], includeGallery = false, guidedCountsData = { ug: 14, pg: 4 }) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
@@ -49,6 +49,8 @@ export async function compareProfile(publicData, activityData, certificationData
     },
     "../lib/subjects-taught": { getPublicSubjectsTaught: async () => subjectData ?? [] },
     "../lib/projects-guided": { getPublicProjectsGuided: async () => projectsGuidedData ?? [] },
+    "../lib/projects-guided-settings": { getPublicGuidedProjectCounts: async () => guidedCountsData },
+    "../lib/gallery": { getPublicGalleryItems: async () => galleryData ?? [] },
     "../lib/peer-reviews": { getPublicPeerReviews: async () => peerReviewData ?? {
       peerReviews: loadModule("data/peer-reviews.ts").peerReviews,
       heroCounterText: loadModule("data/counters.ts").counters.heroPeerReviews,
@@ -58,10 +60,17 @@ export async function compareProfile(publicData, activityData, certificationData
   const current = renderToStaticMarkup(await newPage());
   const baselineCompatibleCurrent = includeProjects ? current : current
     .replace(/<a href="#projects-guided">Projects Guided<\/a>/, "")
-    .replace(/<section id="projects-guided"[\s\S]*?<\/section>/, "");
+    .replace(/<section id="projects-guided"[\s\S]*?<\/section>/, "")
+    .replace(/<div><strong>\d+\+<\/strong><span>UG PROJECTS GUIDED<\/span><\/div>/, "")
+    .replace(/<div><strong>\d+\+<\/strong><span>PG PROJECTS GUIDED<\/span><\/div>/, "")
+    .replace('class="hero-stats hero-stats--guided"', 'class="hero-stats"');
+  const baselineCompatiblePage = includeGallery ? baselineCompatibleCurrent : baselineCompatibleCurrent
+    .replace(/<a href="#gallery">Gallery<\/a>/, "")
+    .replace(/<section id="gallery"[\s\S]*?<\/section>/, "");
   // The year controls are the intentional UI addition under test. Keep existing
   // baseline comparisons focused on the unchanged publication cards and page.
-  const baselineCompatibleWithPublicationFilters = baselineCompatibleCurrent
+  const baselineCompatibleWithPublicationFilters = baselineCompatiblePage
+    .replace(/<a class="admin-shortcut" href="\/admin\/login">Admin<\/a>/, "")
     .replace(/<div class="publication-filter-note"[^>]*>[\s\S]*?<\/div>/, "")
     .replace(/ aria-current="location"/g, "");
   return {

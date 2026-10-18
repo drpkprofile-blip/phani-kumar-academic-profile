@@ -78,6 +78,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <h2>Projects Guided</h2><p>Manage guided UG and PG project records and supporting proof links.</p>
           <Link className={styles.button} href="/admin/projects-guided">Manage Projects Guided</Link>
         </section>
+        <section className={styles.module} aria-label="Photo Gallery management">
+          <h2>Photo Gallery</h2><p>Upload public photos with captions, then edit, reorder, or remove them.</p>
+          <Link className={styles.button} href="/admin/gallery">Manage Gallery</Link>
+        </section>
         <section className={styles.module} aria-label="Peer Reviews management">
           <h2>Peer Reviews</h2><p>Manage review text, display order, and the independent review counters.</p>
           <Link className={styles.button} href="/admin/peer-reviews">Manage Peer Reviews</Link>

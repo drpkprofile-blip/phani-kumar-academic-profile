@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdminPage } from "../../../lib/auth/admin-page";
 import { parseProjectGuidedForm, positiveProjectGuidedInteger, type ProjectGuidedFormState } from "../../../lib/admin/project-guided-form";
+import { parseProjectGuidedCounts } from "../../../lib/admin/project-guided-counts-form";
 
 function success(status: string): never {
   revalidatePath("/");
@@ -59,4 +60,17 @@ export async function moveProjectGuided(form: FormData) {
   const { error } = await supabase.rpc("admin_move_project_guided", { p_id: id, p_position: position, p_expected_order: order });
   if (error) redirect(`/admin/projects-guided?error=${error.code === "P0001" ? "stale" : "operation"}`);
   success("reordered");
+}
+
+export async function saveProjectGuidedCounts(form: FormData) {
+  const { supabase } = await requireAdminPage();
+  const parsed = parseProjectGuidedCounts(form);
+  if (!parsed) redirect("/admin/projects-guided?error=counters");
+  const { error } = await supabase.rpc("admin_update_project_guided_counts", {
+    p_ug_project_count: parsed.ug,
+    p_pg_project_count: parsed.pg,
+    p_expected_updated_at: parsed.updatedAt,
+  });
+  if (error) redirect(`/admin/projects-guided?error=${error.code === "P0001" ? "stale" : "operation"}`);
+  success("counters");
 }

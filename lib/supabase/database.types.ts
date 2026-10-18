@@ -14,6 +14,12 @@ export type Database = {
   }
   public: {
     Tables: {
+      gallery_items: {
+        Row: { created_at: string; description: string; display_order: number; id: number; source_order: number | null; storage_path: string; updated_at: string }
+        Insert: { created_at?: string; description: string; display_order: number; id?: number; source_order?: number | null; storage_path: string; updated_at?: string }
+        Update: { created_at?: string; description?: string; display_order?: number; id?: number; source_order?: number | null; storage_path?: string; updated_at?: string }
+        Relationships: []
+      }
       achievements: {
         Row: {
           created_at: string
@@ -341,6 +347,12 @@ export type Database = {
         }
         Relationships: []
       }
+      project_guided_settings: {
+        Row: { created_at: string; pg_project_count: number; singleton: boolean; ug_project_count: number; updated_at: string }
+        Insert: { created_at?: string; pg_project_count?: number; singleton?: boolean; ug_project_count?: number; updated_at?: string }
+        Update: { created_at?: string; pg_project_count?: number; singleton?: boolean; ug_project_count?: number; updated_at?: string }
+        Relationships: []
+      }
       activities: {
         Row: {
           activity_type: string
@@ -531,6 +543,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_save_gallery_item: {
+        Args: { p_description: string; p_storage_path: string; p_id?: number; p_expected_updated_at?: string }
+        Returns: number
+      }
+      admin_delete_gallery_item: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
+        Returns: string
+      }
+      admin_move_gallery_item: {
+        Args: { p_expected_order: number[]; p_id: number; p_position: number }
+        Returns: undefined
+      }
       admin_save_activity: {
         Args: { p_id?: number; p_activity?: Json; p_expected_updated_at?: string }
         Returns: number
@@ -614,6 +638,10 @@ export type Database = {
       admin_delete_project_guided: {
         Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
         Returns: number
+      }
+      admin_update_project_guided_counts: {
+        Args: { p_expected_updated_at: string; p_pg_project_count: number; p_ug_project_count: number }
+        Returns: undefined
       }
       admin_move_project_guided: {
         Args: { p_expected_order: number[]; p_id: number; p_position: number }

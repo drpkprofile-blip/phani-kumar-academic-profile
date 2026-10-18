@@ -1,21 +1,25 @@
 import Link from "next/link";
 import { requireAdminPage } from "../../../lib/auth/admin-page";
 import { logout } from "../actions";
-import { moveProjectGuided } from "./actions";
+import { moveProjectGuided, saveProjectGuidedCounts } from "./actions";
 import styles from "../admin.module.css";
 
 const successes: Record<string, string> = {
-  added: "Guided project added.", saved: "Guided project saved.", deleted: "Guided project deleted.", reordered: "Project order updated.",
+  added: "Guided project added.", saved: "Guided project saved.", deleted: "Guided project deleted.", reordered: "Project order updated.", counters: "UG/PG project counts updated.",
 };
 const errors: Record<string, string> = {
   stale: "The project list changed. Reload and try again.", operation: "Unable to complete the operation. Please try again.",
-  confirmation: "Deletion requires explicit confirmation.", position: "Choose a valid project position.",
+  confirmation: "Deletion requires explicit confirmation.", position: "Choose a valid project position.", counters: "Enter valid non-negative whole-number UG and PG counts.",
 };
 
 export default async function ProjectsGuidedAdmin({ searchParams }: { searchParams: Promise<{ success?: string; error?: string }> }) {
   const { user, supabase } = await requireAdminPage();
-  const { data: records, error } = await supabase.from("projects_guided").select("*").order("display_order", { ascending: true });
-  if (error || !records) throw new Error("Unable to load Projects Guided management.");
+  const [recordsResult, settingsResult] = await Promise.all([
+    supabase.from("projects_guided").select("*").order("display_order", { ascending: true }),
+    supabase.from("project_guided_settings").select("*").eq("singleton", true).maybeSingle(),
+  ]);
+  if (recordsResult.error || !recordsResult.data) throw new Error("Unable to load Projects Guided management.");
+  const records = recordsResult.data;
   const { success, error: errorCode } = await searchParams;
   const order = JSON.stringify(records.map((record) => record.id));
   return <main className={styles.shell}><section className={`${styles.panel} ${styles.management}`} aria-labelledby="projects-guided-admin-title">
@@ -24,6 +28,13 @@ export default async function ProjectsGuidedAdmin({ searchParams }: { searchPara
       <form action={logout}><button className={styles.secondary} type="submit">Logout</button></form><Link className={styles.button} href="/admin/projects-guided/new">Add project</Link></div>
     {success && Object.hasOwn(successes, success) && <p role="status" className={styles.success}>{successes[success]}</p>}
     {errorCode && Object.hasOwn(errors, errorCode) && <p role="alert" className={styles.error}>{errors[errorCode]}</p>}
+    {settingsResult.data ? <form action={saveProjectGuidedCounts} className={styles.counterForm}>
+      <input type="hidden" name="updated_at" value={settingsResult.data.updated_at} />
+      <label className={styles.field} htmlFor="ug_project_count">UG project count<input id="ug_project_count" name="ug_project_count" type="number" min="0" max="2147483647" defaultValue={settingsResult.data.ug_project_count} required /></label>
+      <label className={styles.field} htmlFor="pg_project_count">PG project count<input id="pg_project_count" name="pg_project_count" type="number" min="0" max="2147483647" defaultValue={settingsResult.data.pg_project_count} required /></label>
+      <button className={styles.button} type="submit">Update counts</button>
+    </form> : <p className={styles.note}>Project count settings are not available until their database migration is applied.</p>}
+    <p className={styles.note}>These independent totals include ongoing projects. They do not create or imply detailed project records.</p>
     <p className={styles.note}>No project records are preloaded. Enter only details supported by authoritative records.</p>
     <div className={styles.list}>{records.map((project, index) => <article className={styles.record} key={project.id}>
       <div className={styles.badges}><span>#{String(project.display_order).padStart(2, "0")}</span>{project.project_level && <span>{project.project_level}</span>}</div>
