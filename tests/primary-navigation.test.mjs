@@ -19,13 +19,16 @@ test("primary navigation renders accessible section links with the Home location
   assert.match(html, /href="#top" aria-current="location"/);
   assert.match(html, /href="#research"/);
   assert.match(html, /href="#publications"/);
+  assert.match(readFileSync(`${root}/app/primary-navigation.tsx`, "utf8"), /onPointerDown=\{\(event\) =>/);
+  assert.match(readFileSync(`${root}/app/primary-navigation.tsx`, "utf8"), /requestedHref\.current = href;\s*setActiveHref\(href\)/);
 });
 
 test("navigation uses compact sky-blue buttons, clear active and press states, and reduced-motion support", () => {
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
   assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*34px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
   assert.match(css, /\.nav-links a\[aria-current="location"\]\s*\{[^}]*background:\s*#63c8f5/s);
-  assert.match(css, /\.nav-links a:active\s*\{[^}]*scale\(0\.96\)/s);
+  assert.match(css, /\.nav-links a\[aria-current="location"\]\s*\{[^}]*transition:\s*none/s);
+  assert.match(css, /\.nav-links a:active\s*\{[^}]*background:\s*#63c8f5;[^}]*scale\(0\.96\)/s);
   assert.match(css, /\.nav-links a:focus-visible\s*\{[^}]*outline:/s);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.nav-links a\s*\{\s*transition:\s*none;/);
   const mobile = css.match(/@media \(max-width: 760px\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";

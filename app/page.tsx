@@ -11,6 +11,7 @@ import { getPublicAchievements } from "../lib/achievements";
 import { getPublicProfessionalMemberships } from "../lib/professional-memberships";
 import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
+import { countGuidedProjectsByLevel } from "../lib/project-guided-counts";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { formatAcademicDate } from "../lib/date-format";
@@ -59,6 +60,7 @@ export default async function Home() {
   const professionalMemberships = await getPublicProfessionalMemberships();
   const subjectsTaught = await getPublicSubjectsTaught();
   const projectsGuided = await getPublicProjectsGuided();
+  const guidedProjectCounts = countGuidedProjectsByLevel(projectsGuided);
   const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
 
@@ -109,7 +111,7 @@ export default async function Home() {
               <a href={pageLinks.contact} className="button button-secondary">{pageCopy.contactMe}</a>
             </div>
 
-            <div className="hero-stats">
+            <div className={`hero-stats${guidedProjectCounts.total > 0 ? " hero-stats--guided" : ""}`}>
               <div>
                 <strong>{heroPublications}</strong>
                 <span>{pageCopy.publicationsLabel}</span>
@@ -126,6 +128,18 @@ export default async function Home() {
                 <strong>{experienceCounterText}</strong>
                 <span>{pageCopy.yearsExperience}</span>
               </div>
+              {guidedProjectCounts.total > 0 && (
+                <>
+                  <div>
+                    <strong>{guidedProjectCounts.ug}</strong>
+                    <span>UG PROJECTS GUIDED</span>
+                  </div>
+                  <div>
+                    <strong>{guidedProjectCounts.pg}</strong>
+                    <span>PG PROJECTS GUIDED</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

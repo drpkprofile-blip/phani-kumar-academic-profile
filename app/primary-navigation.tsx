@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type NavigationItem = { href: string; label: string };
 
 export default function PrimaryNavigation({ items }: { items: NavigationItem[] }) {
   const [activeHref, setActiveHref] = useState("#top");
+  const requestedHref = useRef<string | null>(null);
+  const selectionTimeout = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const updateCurrentSection = () => {
+      if (requestedHref.current) return;
       const navHeight = document.querySelector(".navbar")?.getBoundingClientRect().height ?? 76;
       const activeLine = navHeight + 16;
       const current = items
@@ -20,6 +23,12 @@ export default function PrimaryNavigation({ items }: { items: NavigationItem[] }
         .sort((left, right) => right.top - left.top)[0];
 
       setActiveHref(current?.item.href ?? "#top");
+    };
+
+    const finishNavigation = () => {
+      requestedHref.current = null;
+      window.clearTimeout(selectionTimeout.current);
+      updateCurrentSection();
     };
 
     const nav = document.querySelector<HTMLElement>(".navbar");
@@ -40,9 +49,12 @@ export default function PrimaryNavigation({ items }: { items: NavigationItem[] }
     updateCurrentSection();
     window.addEventListener("scroll", updateCurrentSection, { passive: true });
     window.addEventListener("hashchange", updateCurrentSection);
+    window.addEventListener("scrollend", finishNavigation);
     return () => {
       window.removeEventListener("scroll", updateCurrentSection);
       window.removeEventListener("hashchange", updateCurrentSection);
+      window.removeEventListener("scrollend", finishNavigation);
+      window.clearTimeout(selectionTimeout.current);
       resizeObserver?.disconnect();
       document.documentElement.style.removeProperty("--primary-nav-height");
     };
@@ -55,7 +67,20 @@ export default function PrimaryNavigation({ items }: { items: NavigationItem[] }
           key={href}
           href={href}
           aria-current={activeHref === href ? "location" : undefined}
-          onClick={() => setActiveHref(href)}
+          onPointerDown={(event) => {
+            if (event.button !== 0) return;
+            requestedHref.current = href;
+            setActiveHref(href);
+          }}
+          onClick={() => {
+            requestedHref.current = href;
+            setActiveHref(href);
+            window.clearTimeout(selectionTimeout.current);
+            selectionTimeout.current = window.setTimeout(() => {
+              requestedHref.current = null;
+              window.dispatchEvent(new Event("scroll"));
+            }, 1600);
+          }}
         >
           {label}
         </a>

@@ -5,6 +5,7 @@ import { root } from "../scripts/publication-seed.mjs";
 import { loadModule, compareProfile } from "./helpers/render-profile.mjs";
 
 const validation = loadModule("lib/admin/project-guided-form.ts");
+const { countGuidedProjectsByLevel } = loadModule("lib/project-guided-counts.ts");
 const makeForm = (overrides = {}) => {
   const form = new FormData();
   for (const [name, value] of Object.entries({ id: "", updated_at: "", project_title: "Thermal Storage Optimization", ...overrides })) form.set(name, value);
@@ -103,6 +104,22 @@ test("temporary project rendering preserves field and name order while omitting 
   assert.ok(html.indexOf("Meera, Hari") > -1);
   assert.match(html, /href="https:\/\/example\.test\/proof\?keep=1&amp;x=2"/);
   assert.doesNotMatch(html, /Project level:|Course code:|No proof|Synthetic Project B[\s\S]*?href=/);
+});
+
+test("hero project counts reflect admin-managed UG and PG records", async () => {
+  const rows = [
+    ...Array.from({ length: 14 }, (_, index) => ({ id: index + 1, displayOrder: index + 1, projectTitle: `UG project ${index + 1}`, projectLevel: "UG" })),
+    ...Array.from({ length: 4 }, (_, index) => ({ id: index + 15, displayOrder: index + 15, projectTitle: `PG project ${index + 1}`, projectLevel: "PG" })),
+  ];
+  assert.deepEqual(countGuidedProjectsByLevel(rows), { ug: 14, pg: 4, total: 18 });
+  const html = (await compareProfile(publicBaseline, undefined, undefined, undefined, undefined, [], rows, true)).current;
+  assert.match(html, /<strong>14<\/strong><span>UG PROJECTS GUIDED<\/span>/);
+  assert.match(html, /<strong>4<\/strong><span>PG PROJECTS GUIDED<\/span>/);
+
+  const editedRows = rows.map((project, index) => index === 0 ? { ...project, projectLevel: "PG" } : project);
+  assert.deepEqual(countGuidedProjectsByLevel(editedRows), { ug: 13, pg: 5, total: 18 });
+  const emptyHtml = (await compareProfile(publicBaseline, undefined, undefined, undefined, undefined, [], [], true)).current;
+  assert.doesNotMatch(emptyHtml, /UG PROJECTS GUIDED|PG PROJECTS GUIDED/);
 });
 
 test("protected routes and empty database foundation are declared without seeded projects", () => {
