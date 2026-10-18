@@ -17,6 +17,7 @@ import { formatAcademicDate } from "../lib/date-format";
 import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
 import PublicationBrowser from "./publication-browser";
+import PrimaryNavigation from "./primary-navigation";
 
 function ExternalLink({
   url,
@@ -69,20 +70,20 @@ export default async function Home() {
 
           <a href={pageLinks.top} className="nav-title">{pageCopy.academicProfile}</a>
 
-          <nav className="nav-links" aria-label={pageCopy.primaryNavigation}>
-            <a href={pageLinks.top}>{pageCopy.home}</a>
-            <a href={pageLinks.research}>{pageCopy.research}</a>
-            <a href={pageLinks.publications}>{pageCopy.publications}</a>
-            <a href={pageLinks.activities}>{pageCopy.activities}</a>
-            <a href={pageLinks.experience}>{pageCopy.experience}</a>
-            <a href={pageLinks.certifications}>{pageCopy.nptel}</a>
-            <a href={pageLinks.peerReviews}>{pageCopy.peerReviews}</a>
-            <a href={pageLinks.achievements}>{pageCopy.achievements}</a>
-            <a href={pageLinks.professionalBodies}>{pageCopy.professionalBodies}</a>
-            <a href={pageLinks.subjectsTaught}>{pageCopy.subjectsTaught}</a>
-            <a href={pageLinks.projectsGuided}>{pageCopy.projectsGuided}</a>
-            <a href={pageLinks.contact}>{pageCopy.contact}</a>
-          </nav>
+          <PrimaryNavigation items={[
+            { href: pageLinks.top, label: pageCopy.home },
+            { href: pageLinks.research, label: pageCopy.research },
+            { href: pageLinks.publications, label: pageCopy.publications },
+            { href: pageLinks.activities, label: pageCopy.activities },
+            { href: pageLinks.experience, label: pageCopy.experience },
+            { href: pageLinks.certifications, label: pageCopy.nptel },
+            { href: pageLinks.peerReviews, label: pageCopy.peerReviews },
+            { href: pageLinks.achievements, label: pageCopy.achievements },
+            { href: pageLinks.professionalBodies, label: pageCopy.professionalBodies },
+            { href: pageLinks.subjectsTaught, label: pageCopy.subjectsTaught },
+            { href: pageLinks.projectsGuided, label: pageCopy.projectsGuided },
+            { href: pageLinks.contact, label: pageCopy.contact },
+          ]} />
         </div>
       </header>
 

@@ -21,7 +21,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
+  scroll-padding-top: calc(var(--primary-nav-height, 92px) + 12px);
 }
 
 body {
@@ -107,7 +107,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 7px;
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
@@ -118,28 +118,45 @@ main {
 }
 
 .nav-links a {
-  color: #bccad2;
-  font-size: 14px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 5px 8px;
+  border: 1px solid rgba(99, 183, 222, 0.52);
+  border-radius: 9px;
+  background: rgba(14, 52, 73, 0.32);
+  color: #b9dff2;
+  font-size: 11px;
+  font-weight: 600;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
 }
 
 .nav-links a:hover {
-  color: var(--teal);
+  border-color: rgba(112, 207, 250, 0.92);
+  background: rgba(99, 200, 245, 0.16);
+  color: #effaff;
+  box-shadow: 0 0 0 3px rgba(99, 200, 245, 0.1);
 }
 
-.nav-links .nav-home {
-  color: var(--teal);
+.nav-links a[aria-current="location"] {
+  border-color: #79d4ff;
+  background: #63c8f5;
+  color: #062237;
   font-weight: 700;
-  padding: 7px 12px;
-  border: 1px solid var(--border-strong);
-  border-radius: 9px;
-  background: rgba(56, 214, 204, 0.04);
+  box-shadow: 0 0 15px rgba(99, 200, 245, 0.2);
 }
 
-.nav-links .nav-home:hover {
-  color: var(--white);
-  background: rgba(56, 214, 204, 0.10);
+.nav-links a:active {
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 0 0 4px rgba(99, 200, 245, 0.16);
+}
+
+.nav-links a:focus-visible {
+  outline: 2px solid #8bdcff;
+  outline-offset: 3px;
 }
 
 /* ---------- HERO ---------- */
@@ -1380,14 +1397,17 @@ main {
 
   .nav-links {
     flex: 1;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    overflow: visible;
-    gap: 4px 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 5px 3px;
+    gap: 6px;
   }
 
   .nav-links a {
-    font-size: 12px;
+    min-height: 32px;
+    padding: 4px 7px;
+    font-size: 10px;
   }
 
   .hero-name {
@@ -1468,11 +1488,28 @@ main {
 
 @media (max-width: 760px) {
   main {
-    padding-top: 70px;
+    padding-top: 0;
+    overflow-x: clip;
   }
 
   .navbar {
-    height: 70px;
+    position: sticky;
+    height: auto;
+    min-height: 70px;
+  }
+
+  .nav-container {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 7px 11px;
+    padding: 8px 0;
+  }
+
+  .nav-title {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.06em;
   }
 
   .nav-container {
@@ -1488,14 +1525,19 @@ main {
   }
 
   .nav-links {
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex: 0 0 100%;
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
+    overflow: visible;
     justify-content: flex-start;
-    gap: 18px;
+    gap: 5px;
   }
 
   .nav-links a {
-    font-size: 13px;
+    min-height: 31px;
+    padding: 4px 7px;
+    font-size: 10px;
   }
 
   .hero {
@@ -1653,11 +1695,13 @@ main {
   }
 
   .nav-links {
-    gap: 15px;
+    gap: 5px;
   }
 
   .nav-links a {
-    font-size: 12px;
+    min-height: 30px;
+    padding: 4px 6px;
+    font-size: 10px;
   }
 
   .profile-card {
@@ -2109,6 +2153,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-links a { transition: none; }
+  .nav-links a:active { transform: none; }
   .research-card,
   .publication-card,
   .activity-card,
