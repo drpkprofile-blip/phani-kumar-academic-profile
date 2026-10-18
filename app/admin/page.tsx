@@ -48,6 +48,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <h2>Profile, Photo &amp; Links</h2><p>Manage public profile information, research links, contact details and the experience counter.</p>
           <Link className={styles.button} href="/admin/profile">Manage Profile</Link>
         </section>
+        <section className={styles.module} aria-label="Private resume generation">
+          <h2>Academic Resume</h2><p>Generate and download a current, complete PDF resume from the profile and academic records.</p>
+          <Link className={styles.button} href="/admin/resume">Open Resume Builder</Link>
+        </section>
         {successMessage && <p role="status" className={styles.success}>{successMessage}</p>}
         {errorMessage && <p role="alert" className={styles.error}>{errorMessage}</p>}
         <section className={styles.module} aria-label="Activities management">
