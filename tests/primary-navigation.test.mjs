@@ -45,6 +45,7 @@ test("navigation uses clear sky-blue buttons, wraps across rows, and keeps Admin
   assert.match(mobile, /\.nav-title\s*\{[^}]*display:\s*block;/s);
   assert.match(mobile, /main\s*\{[^}]*padding-top:\s*0;/s);
   assert.match(css, /\.section\s*\{[^}]*scroll-margin-top:\s*0;/s);
-  assert.match(css, /\.hero\s*\{[^}]*padding:\s*26px 0 42px;/s);
+  assert.match(css, /\.hero\s*\{[^}]*padding-top:\s*30px;/s);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*?\.hero\s*\{\s*padding-top:\s*18px;/s);
   assert.match(css, /scroll-padding-top:\s*calc\(var\(--primary-nav-height, 92px\) \+ 12px\)/);
 });

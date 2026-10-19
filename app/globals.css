@@ -2077,7 +2077,7 @@ body {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-top: 58px;
+  padding-top: 30px;
 }
 
 .hero::before {
@@ -2266,7 +2266,7 @@ body {
 }
 
 @media (max-width: 760px) {
-  .hero { padding-top: 34px; }
+  .hero { padding-top: 18px; }
   .hero h1.hero-name { max-width: 100%; white-space: normal; font-size: clamp(36px, 10vw, 48px); }
   .hero::before { top: -90px; right: -220px; width: 620px; }
   .hero::after { top: 80px; right: 7%; width: 150px; opacity: 0.22; }
