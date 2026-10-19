@@ -119,10 +119,9 @@ main {
 
 .nav-links {
   margin-left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-content: center;
   gap: 8px;
   min-width: 0;
   overflow: visible;
@@ -156,19 +155,26 @@ main {
 
 .nav-links a {
   display: inline-flex;
-  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
-  padding: 7px 10px;
+  min-height: 44px;
+  padding: 8px;
   border: 1px solid rgba(99, 183, 222, 0.52);
   border-radius: 9px;
   background: rgba(14, 52, 73, 0.32);
   color: #b9dff2;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+}
+
+.nav-links a:nth-child(8) {
+  grid-column: 2;
 }
 
 .nav-links a:hover {
@@ -204,7 +210,7 @@ main {
 /* ---------- HERO ---------- */
 
 .hero {
-  padding: 48px 0 42px;
+  padding: 26px 0 42px;
 }
 
 .hero-container {
@@ -480,7 +486,7 @@ main {
 
 .section {
   padding: 62px 0;
-  scroll-margin-top: 76px;
+  scroll-margin-top: 0;
 }
 
 .section-card-section {
@@ -1456,21 +1462,19 @@ main {
 
 @media (max-width: 1250px) {
   .nav-container {
+    grid-template-columns: 190px minmax(0, 1fr);
     gap: 10px;
   }
 
   .nav-links {
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    overflow: visible;
     padding: 2px;
     gap: 6px;
   }
 
   .nav-links a {
-    min-height: 36px;
-    padding: 6px 8px;
-    font-size: 11px;
+    min-height: 42px;
+    padding: 6px 5px;
+    font-size: 12px;
   }
 
   .hero-name {
@@ -1497,6 +1501,11 @@ main {
 }
 
 @media (max-width: 1000px) {
+  .nav-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
   .nav-links {
     gap: 7px;
   }
@@ -1584,6 +1593,7 @@ main {
   }
 
   .nav-links {
+    display: flex;
     flex: 0 0 100%;
     width: 100%;
     margin-left: 0;
@@ -1594,9 +1604,12 @@ main {
   }
 
   .nav-links a {
+    flex: 0 0 auto;
+    width: auto;
     min-height: 38px;
     padding: 6px 9px;
     font-size: 12px;
+    white-space: nowrap;
   }
 
   .hero {
@@ -1777,9 +1790,12 @@ main {
   }
 
   .nav-links a {
+    flex: 0 0 auto;
+    width: auto;
     min-height: 36px;
     padding: 5px 8px;
     font-size: 11px;
+    white-space: nowrap;
   }
 
   .profile-card {

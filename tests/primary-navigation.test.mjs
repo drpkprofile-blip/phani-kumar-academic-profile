@@ -26,9 +26,9 @@ test("primary navigation renders accessible section links with the Home location
 test("navigation uses clear sky-blue buttons, wraps across rows, and keeps Admin under the profile brand", () => {
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
   const page = readFileSync(`${root}/app/page.tsx`, "utf8");
-  assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*38px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
-  assert.match(css, /\.nav-links a\s*\{[^}]*font-size:\s*12px;/s);
-  assert.match(css, /\.nav-links\s*\{[^}]*flex-wrap:\s*wrap;/s);
+  assert.match(css, /\.nav-links\s*\{[^}]*grid-template-columns:\s*repeat\(7, minmax\(0, 1fr\)\);/s);
+  assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*44px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
+  assert.match(css, /\.nav-links a\s*\{[^}]*font-size:\s*13px;/s);
   assert.match(css, /\.nav-brand\s*\{[^}]*grid-template-columns:\s*50px minmax\(0, 1fr\);/s);
   assert.match(css, /\.admin-shortcut\s*\{[^}]*grid-column:\s*2;/s);
   assert.match(page, /<div className="nav-brand">[\s\S]*?className="nav-title"[\s\S]*?className="admin-shortcut"/);
@@ -41,7 +41,10 @@ test("navigation uses clear sky-blue buttons, wraps across rows, and keeps Admin
   const mobile = css.match(/@media \(max-width: 760px\)\s*\{([\s\S]*?)\n\}/)?.[1] ?? "";
   assert.match(mobile, /\.navbar\s*\{[^}]*position:\s*sticky;/s);
   assert.match(mobile, /\.nav-links\s*\{[^}]*flex-wrap:\s*wrap;[^}]*overflow:\s*visible;/s);
+  assert.match(mobile, /\.nav-links\s*\{[^}]*display:\s*flex;/s);
   assert.match(mobile, /\.nav-title\s*\{[^}]*display:\s*block;/s);
   assert.match(mobile, /main\s*\{[^}]*padding-top:\s*0;/s);
+  assert.match(css, /\.section\s*\{[^}]*scroll-margin-top:\s*0;/s);
+  assert.match(css, /\.hero\s*\{[^}]*padding:\s*26px 0 42px;/s);
   assert.match(css, /scroll-padding-top:\s*calc\(var\(--primary-nav-height, 92px\) \+ 12px\)/);
 });
