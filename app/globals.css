@@ -54,7 +54,7 @@ img {
 main {
   min-height: 100vh;
   overflow-x: hidden;
-  padding-top: var(--primary-nav-height, 118px);
+  padding-top: var(--primary-nav-height, 126px);
 }
 
 /* ---------- FIXED COMMON NAVIGATION ---------- */
@@ -64,7 +64,7 @@ main {
   inset: 0 0 auto 0;
   z-index: 1000;
   height: auto;
-  min-height: 112px;
+  min-height: 126px;
   background: rgba(4, 17, 26, 0.96);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(16px);
@@ -73,7 +73,7 @@ main {
 
 .nav-container {
   width: min(1360px, calc(100% - 80px));
-  min-height: 112px;
+  min-height: 126px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
@@ -159,13 +159,13 @@ main {
   min-width: 0;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 8px;
+  min-height: 48px;
+  padding: 10px 8px;
   border: 1px solid rgba(99, 183, 222, 0.52);
   border-radius: 9px;
   background: rgba(14, 52, 73, 0.32);
   color: #b9dff2;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
@@ -1472,9 +1472,9 @@ main {
   }
 
   .nav-links a {
-    min-height: 42px;
-    padding: 6px 5px;
-    font-size: 12px;
+    min-height: 46px;
+    padding: 8px 5px;
+    font-size: 14px;
   }
 
   .hero-name {
@@ -1606,9 +1606,9 @@ main {
   .nav-links a {
     flex: 0 0 auto;
     width: auto;
-    min-height: 38px;
-    padding: 6px 9px;
-    font-size: 12px;
+    min-height: 42px;
+    padding: 7px 10px;
+    font-size: 13px;
     white-space: nowrap;
   }
 
@@ -1792,9 +1792,9 @@ main {
   .nav-links a {
     flex: 0 0 auto;
     width: auto;
-    min-height: 36px;
-    padding: 5px 8px;
-    font-size: 11px;
+    min-height: 40px;
+    padding: 6px 9px;
+    font-size: 12px;
     white-space: nowrap;
   }
 
