@@ -155,4 +155,4 @@ test("public gallery safely remains empty if its new table has not reached the s
     if (previous[0] === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_URL; else process.env.NEXT_PUBLIC_SUPABASE_URL = previous[0];
     if (previous[1] === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY; else process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = previous[1];
   }
-});\n
+});

@@ -70,9 +70,11 @@ export default async function Home() {
     <main id="top">
       <header className="navbar">
         <div className="nav-container">
-          <a href={pageLinks.top} className="logo" aria-label={pageCopy.home}>{pageCopy.pk}</a>
-
-          <a href={pageLinks.top} className="nav-title">{pageCopy.academicProfile}</a>
+          <div className="nav-brand">
+            <a href={pageLinks.top} className="logo" aria-label={pageCopy.home}>{pageCopy.pk}</a>
+            <a href={pageLinks.top} className="nav-title">{pageCopy.academicProfile}</a>
+            <a className="admin-shortcut" href="/admin/login">Admin</a>
+          </div>
 
           <PrimaryNavigation items={[
             { href: pageLinks.top, label: pageCopy.home },
@@ -746,7 +748,6 @@ export default async function Home() {
         </div>
         <a href={pageLinks.top}>{pageCopy.backToHome}</a>
       </footer>
-      <a className="admin-shortcut" href="/admin/login">Admin</a>
     </main>
   );
 }

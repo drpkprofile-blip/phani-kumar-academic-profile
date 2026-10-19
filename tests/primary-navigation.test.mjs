@@ -23,9 +23,16 @@ test("primary navigation renders accessible section links with the Home location
   assert.match(readFileSync(`${root}/app/primary-navigation.tsx`, "utf8"), /requestedHref\.current = href;\s*setActiveHref\(href\)/);
 });
 
-test("navigation uses compact sky-blue buttons, clear active and press states, and reduced-motion support", () => {
+test("navigation uses clear sky-blue buttons, wraps across rows, and keeps Admin under the profile brand", () => {
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
-  assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*34px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
+  const page = readFileSync(`${root}/app/page.tsx`, "utf8");
+  assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*38px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
+  assert.match(css, /\.nav-links a\s*\{[^}]*font-size:\s*12px;/s);
+  assert.match(css, /\.nav-links\s*\{[^}]*flex-wrap:\s*wrap;/s);
+  assert.match(css, /\.nav-brand\s*\{[^}]*grid-template-columns:\s*50px minmax\(0, 1fr\);/s);
+  assert.match(css, /\.admin-shortcut\s*\{[^}]*grid-column:\s*2;/s);
+  assert.match(page, /<div className="nav-brand">[\s\S]*?className="nav-title"[\s\S]*?className="admin-shortcut"/);
+  assert.doesNotMatch(css, /\.admin-shortcut\s*\{[^}]*position:\s*fixed;/s);
   assert.match(css, /\.nav-links a\[aria-current="location"\]\s*\{[^}]*background:\s*#63c8f5/s);
   assert.match(css, /\.nav-links a\[aria-current="location"\]\s*\{[^}]*transition:\s*none/s);
   assert.match(css, /\.nav-links a:active\s*\{[^}]*background:\s*#63c8f5;[^}]*scale\(0\.96\)/s);

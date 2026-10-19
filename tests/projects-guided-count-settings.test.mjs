@@ -79,4 +79,4 @@ test("database migration seeds only supplied project counts and protects setting
   assert.match(migration, /admin_update_project_guided_counts[\s\S]*?security definer set search_path = ''/);
   assert.match(readFileSync(`${root}/supabase/tests/projects_guided_counts_authorization.sql`, "utf8"), /rollback/i);
   assert.match(readFileSync(`${root}/app/admin/projects-guided/page.tsx`, "utf8"), /Update counts/);
-});\n
+});
