@@ -357,10 +357,11 @@ main {
 
 .hero-stats span {
   display: block;
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 0.09em;
+  margin-top: 9px;
+  color: #8bdde2;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
 }
 
 .hero-stats--guided {
