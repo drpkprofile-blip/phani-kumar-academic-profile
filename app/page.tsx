@@ -15,11 +15,13 @@ import { getPublicGuidedProjectCounts } from "../lib/projects-guided-settings";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { getPublicGalleryItems } from "../lib/gallery";
+import { getPublicProfileVisitCount } from "../lib/profile-visits";
 import { formatAcademicDate } from "../lib/date-format";
 import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
 import PublicationBrowser from "./publication-browser";
 import PrimaryNavigation from "./primary-navigation";
+import ProfileVisitCounter from "./profile-visit-counter";
 
 function ExternalLink({
   url,
@@ -63,6 +65,7 @@ export default async function Home() {
   const projectsGuided = await getPublicProjectsGuided();
   const guidedProjectCounts = await getPublicGuidedProjectCounts();
   const galleryItems = await getPublicGalleryItems();
+  const profileVisitCount = await getPublicProfileVisitCount();
   const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
 
@@ -148,6 +151,7 @@ export default async function Home() {
               <div><strong>{guidedProjectCounts.ug}+</strong><span>UG PROJECTS GUIDED</span></div>
               <div><strong>{guidedProjectCounts.pg}+</strong><span>PG PROJECTS GUIDED</span></div>
             </div>
+            <ProfileVisitCounter initialCount={profileVisitCount} />
           </div>
 
           <aside className="profile-card">

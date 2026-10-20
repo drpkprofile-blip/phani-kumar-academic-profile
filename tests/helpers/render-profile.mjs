@@ -19,6 +19,7 @@ export function loadModule(path, mocks = {}, source) {
     if (name === "./activity-browser") return loadModule("app/activity-browser.tsx", mocks);
     if (name === "./publication-browser") return loadModule("app/publication-browser.tsx", mocks);
     if (name === "./primary-navigation") return loadModule("app/primary-navigation.tsx", mocks);
+    if (name === "./profile-visit-counter") return loadModule("app/profile-visit-counter.tsx", mocks);
     // Isolate unrelated publication tests from Activities network reads.
     if (name === "../lib/activities") return { getPublicActivities: async () => loadModule("data/activities.ts") };
     if (name.startsWith(".")) return loadModule(`${resolve(dirname(absolute), name)}.ts`, mocks);
@@ -56,6 +57,7 @@ export async function compareProfile(publicData, activityData, certificationData
     "../lib/subjects-taught": { getPublicSubjectsTaught: async () => subjectData ?? [] },
     "../lib/projects-guided": { getPublicProjectsGuided: async () => projectsGuidedData ?? [] },
     "../lib/projects-guided-settings": { getPublicGuidedProjectCounts: async () => guidedCountsData },
+    "../lib/profile-visits": { getPublicProfileVisitCount: async () => 123 },
     "../lib/gallery": { getPublicGalleryItems: async () => galleryData ?? [] },
     "../lib/peer-reviews": { getPublicPeerReviews: async () => peerReviewData ?? {
       peerReviews: loadModule("data/peer-reviews.ts").peerReviews,
@@ -70,7 +72,9 @@ export async function compareProfile(publicData, activityData, certificationData
     .replace(/<div><strong>\d+\+<\/strong><span>UG PROJECTS GUIDED<\/span><\/div>/, "")
     .replace(/<div><strong>\d+\+<\/strong><span>PG PROJECTS GUIDED<\/span><\/div>/, "")
     .replace('class="hero-stats hero-stats--guided"', 'class="hero-stats"');
-  const baselineCompatiblePage = includeGallery ? baselineCompatibleCurrent : baselineCompatibleCurrent
+  const baselineCompatibleWithVisitCounter = baselineCompatibleCurrent
+    .replace(/<p class="profile-visit-counter"[\s\S]*?<\/p>/, "");
+  const baselineCompatiblePage = includeGallery ? baselineCompatibleWithVisitCounter : baselineCompatibleWithVisitCounter
     .replace(/<a href="#gallery">Gallery<\/a>/, "")
     .replace(/<section id="gallery"[\s\S]*?<\/section>/, "");
   // The year controls are the intentional UI addition under test. Keep existing

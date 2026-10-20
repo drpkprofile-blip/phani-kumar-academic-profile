@@ -482,6 +482,33 @@ main {
   border-bottom: 0;
 }
 
+.profile-visit-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 10px 0 0;
+  padding: 7px 11px;
+  border: 1px solid rgba(56, 214, 204, 0.2);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.profile-visit-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 10px rgba(56, 214, 204, 0.65);
+}
+
+.profile-visit-counter strong {
+  color: #8bdde2;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- PROFILE PHOTO ---------- */
 
 .profile-card {

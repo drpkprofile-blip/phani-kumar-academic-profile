@@ -14,6 +14,12 @@ export type Database = {
   }
   public: {
     Tables: {
+      profile_visit_counter: {
+        Row: { singleton: boolean; total_visits: number; updated_at: string }
+        Insert: { singleton?: boolean; total_visits?: number; updated_at?: string }
+        Update: { singleton?: boolean; total_visits?: number; updated_at?: string }
+        Relationships: []
+      }
       gallery_items: {
         Row: { created_at: string; description: string; display_order: number; id: number; source_order: number | null; storage_path: string; updated_at: string }
         Insert: { created_at?: string; description: string; display_order: number; id?: number; source_order?: number | null; storage_path: string; updated_at?: string }
@@ -558,6 +564,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      record_profile_visit: { Args: never; Returns: number }
       admin_save_gallery_item: {
         Args: { p_description: string; p_storage_path: string; p_id?: number; p_expected_updated_at?: string }
         Returns: number
