@@ -24,9 +24,17 @@ test("home hero message supports admin-managed quotes and festival wishes with c
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
   assert.match(page, /hero-message--\$\{profile\.heroMessage\.mode\}/);
   assert.match(page, /profile\.heroMessage\.mode === "greeting" \? profile\.heroMessage\.greeting : profile\.heroMessage\.quote/);
+  assert.match(page, /<div className="hero-nameplate">[\s\S]*?<h1 className="hero-name">\{profile\.name\}<\/h1>[\s\S]*?<h2 className="qualifications">\{profile\.qualifications\}<\/h2>[\s\S]*?<p className="hero-role">[\s\S]*?<p className="institution">\{profile\.institution\}<\/p>\s*<\/div>/);
+  assert.match(css, /\.hero-nameplate\s*\{[^}]*border-left:\s*8px solid var\(--teal\)[^}]*background:\s*linear-gradient\(112deg, #0755b7, #0a438e\)/s);
   assert.match(editor, /Show the general quote[\s\S]*Show festival wishes/);
   assert.match(editor, /name === "hero_quote" \|\| name === "hero_greeting" \? 280/);
   assert.match(css, /\.hero-message\s*\{[^}]*min-height:\s*104px/s);
+  assert.match(css, /\.hero-message--quote\s*\{[^}]*background:\s*#0b2230/s);
+  assert.match(css, /\.hero-message--greeting\s*\{[^}]*background:\s*#0b2230/s);
+  assert.match(css, /\.hero-message--quote blockquote,[\s\S]*color:\s*#f0a6c9/s);
+  assert.match(css, /\.hero-message--greeting blockquote\s*\{[^}]*color:\s*#e5bd3c/s);
+  assert.match(css, /\.hero-message--greeting \.hero-message-kicker\s*\{[^}]*color:\s*var\(--teal\)/s);
+  assert.match(css, /\.hero-message--greeting cite\s*\{[^}]*color:\s*#a8bfcb/s);
   assert.match(css, /@media \(max-width: 420px\)\s*\{[^}]*\.hero-message\s*\{/s);
   const general = await compareProfile({ publications: [], heroPublications: "38+" });
   assert.match(general.rawCurrent, /Curiosity inspires discovery; knowledge creates lasting impact\./);

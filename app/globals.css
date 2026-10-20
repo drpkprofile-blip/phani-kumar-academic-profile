@@ -379,6 +379,18 @@ main {
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.025), 0 14px 38px rgba(0, 0, 0, 0.12);
 }
 
+.hero-message--quote {
+  border-color: #236075;
+  border-left-color: #dc84b0;
+  background: #0b2230;
+}
+
+.hero-message--greeting {
+  border-color: #236075;
+  border-left-color: #ddb333;
+  background: #0b2230;
+}
+
 .hero-message-mark {
   align-self: start;
   color: var(--teal);
@@ -386,6 +398,20 @@ main {
   font-size: 60px;
   line-height: 0.9;
   opacity: 0.9;
+}
+
+.hero-message--quote .hero-message-mark,
+.hero-message--quote .hero-message-kicker {
+  color: #f0a6c9;
+}
+
+.hero-message--greeting .hero-message-mark,
+.hero-message--greeting .hero-message-kicker {
+  color: #e5bd3c;
+}
+
+.hero-message--greeting .hero-message-kicker {
+  color: var(--teal);
 }
 
 .hero-message-copy { min-width: 0; }
@@ -400,7 +426,7 @@ main {
 
 .hero-message blockquote {
   margin: 0;
-  color: var(--white);
+  color: #edf5f7;
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(18px, 1.7vw, 24px);
   font-weight: 600;
@@ -412,9 +438,22 @@ main {
 .hero-message cite {
   display: block;
   margin-top: 5px;
-  color: var(--muted);
+  color: #a8bfcb;
   font-size: 12px;
   font-style: normal;
+}
+
+.hero-message--quote blockquote,
+.hero-message--quote cite {
+  color: #f0a6c9;
+}
+
+.hero-message--greeting blockquote {
+  color: #e5bd3c;
+}
+
+.hero-message--greeting cite {
+  color: #a8bfcb;
 }
 
 .hero-stats--guided {
@@ -2357,4 +2396,64 @@ body {
   .professional-membership-card:hover,
   .subject-taught-card:hover,
   .project-guided-card:hover { transform: none; }
+}
+
+.hero-nameplate {
+  margin-bottom: 16px;
+  padding: 22px 24px;
+  border-left: 8px solid var(--teal);
+  border-radius: 5px;
+  background: linear-gradient(112deg, #0755b7, #0a438e);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.hero-nameplate .eyebrow {
+  margin: 0 0 9px;
+  color: #fff;
+  letter-spacing: 0.14em;
+}
+
+.hero-nameplate .eyebrow::before {
+  display: none;
+}
+
+.hero-nameplate h1.hero-name {
+  max-width: 100%;
+  color: #fff;
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.hero-nameplate .qualifications {
+  margin: 10px 0 7px;
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.hero-nameplate .hero-role,
+.hero-nameplate .hero-role b,
+.hero-nameplate .institution {
+  color: #fff;
+}
+
+.hero-nameplate .institution {
+  margin-top: 7px;
+}
+
+@media (max-width: 520px) {
+  .hero-nameplate {
+    padding: 18px 15px;
+  }
+
+  .hero-nameplate h1.hero-name {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .hero-nameplate .qualifications {
+    font-size: 15px;
+  }
 }

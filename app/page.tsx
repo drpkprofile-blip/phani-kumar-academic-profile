@@ -106,17 +106,19 @@ export default async function Home() {
                   <cite>— {profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution}</cite>}
               </div>
             </aside>
-            <p className="eyebrow">{profile.profileLabel}</p>
+            <div className="hero-nameplate">
+              <p className="eyebrow">{profile.profileLabel}</p>
 
-            <h1 className="hero-name">{profile.name}</h1>
+              <h1 className="hero-name">{profile.name}</h1>
 
-            <h2 className="qualifications">{profile.qualifications}</h2>
+              <h2 className="qualifications">{profile.qualifications}</h2>
 
-            <p className="hero-role">
-              {profile.designation} <b>{pageCopy.roleSeparator}</b> {profile.department}
-            </p>
+              <p className="hero-role">
+                {profile.designation} <b>{pageCopy.roleSeparator}</b> {profile.department}
+              </p>
 
-            <p className="institution">{profile.institution}</p>
+              <p className="institution">{profile.institution}</p>
+            </div>
 
             <p className="hero-description">{profile.description}</p>
 
