@@ -2,7 +2,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
-select plan(22);
+select plan(25);
 
 insert into auth.users(id) values
   ('00000000-0000-0000-0000-000000000921'),
@@ -15,6 +15,8 @@ select is((select count(*)::integer from public.profile_settings where singleton
   'Anonymous readers can view the singleton public profile');
 select is((select name from public.profile_settings where singleton),
   'Dr. Phani Kumar Simhadri','Anonymous readers see the committed profile name');
+select is((select hero_message_mode from public.profile_settings where singleton),
+  'quote','Anonymous readers can see the selected home hero message');
 select throws_ok($$update public.profile_settings set name='Anonymous edit' where singleton$$,
   '42501',null,'Anonymous profile writes are denied');
 select throws_ok($$insert into public.profile_settings(name,first_name,last_name,qualifications,designation,department,institution,profile_label,description,email,phone,photo_url,academic_identity,profile_links,youtube_channel,technical_tools,skills,research_interests,experience_counter_text)
@@ -58,6 +60,11 @@ select lives_ok($$update public.profile_settings set experience_counter_text='21
   'Allowlisted admin can update profile fields');
 select is((select experience_counter_text from public.profile_settings where singleton),
   '21+','Admin-managed experience counter remains independent profile content');
+select lives_ok($$update public.profile_settings set hero_message_mode='greeting',
+  hero_greeting='Warm festival wishes' where singleton$$,
+  'Allowlisted admin can select and edit the public festival greeting');
+select is((select hero_message_mode || '|' || hero_greeting from public.profile_settings where singleton),
+  'greeting|Warm festival wishes','Selected greeting is visible to public readers');
 select throws_ok($$update public.profile_settings set name='  ' where singleton$$,
   '23514',null,'Blank required public name is rejected');
 

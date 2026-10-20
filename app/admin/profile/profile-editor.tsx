@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useActionState } from "react";
 import type { AcademicIdentity, ProfileLink } from "../../../data/profile";
 import { saveProfileSettings, type ProfileFormState } from "./actions";
@@ -15,6 +15,8 @@ type ProfileEditorValues = {
   google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
   technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
+  hero_message_mode: string; hero_quote: string; hero_quote_attribution: string;
+  hero_greeting: string; hero_greeting_attribution: string;
 };
 
 const fields: Array<{ name: keyof Omit<ProfileEditorValues, "technical_tools" | "skills" | "research_interests" | "academic_identity" | "profile_links">; label: string; multiline?: boolean }> = [
@@ -27,6 +29,11 @@ const fields: Array<{ name: keyof Omit<ProfileEditorValues, "technical_tools" | 
   { name: "institution", label: "Institution" },
   { name: "profile_label", label: "Profile label" },
   { name: "description", label: "Short profile text", multiline: true },
+  { name: "hero_message_mode", label: "Home page message" },
+  { name: "hero_quote", label: "General quote", multiline: true },
+  { name: "hero_quote_attribution", label: "Quote attribution" },
+  { name: "hero_greeting", label: "Festival wishes", multiline: true },
+  { name: "hero_greeting_attribution", label: "Festival wishes attribution" },
   { name: "email", label: "Public email" },
   { name: "phone", label: "Public phone" },
   { name: "experience_counter_text", label: "Independent experience counter" },
@@ -70,12 +77,21 @@ export default function ProfileEditor({ initial }: { initial: ProfileEditorValue
 
   return <form action={action} className={styles.form}>
     {state.message && <p role="alert" className={styles.error}>{state.message}</p>}
-    {fields.map(({ name, label, multiline }) => <label className={styles.field} htmlFor={name} key={name}>{label}
-      {multiline ? <textarea id={name} name={name} rows={5} defaultValue={String(state.values?.[name] ?? initial[name])} />
+    {fields.map(({ name, label, multiline }) => <Fragment key={name}>
+      {name === "hero_message_mode" && <h2>Home page message</h2>}
+      <label className={styles.field} htmlFor={name}>{label}
+      {name === "hero_message_mode" ? <select id={name} name={name} defaultValue={String(state.values?.[name] ?? initial[name])}>
+          <option value="quote">Show the general quote</option><option value="greeting">Show festival wishes</option>
+        </select>
+        : multiline ? <textarea id={name} name={name} rows={name === "hero_quote" || name === "hero_greeting" ? 3 : 5}
+          maxLength={name === "hero_quote" || name === "hero_greeting" ? 280 : undefined}
+          defaultValue={String(state.values?.[name] ?? initial[name])} />
         : <input id={name} name={name} type={name === "email" ? "email" : name === "youtube_href" || name === "youtube_image" ? "text" : "text"}
-          defaultValue={String(state.values?.[name] ?? initial[name])} required />}
+          defaultValue={String(state.values?.[name] ?? initial[name])} required={!name.endsWith("attribution")}
+          maxLength={name.endsWith("attribution") ? 120 : undefined} />}
       {state.errors?.[name] && <span className={styles.error}>{state.errors[name]}</span>}
-    </label>)}
+      </label>
+    </Fragment>)}
     <input type="hidden" name="academic_identity" value={JSON.stringify(identity)} />
     <input type="hidden" name="profile_links" value={JSON.stringify(links)} />
     <RowEditor title="Academic and research IDs" rows={identity} onChange={setIdentity} identity />
@@ -87,6 +103,7 @@ export default function ProfileEditor({ initial }: { initial: ProfileEditorValue
     {listField("skills", "Skills", state.values?.skills ?? initial.skills)}
     <p className={styles.note}>Links accept HTTP or HTTPS. Leave a link blank when none is supplied. The experience counter stays independent of record counts.</p>
     <p className={styles.note}>Enter each metric as All (Since 2021), for example 179 (142), matching the citation table. Metrics are manual and are never imported automatically.</p>
+    <p className={styles.note}>Choose which message appears in the home page hero. Both the general quote and festival wishes are saved, so you can switch back at any time. Messages allow 280 characters; attributions are optional.</p>
     <button className={styles.button} type="submit" disabled={pending}>{pending ? "Saving…" : "Save profile settings"}</button>
   </form>;
 }

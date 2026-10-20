@@ -27,12 +27,18 @@ export function loadModule(path, mocks = {}, source) {
   return exports;
 }
 
-export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData, galleryData = [], includeGallery = false, guidedCountsData = { ug: 14, pg: 4 }) {
+export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData, galleryData = [], includeGallery = false, guidedCountsData = { ug: 14, pg: 4 }, heroMessageData = {
+  mode: "quote", quote: "Curiosity inspires discovery; knowledge creates lasting impact.", quoteAttribution: "",
+  greeting: "Warm wishes to you and your family on this special occasion.", greetingAttribution: "",
+}) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
     "../lib/profile-settings": { getPublicProfileSettings: async () => ({
-      profile: loadModule("data/profile.ts").profile,
+      profile: {
+        ...loadModule("data/profile.ts").profile,
+        heroMessage: heroMessageData,
+      },
       experienceCounterText: loadModule("data/counters.ts").counters.experienceYears,
     }) },
     "../lib/publications": { getPublicPublications: async () => publicData },
@@ -70,11 +76,13 @@ export async function compareProfile(publicData, activityData, certificationData
   // The year controls are the intentional UI addition under test. Keep existing
   // baseline comparisons focused on the unchanged publication cards and page.
   const baselineCompatibleWithPublicationFilters = baselineCompatiblePage
+    .replace(/<aside class="hero-message[^\"]*"[\s\S]*?<\/aside>/, "")
     .replace(/<a class="admin-shortcut" href="\/admin\/login">Admin<\/a>/, "")
     .replace(/<div class="publication-filter-note"[^>]*>[\s\S]*?<\/div>/, "")
     .replace(/ aria-current="location"/g, "");
   return {
     baseline: renderToStaticMarkup(await oldPage()),
+    rawCurrent: current,
     current: baselineCompatibleWithPublicationFilters,
   };
 }

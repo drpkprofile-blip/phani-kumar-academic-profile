@@ -327,9 +327,11 @@ test("editable Word route denies anonymous and non-admin requests before loading
 test("admin dashboard links to the protected resume builder and public hero graphics remain decorative", () => {
   const dashboard = readFileSync(`${root}/app/admin/page.tsx`, "utf8");
   const page = readFileSync(`${root}/app/admin/resume/page.tsx`, "utf8");
+  const publicPage = readFileSync(`${root}/app/page.tsx`, "utf8");
   const route = readFileSync(`${root}/app/admin/resume/download/route.ts`, "utf8");
   const wordRoute = readFileSync(`${root}/app/admin/resume/download/word/route.ts`, "utf8");
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
+  assert.match(publicPage, /href="\/admin\/resume" className="button button-secondary">Download CV<\/a>/);
   assert.match(dashboard, /href="\/admin\/resume"/);
   assert.match(page, /href="\/admin\/resume\/download"/);
   assert.match(page, /href="\/admin\/resume\/download\/word"/);

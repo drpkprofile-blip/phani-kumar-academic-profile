@@ -97,6 +97,15 @@ export default async function Home() {
       <section id="about" className="hero">
         <div className="hero-container">
           <div className="hero-content">
+            <aside className={`hero-message hero-message--${profile.heroMessage.mode}`} aria-label={profile.heroMessage.mode === "greeting" ? "Festival wishes" : "Featured quote"}>
+              <span className="hero-message-mark" aria-hidden="true">“</span>
+              <div className="hero-message-copy">
+                <p className="hero-message-kicker">{profile.heroMessage.mode === "greeting" ? "FESTIVAL WISHES" : "A THOUGHT FOR TODAY"}</p>
+                <blockquote>{profile.heroMessage.mode === "greeting" ? profile.heroMessage.greeting : profile.heroMessage.quote}</blockquote>
+                {(profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution) &&
+                  <cite>— {profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution}</cite>}
+              </div>
+            </aside>
             <p className="eyebrow">{profile.profileLabel}</p>
 
             <h1 className="hero-name">{profile.name}</h1>
@@ -114,6 +123,7 @@ export default async function Home() {
             <div className="hero-buttons">
               <a href={pageLinks.research} className="button button-primary">{pageCopy.exploreResearch}</a>
               <a href={pageLinks.contact} className="button button-secondary">{pageCopy.contactMe}</a>
+              <a href="/admin/resume" className="button button-secondary">Download CV</a>
             </div>
 
             <div className="hero-stats hero-stats--guided">

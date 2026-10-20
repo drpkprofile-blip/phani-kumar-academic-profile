@@ -1,6 +1,6 @@
 import "server-only";
 
-import { profile as referenceProfile, type AcademicIdentity, type ProfileLink } from "../data/profile";
+import { profile as referenceProfile, type AcademicIdentity, type HeroMessage, type ProfileLink } from "../data/profile";
 import { counters } from "../data/counters";
 import { pageLinks } from "../data/page-content";
 import { createClient } from "./supabase/server";
@@ -11,6 +11,7 @@ export type ManagedProfile = {
   designation: string; department: string; institution: string; profileLabel: string;
   description: string; email: string; phone: string; address: string; photo: string;
   citationsImageUrl: string;
+  heroMessage: HeroMessage;
   googleScholarMetrics: { citationsText: string; hIndexText: string; i10IndexText: string };
   academicIdentity: AcademicIdentity[]; profileLinks: ProfileLink[];
   youtubeChannel: { title: string; href: string; image: string };
@@ -18,6 +19,14 @@ export type ManagedProfile = {
 };
 
 type ProfileSettingsRow = Database["public"]["Tables"]["profile_settings"]["Row"];
+
+export const defaultHeroMessage: HeroMessage = {
+  mode: "quote",
+  quote: "Curiosity inspires discovery; knowledge creates lasting impact.",
+  quoteAttribution: "",
+  greeting: "Warm wishes to you and your family on this special occasion.",
+  greetingAttribution: "",
+};
 
 export type PublicProfileSettings = {
   profile: ManagedProfile;
@@ -27,6 +36,7 @@ export type PublicProfileSettings = {
 const referenceManagedProfile: ManagedProfile = {
   ...(referenceProfile as unknown as ManagedProfile),
   citationsImageUrl: pageLinks.citationsImage,
+  heroMessage: defaultHeroMessage,
 };
 
 function jsonArray<T>(value: Json, fallback: T[]): T[] {
@@ -55,6 +65,13 @@ function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
       address: referenceProfile.address,
       photo: row.photo_url,
       citationsImageUrl: row.citations_image_url,
+      heroMessage: {
+        mode: row.hero_message_mode === "greeting" ? "greeting" : "quote",
+        quote: row.hero_quote || defaultHeroMessage.quote,
+        quoteAttribution: row.hero_quote_attribution || "",
+        greeting: row.hero_greeting || defaultHeroMessage.greeting,
+        greetingAttribution: row.hero_greeting_attribution || "",
+      },
       googleScholarMetrics: {
         citationsText: row.google_scholar_citations_text,
         hIndexText: row.google_scholar_h_index_text,

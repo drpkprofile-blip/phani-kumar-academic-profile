@@ -9,6 +9,8 @@ export type ProfileSettingsValues = {
   google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
   technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
+  hero_message_mode: string; hero_quote: string; hero_quote_attribution: string;
+  hero_greeting: string; hero_greeting_attribution: string;
 };
 
 export type ProfileSettingsErrors = Partial<Record<keyof ProfileSettingsValues, string>>;
@@ -18,6 +20,7 @@ const scalarFields = [
   "institution", "profile_label", "description", "email", "phone",
   "experience_counter_text", "youtube_title", "youtube_href", "youtube_image",
   "google_scholar_citations_text", "google_scholar_h_index_text", "google_scholar_i10_index_text",
+  "hero_message_mode", "hero_quote", "hero_quote_attribution", "hero_greeting", "hero_greeting_attribution",
 ] as const;
 
 function safeHttpUrl(value: string): boolean {
@@ -58,7 +61,10 @@ export function parseProfileSettingsForm(form: FormData): { values: ProfileSetti
   const values = Object.fromEntries(scalarFields.map((field) => [field, form.get(field)])) as Record<(typeof scalarFields)[number], FormDataEntryValue | null>;
   const errors: ProfileSettingsErrors = {};
   for (const field of scalarFields) {
-    if (typeof values[field] !== "string" || values[field].length > (field === "description" ? 8000 : field.startsWith("google_scholar_") ? 64 : 2048)) {
+    const maxLength = field === "description" ? 8000 : field.startsWith("google_scholar_") ? 64
+      : field === "hero_quote" || field === "hero_greeting" ? 280
+        : field === "hero_quote_attribution" || field === "hero_greeting_attribution" ? 120 : 2048;
+    if (typeof values[field] !== "string" || values[field].length > maxLength) {
       errors[field as keyof ProfileSettingsValues] = "Enter a valid value within the field limit.";
     }
   }
@@ -74,6 +80,13 @@ export function parseProfileSettingsForm(form: FormData): { values: ProfileSetti
     if (typeof value === "string" && value.trim() && !/^\d+(?:\s*\(\d+\))?$/.test(value.trim())) {
       errors[field] = "Use a count with an optional parenthetical value, for example 179 (142).";
     }
+  }
+  if (values.hero_message_mode !== "quote" && values.hero_message_mode !== "greeting") {
+    errors.hero_message_mode = "Choose quote or festival wishes.";
+  }
+  for (const field of ["hero_quote", "hero_greeting"] as const) {
+    const value = values[field];
+    if (typeof value !== "string" || !value.trim()) errors[field] = "Enter the message to display.";
   }
   for (const field of ["youtube_href", "youtube_image"] as const) {
     const value = values[field];
@@ -115,5 +128,10 @@ export function profileSettingsToRow(values: ProfileSettingsValues) {
     academic_identity: values.academic_identity, profile_links: values.profile_links,
     youtube_channel: { title: values.youtube_title, href: values.youtube_href, image: values.youtube_image },
     technical_tools: values.technical_tools, skills: values.skills, research_interests: values.research_interests,
+    hero_message_mode: values.hero_message_mode,
+    hero_quote: values.hero_quote,
+    hero_quote_attribution: values.hero_quote_attribution,
+    hero_greeting: values.hero_greeting,
+    hero_greeting_attribution: values.hero_greeting_attribution,
   };
 }

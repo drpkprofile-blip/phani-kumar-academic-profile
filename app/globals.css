@@ -364,6 +364,59 @@ main {
   letter-spacing: 0.07em;
 }
 
+.hero-message {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 104px;
+  margin: 0 0 24px;
+  padding: 15px 20px;
+  border: 1px solid rgba(95, 191, 202, 0.3);
+  border-left: 3px solid var(--teal);
+  border-radius: 16px;
+  background: linear-gradient(115deg, rgba(16, 54, 69, 0.76), rgba(9, 31, 45, 0.42));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025), 0 14px 38px rgba(0, 0, 0, 0.12);
+}
+
+.hero-message-mark {
+  align-self: start;
+  color: var(--teal);
+  font-family: Georgia, serif;
+  font-size: 60px;
+  line-height: 0.9;
+  opacity: 0.9;
+}
+
+.hero-message-copy { min-width: 0; }
+
+.hero-message-kicker {
+  margin: 0 0 5px;
+  color: #8bdde2;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.hero-message blockquote {
+  margin: 0;
+  color: var(--white);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(18px, 1.7vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+.hero-message cite {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+}
+
 .hero-stats--guided {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2054,6 +2107,14 @@ main {
 }
 
 @media (max-width: 420px) {
+  .hero-message {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 92px;
+    padding: 13px 14px;
+  }
+  .hero-message-mark { font-size: 48px; }
+  .hero-message blockquote { font-size: 18px; }
   .profile-socials {
     grid-template-columns: 1fr;
   }

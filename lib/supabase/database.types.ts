@@ -120,6 +120,11 @@ export type Database = {
           designation: string
           email: string
           experience_counter_text: string
+          hero_greeting: string
+          hero_greeting_attribution: string
+          hero_message_mode: string
+          hero_quote: string
+          hero_quote_attribution: string
           first_name: string
           institution: string
           last_name: string
@@ -148,6 +153,11 @@ export type Database = {
           designation: string
           email: string
           experience_counter_text: string
+          hero_greeting?: string
+          hero_greeting_attribution?: string
+          hero_message_mode?: string
+          hero_quote?: string
+          hero_quote_attribution?: string
           first_name: string
           institution: string
           last_name: string
@@ -176,6 +186,11 @@ export type Database = {
           designation?: string
           email?: string
           experience_counter_text?: string
+          hero_greeting?: string
+          hero_greeting_attribution?: string
+          hero_message_mode?: string
+          hero_quote?: string
+          hero_quote_attribution?: string
           first_name?: string
           institution?: string
           last_name?: string

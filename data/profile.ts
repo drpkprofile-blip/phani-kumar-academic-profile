@@ -9,6 +9,14 @@ export type AcademicIdentity = {
   href?: string;
 };
 
+export type HeroMessage = {
+  mode: "quote" | "greeting";
+  quote: string;
+  quoteAttribution: string;
+  greeting: string;
+  greetingAttribution: string;
+};
+
 export const profile = {
   name: "Dr. Phani Kumar Simhadri",
 
