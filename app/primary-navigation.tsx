@@ -6,6 +6,7 @@ type NavigationItem = { href: string; label: string };
 
 export default function PrimaryNavigation({ items }: { items: NavigationItem[] }) {
   const [activeHref, setActiveHref] = useState("#top");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const requestedHref = useRef<string | null>(null);
   const selectionTimeout = useRef<number | undefined>(undefined);
 
@@ -61,30 +62,47 @@ export default function PrimaryNavigation({ items }: { items: NavigationItem[] }
   }, [items]);
 
   return (
-    <nav className="nav-links" aria-label="Primary navigation">
-      {items.map(({ href, label }) => (
-        <a
-          key={href}
-          href={href}
-          aria-current={activeHref === href ? "location" : undefined}
-          onPointerDown={(event) => {
-            if (event.button !== 0) return;
-            requestedHref.current = href;
-            setActiveHref(href);
-          }}
-          onClick={() => {
-            requestedHref.current = href;
-            setActiveHref(href);
-            window.clearTimeout(selectionTimeout.current);
-            selectionTimeout.current = window.setTimeout(() => {
-              requestedHref.current = null;
-              window.dispatchEvent(new Event("scroll"));
-            }, 1600);
-          }}
-        >
-          {label}
-        </a>
-      ))}
-    </nav>
+    <div className="primary-navigation">
+      <button
+        className="nav-menu-toggle"
+        type="button"
+        aria-expanded={isMenuOpen}
+        aria-controls="primary-nav-links"
+        onClick={() => setIsMenuOpen((open) => !open)}
+      >
+        <span className="nav-menu-icon" aria-hidden="true"><span /><span /><span /></span>
+        <span>{isMenuOpen ? "Close" : "Menu"}</span>
+      </button>
+      <nav
+        id="primary-nav-links"
+        className={`nav-links${isMenuOpen ? " is-open" : ""}`}
+        aria-label="Primary navigation"
+      >
+        {items.map(({ href, label }) => (
+          <a
+            key={href}
+            href={href}
+            aria-current={activeHref === href ? "location" : undefined}
+            onPointerDown={(event) => {
+              if (event.button !== 0) return;
+              requestedHref.current = href;
+              setActiveHref(href);
+            }}
+            onClick={() => {
+              requestedHref.current = href;
+              setActiveHref(href);
+              setIsMenuOpen(false);
+              window.clearTimeout(selectionTimeout.current);
+              selectionTimeout.current = window.setTimeout(() => {
+                requestedHref.current = null;
+                window.dispatchEvent(new Event("scroll"));
+              }, 1600);
+            }}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </div>
   );
 }
