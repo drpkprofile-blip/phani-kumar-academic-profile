@@ -66,6 +66,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <h2>Achievements / Awards</h2><p>Manage achievement descriptions and proof links.</p>
           <Link className={styles.button} href="/admin/achievements">Manage Achievements</Link>
         </section>
+        <section className={styles.module} aria-label="Patents management">
+          <h2>Patents</h2><p>Manage patent application details, publication dates and proof links.</p>
+          <Link className={styles.button} href="/admin/patents">Manage Patents</Link>
+        </section>
         <section className={styles.module} aria-label="Professional Bodies management">
           <h2>Professional Bodies / Memberships</h2><p>Manage professional society membership details and proof links.</p>
           <Link className={styles.button} href="/admin/professional-memberships">Manage Professional Bodies</Link>

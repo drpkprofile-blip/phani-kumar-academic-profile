@@ -1487,6 +1487,28 @@ main {
 .professional-membership-card p { color: var(--muted); font-size: 14px; }
 .professional-membership-card a { color: var(--teal); }
 
+/* ---------- PATENTS ---------- */
+.patent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 18px;
+}
+.patent-card {
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 21px;
+  background: var(--card);
+  overflow-wrap: anywhere;
+}
+.patent-card-topline { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.patent-card h3 { margin: 0 0 22px; color: var(--white); font-family: "Playfair Display", Georgia, serif; font-size: clamp(20px, 2.2vw, 25px); line-height: 1.35; }
+.patent-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; margin: 0 0 22px; }
+.patent-details div { min-width: 0; }
+.patent-details dt { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .09em; }
+.patent-details dd { margin: 5px 0 0; color: var(--white); font-size: 14px; line-height: 1.5; }
+@media (max-width: 520px) { .patent-card { padding: 21px; } .patent-details { grid-template-columns: 1fr; gap: 12px; } }
+
 .subjects-empty-state {
   padding: 28px;
   border: 1px dashed var(--border-strong);

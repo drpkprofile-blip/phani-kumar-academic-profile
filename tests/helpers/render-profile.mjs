@@ -31,7 +31,7 @@ export function loadModule(path, mocks = {}, source) {
 export async function compareProfile(publicData, activityData, certificationData, achievementData, professionalMembershipData, subjectData, projectsGuidedData, includeProjects = false, peerReviewData, galleryData = [], includeGallery = false, guidedCountsData = { ug: 14, pg: 4 }, heroMessageData = {
   mode: "quote", quote: "Curiosity inspires discovery; knowledge creates lasting impact.", quoteAttribution: "",
   greeting: "Warm wishes to you and your family on this special occasion.", greetingAttribution: "",
-}) {
+}, patentData = []) {
   const baseline = execFileSync("git", ["show", "112840e2d5aabbd516279533db6dde8ed08c1235:app/page.tsx"], { cwd: root, encoding: "utf8" });
   const oldPage = loadModule("app/page.tsx", {}, baseline).default;
   const newPage = loadModule("app/page.tsx", {
@@ -43,6 +43,7 @@ export async function compareProfile(publicData, activityData, certificationData
       experienceCounterText: loadModule("data/counters.ts").counters.experienceYears,
     }) },
     "../lib/publications": { getPublicPublications: async () => publicData },
+    "../lib/patents": { getPublicPatents: async () => patentData },
     ...(activityData ? { "../lib/activities": { getPublicActivities: async () => activityData } } : {}),
     "../lib/certifications": {
       getPublicCertifications: async () => certificationData ?? loadModule("data/certifications.ts").certifications,
@@ -72,7 +73,18 @@ export async function compareProfile(publicData, activityData, certificationData
     .replace(/<div><strong>\d+\+<\/strong><span>UG PROJECTS GUIDED<\/span><\/div>/, "")
     .replace(/<div><strong>\d+\+<\/strong><span>PG PROJECTS GUIDED<\/span><\/div>/, "")
     .replace('class="hero-stats hero-stats--guided"', 'class="hero-stats"');
-  const baselineCompatibleWithVisitCounter = baselineCompatibleCurrent
+  const baselineCompatibleWithNewPatents = baselineCompatibleCurrent
+    .replace(/<a href="#patents">Patents<\/a>/, "")
+    .replace(/<section id="patents"[\s\S]*?<\/section>/, "")
+    .replace("05 · ACADEMIC ACTIVITIES", "05 · ACADEMIC ACTIVITIES")
+    .replace("06 · ACADEMIC ACTIVITIES", "05 · ACADEMIC ACTIVITIES")
+    .replace("07 · EXPERIENCE", "06 · EXPERIENCE")
+    .replace("08 · NPTEL", "07 · NPTEL")
+    .replace("09 · PEER REVIEWS", "08 · PEER REVIEWS")
+    .replace("10 · ACHIEVEMENTS", "09 · ACHIEVEMENTS")
+    .replace("11 · CONTACT", "10 · CONTACT")
+    .replace('class="section-index">10</div>', 'class="section-index">09</div>');
+  const baselineCompatibleWithVisitCounter = baselineCompatibleWithNewPatents
     .replace(/<p class="profile-visit-counter"[\s\S]*?<\/p>/, "");
   const baselineCompatiblePage = includeGallery ? baselineCompatibleWithVisitCounter : baselineCompatibleWithVisitCounter
     .replace(/<a href="#gallery">Gallery<\/a>/, "")

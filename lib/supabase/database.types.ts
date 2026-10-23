@@ -62,6 +62,45 @@ export type Database = {
         }
         Relationships: []
       }
+      patents: {
+        Row: {
+          application_number: string
+          created_at: string
+          filing_date: string
+          id: number
+          journal_number: string
+          page_number: string
+          proof_url: string | null
+          publication_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          application_number: string
+          created_at?: string
+          filing_date: string
+          id?: number
+          journal_number: string
+          page_number: string
+          proof_url?: string | null
+          publication_date: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          application_number?: string
+          created_at?: string
+          filing_date?: string
+          id?: number
+          journal_number?: string
+          page_number?: string
+          proof_url?: string | null
+          publication_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       peer_reviews: {
         Row: {
           created_at: string
@@ -611,6 +650,14 @@ export type Database = {
       }
       admin_save_achievement: {
         Args: { p_achievement?: Json; p_expected_updated_at?: string; p_id?: number }
+        Returns: number
+      }
+      admin_save_patent: {
+        Args: { p_expected_updated_at?: string; p_id?: number; p_patent?: Json }
+        Returns: number
+      }
+      admin_delete_patent: {
+        Args: { p_confirmed: boolean; p_expected_updated_at: string; p_id: number }
         Returns: number
       }
       admin_save_professional_membership: {

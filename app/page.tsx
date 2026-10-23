@@ -5,6 +5,7 @@ import { educationNewestFirst as education } from "../data/education";
 import { experience } from "../data/experience";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
+import { getPublicPatents } from "../lib/patents";
 import { getPublicActivities } from "../lib/activities";
 import { getPublicCertifications } from "../lib/certifications";
 import { getPublicAchievements } from "../lib/achievements";
@@ -57,6 +58,7 @@ export default async function Home() {
     i10Index: primaryScholarMetric(profile.googleScholarMetrics.i10IndexText),
   };
   const { publications: sortedPublications, heroPublications } = await getPublicPublications();
+  const patents = await getPublicPatents();
   const { activities, activityTypes, activityYears } = await getPublicActivities();
   const certifications = await getPublicCertifications();
   const achievements = await getPublicAchievements();
@@ -83,6 +85,7 @@ export default async function Home() {
             { href: pageLinks.top, label: pageCopy.home },
             { href: pageLinks.research, label: pageCopy.research },
             { href: pageLinks.publications, label: pageCopy.publications },
+            { href: pageLinks.patents, label: pageCopy.patents },
             { href: pageLinks.activities, label: pageCopy.activities },
             { href: pageLinks.experience, label: pageCopy.experience },
             { href: pageLinks.certifications, label: pageCopy.nptel },
@@ -388,11 +391,52 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="patents" className="section">
+        <div className="section-container">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-label">{pageCopy.section05Patents}</p>
+              <h2>{pageCopy.patentsTitle}</h2>
+              <p>{pageCopy.patentsDescription}</p>
+            </div>
+            <div className="big-stat">
+              <strong>{patents.length}{pageCopy.counterSuffix}</strong>
+              <span>{pageCopy.patents}</span>
+            </div>
+          </div>
+
+          <div className="patent-grid">
+            {patents.map((patent, index) => (
+              <article className="patent-card" key={patent.id}>
+                <div className="patent-card-topline">
+                  <span className="membership-number">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="membership-type">Patent publication</span>
+                </div>
+                <h3>{patent.title}</h3>
+                <dl className="patent-details">
+                  <div><dt>{pageCopy.patentApplication}</dt><dd>{patent.applicationNumber}</dd></div>
+                  <div><dt>{pageCopy.patentFilingDate}</dt><dd>{formatAcademicDate(patent.filingDate)}</dd></div>
+                  <div><dt>{pageCopy.patentPublicationDate}</dt><dd>{formatAcademicDate(patent.publicationDate)}</dd></div>
+                  <div><dt>{pageCopy.patentJournal}</dt><dd>No. {patent.journalNumber}</dd></div>
+                  <div><dt>PAGE NO.</dt><dd>{patent.pageNumber}</dd></div>
+                </dl>
+                <div className="proof-row">
+                  <ExternalLink url={patent.proofUrl}>
+                    {patent.proofUrl ? pageCopy.patentProof : pageCopy.patentProofPending}
+                  </ExternalLink>
+                </div>
+              </article>
+            ))}
+            {patents.length === 0 && <p className="subjects-empty-state">Patent records will be added soon.</p>}
+          </div>
+        </div>
+      </section>
+
       <section id="activities" className="section">
         <div className="section-container">
           <div className="section-heading-row">
             <div>
-              <p className="section-label">{pageCopy.section05AcademicActivities}</p>
+              <p className="section-label">{pageCopy.section06AcademicActivities}</p>
               <h2>{pageCopy.fdpsWorkshopsConferences}</h2>
               <p>{pageCopy.activitiesDescription}</p>
             </div>
@@ -419,7 +463,7 @@ export default async function Home() {
         <div className="section-container">
           <div className="section-heading-row">
             <div>
-              <p className="section-label">{pageCopy.section06Experience}</p>
+              <p className="section-label">{pageCopy.section07Experience}</p>
               <h2>{pageCopy.academicExperience}</h2>
               <p>{pageCopy.experienceDescription}</p>
             </div>
@@ -453,7 +497,7 @@ export default async function Home() {
         <div className="section-container">
           <div className="section-heading-row">
             <div>
-              <p className="section-label">{pageCopy.section07Nptel}</p>
+              <p className="section-label">{pageCopy.section08Nptel}</p>
               <h2>{pageCopy.nptelCertifications}</h2>
               <p>{pageCopy.certificationsDescription}</p>
             </div>
@@ -500,7 +544,7 @@ export default async function Home() {
         <div className="section-container">
           <div className="section-heading-row">
             <div>
-              <p className="section-label">{pageCopy.section08PeerReviews}</p>
+              <p className="section-label">{pageCopy.section09PeerReviews}</p>
               <h2>{pageCopy.journalPeerReviews}</h2>
               <p>{pageCopy.peerReviewsDescription}</p>
             </div>
@@ -552,11 +596,11 @@ export default async function Home() {
         <div className="section-container">
           <div className="section-heading-row">
             <div>
-              <p className="section-label">{pageCopy.section09Achievements}</p>
+              <p className="section-label">{pageCopy.section10Achievements}</p>
               <h2>{pageCopy.academicAchievements}</h2>
               <p>{pageCopy.achievementsDescription}</p>
             </div>
-            <div className="section-index">{pageCopy.section09}</div>
+            <div className="section-index">{pageCopy.section10}</div>
           </div>
 
           <div className="achievement-grid">
@@ -716,7 +760,7 @@ export default async function Home() {
         <div className="section-container">
           <div className="contact-box">
             <div className="contact-main">
-              <p className="section-label">{pageCopy.section10Contact}</p>
+              <p className="section-label">{pageCopy.section11Contact}</p>
               <h2>{pageCopy.academicCollaboration}</h2>
 
               <p>{pageCopy.contactDescription}</p>
