@@ -197,6 +197,8 @@ const months: Record<string, string> = {
 };
 
 function formatResumeDate(value: string) {
+  const isoDate = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoDate) return `${isoDate[3]}/${isoDate[2]}/${isoDate[1]}`;
   const monthYear = value.trim().match(/^([A-Za-z]+)\s+(\d{4})$/);
   if (monthYear && months[monthYear[1].toLowerCase()]) {
     return `${months[monthYear[1].toLowerCase()]}/${monthYear[2]}`;
@@ -344,6 +346,21 @@ export async function renderResumePdf(
       entry(doc, title, detail);
       if (doi) {
         paragraph(doc, `doi:${doi}`, { link: `https://doi.org/${doi}`, fontSize: 8.1 });
+      }
+    }
+
+    if (model.patents.length) {
+      section(doc, `Patents (${model.patents.length})`);
+      for (const patent of model.patents) {
+        const details = [
+          `Application No.: ${patent.applicationNumber}`,
+          `Filed: ${formatResumeDate(patent.filingDate)}`,
+          `Published: ${formatResumeDate(patent.publicationDate)}`,
+          patent.journalNumber ? `Patent Office Journal No. ${patent.journalNumber}` : undefined,
+          patent.pageNumber ? `Page ${patent.pageNumber}` : undefined,
+        ].filter(Boolean).join(" | ");
+        entry(doc, patent.title, details);
+        if (patent.proofUrl) paragraph(doc, "Patent proof", { link: patent.proofUrl, fontSize: 8.1 });
       }
     }
 

@@ -33,6 +33,11 @@ const emptyModel = {
     { title: "Older Research Paper LiFePO₄", year: "2024", journal: "Example Journal", type: "Journal Article", doi: "10.1000/older", url: "https://article.example.test/older", proof: "https://drive.example.test/older-proof", indexing: ["SCOPUS"], id: 2 },
     { title: "Research Paper", year: "2026", journal: "Example Journal", type: "Journal Article", doi: "10.1000/example", url: "https://article.example.test/paper", proof: "https://drive.example.test/article-proof", indexing: ["SCIE", "Q2-SCOPUS"], impactFactor: 2.8, id: 1 },
   ],
+  patents: [{
+    id: 1, applicationNumber: "202141030245 A", filingDate: "2021-07-06", publicationDate: "2021-07-16",
+    title: "PROCESS OF PLASTIC WASTE FOR PRODUCTS OF BUILDING MATERIALS WITH PLASTIC EXTRUSION METHOD",
+    journalNumber: "29/2021", pageNumber: "31374", proofUrl: "https://drive.example.test/patent-proof",
+  }],
   activities: [
     { title: "Older Workshop", year: "2024", type: "Workshop", institution: "Example University", proofUrl: "https://drive.example.test/older-activity-proof" },
     { title: "Teaching Workshop", year: "2026", type: "Workshop", institution: "Example University", proofUrl: "https://drive.example.test/activity-proof" },
@@ -69,6 +74,11 @@ test("academic CV is recruiter-readable, omits proof/image clutter, and retains 
   assert.match(textRuns, /PROFESSIONAL SUMMARY/);
   assert.match(textRuns, /ACADEMIC APPOINTMENTS/);
   assert.match(textRuns, /RESEARCH PUBLICATIONS \(2\)/);
+  assert.match(textRuns, /PATENTS \(1\)/);
+  assert.match(textRuns, /202141030245 A/);
+  assert.match(textRuns, /Patent Office Journal No\. 29\/2021/);
+  assert.match(textRuns, /Page 31374/);
+  assert.match(content, /drive\.example\.test\/patent-proof/);
   assert.match(textRuns, /ACADEMIC ACTIVITIES \(2\)/);
   assert.match(textRuns, /PEER-REVIEWED WEB OF SCIENCE \(WOS\) PUBLICATIONS: 17/i);
   assert.match(textRuns, /Indexing: SCIE, Q2-SCOPUS/);
@@ -103,7 +113,7 @@ test("academic CV is recruiter-readable, omits proof/image clutter, and retains 
   assert.doesNotMatch(textRuns, /Open link|Scholar citations graph|certificate-proof|activity-proof|article-proof|older-proof|award-proof|scholar\.jpg|profile\.jpg|instagram\.example/);
   assert.match(content, /scholar\.example\.test/);
   assert.match(content, /doi\.org\/10\.1000\/example/);
-  assert.doesNotMatch(content, /instagram\.example\.test|drive\.example\.test|article\.example\.test|scholar\.jpg|profile\.jpg/);
+  assert.doesNotMatch(content, /instagram\.example\.test|drive\.example\.test\/(?:certificate-proof|activity-proof|article-proof|older-proof|award-proof)|article\.example\.test|scholar\.jpg|profile\.jpg/);
 });
 
 test("academic CV includes every publication and activity beyond the former selected-item limits", async () => {
@@ -244,6 +254,14 @@ test("editable Word CV includes photo, Scholar figure, full records, spaced list
   assert.match(documentXml, /UG: 14\s+\|\s+PG: 4/);
   assert.match(documentXml, /ACADEMIC ACTIVITIES \(11\)/i);
   assert.match(documentXml, /RESEARCH PUBLICATIONS \(15\)/i);
+  assert.match(documentXml, /PATENTS \(1\)/i);
+  assert.match(documentXml, /202141030245 A/);
+  assert.match(documentXml, /Patent Office Journal No\. 29\/2021/);
+  assert.match(documentXml, /Page 31374/);
+  const relationshipsXml = await Promise.all(Object.keys(archive.files)
+    .filter((name) => /^word\/_rels\/.*\.rels$/.test(name))
+    .map(async (name) => archive.file(name).async("string"))).then((items) => items.join("\n"));
+  assert.match(relationshipsXml, /drive\.example\.test\/patent-proof/);
   assert.match(documentXml, /Word publication 15/);
   assert.match(documentXml, /Doctor of Philosophy \| 02\/2026/);
   assert.doesNotMatch(documentXml, /Private UG project title|Private PG project title|Private Student/);

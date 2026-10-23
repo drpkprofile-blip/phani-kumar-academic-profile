@@ -29,6 +29,7 @@ export async function GET() {
         headers: { "Cache-Control": "private, no-store" },
       });
     }
+    console.error("[resume-pdf] generation failed", error);
     return new Response("Unable to generate the resume right now.", {
       status: 503,
       headers: { "Cache-Control": "private, no-store" },

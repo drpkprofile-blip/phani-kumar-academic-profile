@@ -10,6 +10,7 @@ import type { ProfessionalMembership } from "../../data/professional-memberships
 import type { PublicSubjectTaught } from "../subjects-taught";
 import type { PublicGuidedProject } from "../projects-guided";
 import type { ManagedProfile } from "../profile-settings";
+import type { Patent } from "../../data/patents";
 
 export type ResumeModel = {
   profile: ManagedProfile;
@@ -18,6 +19,7 @@ export type ResumeModel = {
   experience: Experience[];
   researchAreas: ResearchArea[];
   publications: Publication[];
+  patents: Patent[];
   activities: AcademicActivity[];
   certifications: PublicCertification[];
   achievements: Achievement[];
@@ -40,6 +42,7 @@ export function buildResumeModel(input: ResumeModel): ResumeModel {
     experience: [...input.experience],
     researchAreas: [...input.researchAreas],
     publications: [...input.publications],
+    patents: [...input.patents],
     activities: [...input.activities],
     certifications: [...input.certifications],
     achievements: [...input.achievements],

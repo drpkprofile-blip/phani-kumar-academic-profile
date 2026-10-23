@@ -170,6 +170,8 @@ const monthNumbers: Record<string, string> = {
 };
 
 function formatResumeDate(value: string) {
+  const isoDate = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoDate) return `${isoDate[3]}/${isoDate[2]}/${isoDate[1]}`;
   const match = value.trim().match(/^([A-Za-z]+)\s+(\d{4})$/);
   const month = match && monthNumbers[match[1].toLowerCase()];
   return match && month ? `${month}/${match[2]}` : value;
@@ -251,6 +253,21 @@ export async function renderResumeDocx(model: ResumeModel, images: ResumeImages 
       const doi = item.doi?.replace(/^https?:\/\/doi\.org\//i, "");
       if (doi) body.push(linkParagraph(`doi:${doi}`, `https://doi.org/${doi}`));
       else if (item.url && safeLink(item.url)) body.push(linkParagraph("Article link", item.url));
+    }
+  }
+
+  if (model.patents.length) {
+    body.push(section(`Patents (${model.patents.length})`));
+    for (const item of model.patents) {
+      const details = [
+        `Application No.: ${item.applicationNumber}`,
+        `Filed: ${formatResumeDate(item.filingDate)}`,
+        `Published: ${formatResumeDate(item.publicationDate)}`,
+        item.journalNumber ? `Patent Office Journal No. ${item.journalNumber}` : undefined,
+        item.pageNumber ? `Page ${item.pageNumber}` : undefined,
+      ].filter(Boolean).join(" | ");
+      body.push(...entry(item.title, details));
+      if (item.proofUrl) body.push(linkParagraph("Patent proof", item.proofUrl));
     }
   }
 
