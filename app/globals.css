@@ -182,10 +182,6 @@ main {
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
 }
 
-.nav-links a:nth-child(8) {
-  grid-column: 2;
-}
-
 .nav-links a:hover {
   border-color: rgba(112, 207, 250, 0.92);
   background: rgba(99, 200, 245, 0.16);

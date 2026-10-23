@@ -27,6 +27,7 @@ test("navigation uses clear sky-blue buttons, wraps across rows, and keeps Admin
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
   const page = readFileSync(`${root}/app/page.tsx`, "utf8");
   assert.match(css, /\.nav-links\s*\{[^}]*grid-template-columns:\s*repeat\(7, minmax\(0, 1fr\)\);/s);
+  assert.doesNotMatch(css, /\.nav-links a:nth-child\(8\)\s*\{/);
   assert.match(css, /\.nav-links a\s*\{[^}]*min-height:\s*48px;[^}]*border:\s*1px solid rgba\(99, 183, 222, 0\.52\)/s);
   assert.match(css, /\.nav-links a\s*\{[^}]*font-size:\s*15px;/s);
   assert.match(css, /\.nav-brand\s*\{[^}]*grid-template-columns:\s*50px minmax\(0, 1fr\);/s);
