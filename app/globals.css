@@ -3268,41 +3268,37 @@ body {
   }
 }
 
-/* Keep the blue nameplate focused on the name; the rest stays on the dark canvas. */
+/* Keep the complete profile identity together inside the blue nameplate. */
 body:has(.navbar) .hero-nameplate {
-  margin: 0;
+  margin: 0 0 18px;
+  padding: clamp(18px, 2.2vw, 30px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-left: 7px solid #36d1c4;
+  border-radius: 5px 18px 18px 5px;
+  background: linear-gradient(112deg, #0755b7, #0a438e 72%, #0b326b);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+body:has(.navbar) .hero-nameplate h1.hero-name {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 10px;
   padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-}
-
-body:has(.navbar) .hero-nameplate h1.hero-name {
-  display: table;
-  max-width: 100%;
-  margin: 0 0 14px;
-  padding: clamp(10px, 1.25vw, 16px) clamp(14px, 1.7vw, 22px);
-  border-left: 6px solid #36d1c4;
-  border-radius: 4px 12px 12px 4px;
-  background: linear-gradient(112deg, #0755b7, #0a438e 72%, #0b326b);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), inset 0 1px rgba(255, 255, 255, 0.12);
   color: #fff;
 }
 
-body:has(.navbar) .hero-nameplate .eyebrow { margin-bottom: 10px; }
-body:has(.navbar) .hero-nameplate .qualifications { margin-top: 0; }
+body:has(.navbar) .hero-nameplate .eyebrow { margin-bottom: 10px; color: #fff; }
+body:has(.navbar) .hero-nameplate .qualifications { margin-top: 0; color: #fff; }
+body:has(.navbar) .hero-nameplate .hero-role,
+body:has(.navbar) .hero-nameplate .hero-role b,
+body:has(.navbar) .hero-nameplate .institution { color: #fff; }
 
 @media (max-width: 760px) {
-  body:has(.navbar) .hero-nameplate { padding: 0; }
-  body:has(.navbar) .hero-nameplate h1.hero-name {
-    padding: 11px 14px;
-    margin-bottom: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  body:has(.navbar) .hero-nameplate h1.hero-name { padding: 10px 12px; }
+  body:has(.navbar) .hero-nameplate { padding: 18px 16px; }
 }
 
 .profile-social-icon {
