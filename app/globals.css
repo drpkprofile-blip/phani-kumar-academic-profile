@@ -3267,3 +3267,58 @@ body {
     font-size: 14px;
   }
 }
+
+/* Keep the blue nameplate focused on the name; the rest stays on the dark canvas. */
+body:has(.navbar) .hero-nameplate {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body:has(.navbar) .hero-nameplate h1.hero-name {
+  display: table;
+  max-width: 100%;
+  margin: 0 0 14px;
+  padding: clamp(10px, 1.25vw, 16px) clamp(14px, 1.7vw, 22px);
+  border-left: 6px solid #36d1c4;
+  border-radius: 4px 12px 12px 4px;
+  background: linear-gradient(112deg, #0755b7, #0a438e 72%, #0b326b);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22), inset 0 1px rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+body:has(.navbar) .hero-nameplate .eyebrow { margin-bottom: 10px; }
+body:has(.navbar) .hero-nameplate .qualifications { margin-top: 0; }
+
+@media (max-width: 760px) {
+  body:has(.navbar) .hero-nameplate { padding: 0; }
+  body:has(.navbar) .hero-nameplate h1.hero-name {
+    padding: 11px 14px;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  body:has(.navbar) .hero-nameplate h1.hero-name { padding: 10px 12px; }
+}
+
+.profile-social-icon {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  color: currentColor;
+  fill: currentColor;
+}
+
+.profile-social-icon--instagram { color: #e889c0; }
+.profile-social-icon--facebook,
+.profile-social-icon--linkedin { color: #74a9ff; }
+.profile-social-icon--scholar { color: #78aaff; }
+.profile-social-icon--researchgate { color: #65c89a; }
+.profile-social-icon--irins { color: #c3a0ff; }
+
+body:has(.navbar) .profile-socials a { gap: 8px; }

@@ -23,6 +23,7 @@ import ActivityBrowser from "./activity-browser";
 import PublicationBrowser from "./publication-browser";
 import PrimaryNavigation from "./primary-navigation";
 import ProfileVisitCounter from "./profile-visit-counter";
+import SocialLinkIcon from "./social-link-icon";
 
 function ExternalLink({
   url,
@@ -185,7 +186,7 @@ export default async function Home() {
                     rel="noopener noreferrer"
                     title={social.label}
                   >
-                    <span>{social.label.slice(0, 2)}</span>
+                    <SocialLinkIcon label={social.label} />
                     {social.label}
                   </a>
                 ) : null
