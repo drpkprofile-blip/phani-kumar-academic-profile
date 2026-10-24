@@ -2308,6 +2308,211 @@ body:has(.navbar) .button-secondary { border-color: var(--border-strong); color:
 body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"] { background: rgba(69, 95, 193, 0.06); }
 body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"]:hover { background: rgba(69, 95, 193, 0.12); }
 
+/* Selected preview: Graphite & Orchid. */
+body:has(.navbar) {
+  --bg: #171821;
+  --bg-soft: #20212d;
+  --card: #242430;
+  --card-2: #2e2e3b;
+  --border: #454052;
+  --border-strong: #79659b;
+  --teal: #b48aff;
+  --teal-dark: #a879f5;
+  --white: #f1edf8;
+  --text: #ded9e8;
+  --muted: #b1a9c1;
+  --muted-2: #938ba1;
+  background:
+    radial-gradient(ellipse at 15% 5%, rgba(180, 138, 255, 0.1), transparent 34rem),
+    radial-gradient(ellipse at 88% 24%, rgba(213, 255, 99, 0.045), transparent 38rem),
+    linear-gradient(rgba(180, 138, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 138, 255, 0.028) 1px, transparent 1px),
+    var(--bg);
+}
+
+body:has(.navbar) .navbar { background: rgba(16, 17, 24, 0.97); }
+body:has(.navbar) .logo {
+  background: linear-gradient(145deg, rgba(180, 138, 255, 0.15), rgba(180, 138, 255, 0.025));
+  box-shadow: inset 0 0 18px rgba(180, 138, 255, 0.09);
+}
+body:has(.navbar) .admin-shortcut {
+  border-color: rgba(180, 138, 255, 0.55);
+  background: rgba(180, 138, 255, 0.08);
+  color: var(--white);
+}
+body:has(.navbar) .admin-shortcut:hover,
+body:has(.navbar) .admin-shortcut:focus-visible { background: rgba(180, 138, 255, 0.16); }
+body:has(.navbar) .nav-links a {
+  border-color: rgba(180, 138, 255, 0.35);
+  background: rgba(180, 138, 255, 0.045);
+  color: #ddd2f3;
+}
+body:has(.navbar) .nav-links a:hover {
+  border-color: #b48aff;
+  background: rgba(180, 138, 255, 0.14);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(180, 138, 255, 0.09);
+}
+body:has(.navbar) .nav-links a[aria-current="location"],
+body:has(.navbar) .nav-links a:active {
+  border-color: #b48aff;
+  background: #a879f5;
+  color: #17121f;
+  box-shadow: 0 0 15px rgba(180, 138, 255, 0.22);
+}
+body:has(.navbar) .nav-links a:focus-visible,
+body:has(.navbar) .nav-menu-toggle:focus-visible { outline-color: #d5ff63; }
+body:has(.navbar) .nav-menu-toggle {
+  border-color: rgba(180, 138, 255, 0.42);
+  background: rgba(180, 138, 255, 0.08);
+  color: #e8dfff;
+}
+body:has(.navbar) .nav-menu-toggle:hover,
+body:has(.navbar) .nav-menu-toggle:focus-visible,
+body:has(.navbar) .nav-menu-toggle[aria-expanded="true"] {
+  border-color: #b48aff;
+  background: rgba(180, 138, 255, 0.16);
+  color: #fff;
+}
+body:has(.navbar) .hero::before {
+  border-color: rgba(180, 138, 255, 0.15);
+  background: radial-gradient(circle, rgba(121, 101, 155, 0.18), rgba(121, 101, 155, 0.03) 52%, transparent 70%);
+}
+body:has(.navbar) .hero::after {
+  background-image: radial-gradient(rgba(180, 138, 255, 0.28) 1px, transparent 1.4px);
+  opacity: 0.26;
+}
+
+body:has(.navbar) .hero > .hero-message {
+  border-color: rgba(180, 138, 255, 0.24);
+  background: linear-gradient(110deg, #24232e, #1d1e28);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035), 0 14px 32px rgba(0, 0, 0, 0.2);
+}
+body:has(.navbar) .hero > .hero-message::after {
+  background: linear-gradient(90deg, #b48aff, rgba(213, 255, 99, 0.48), transparent 72%);
+}
+body:has(.navbar) .hero-message--quote {
+  border-color: rgba(240, 166, 201, 0.25);
+  border-left-color: #dc84b0;
+  background: #22212d;
+}
+body:has(.navbar) .hero-message--greeting {
+  border-color: rgba(229, 189, 60, 0.27);
+  border-left-color: #ddb333;
+  background: #24232b;
+}
+body:has(.navbar) .hero-message--quote .hero-message-mark,
+body:has(.navbar) .hero-message--quote .hero-message-kicker,
+body:has(.navbar) .hero-message--quote blockquote,
+body:has(.navbar) .hero-message--quote cite { color: #f0a6c9; }
+body:has(.navbar) .hero-message--greeting .hero-message-mark,
+body:has(.navbar) .hero-message--greeting .hero-message-kicker { color: #d5ff63; }
+body:has(.navbar) .hero-message--greeting blockquote { color: #e5bd3c; }
+body:has(.navbar) .hero-message--greeting cite { color: #b1a9c1; }
+
+body:has(.navbar) .hero-nameplate {
+  border-color: rgba(180, 138, 255, 0.48);
+  border-left-color: #b48aff;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(180, 138, 255, 0.22), transparent 48%),
+    linear-gradient(116deg, #292633 0%, #302b3d 70%, #272431 100%);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.08);
+}
+body:has(.navbar) .hero-nameplate .eyebrow,
+body:has(.navbar) .hero-nameplate h1.hero-name,
+body:has(.navbar) .hero-nameplate .qualifications,
+body:has(.navbar) .hero-nameplate .hero-role,
+body:has(.navbar) .hero-nameplate .hero-role b,
+body:has(.navbar) .hero-nameplate .institution { color: #f1edf8; }
+body:has(.navbar) .hero-nameplate .eyebrow { color: #d5ff63; }
+body:has(.navbar) .hero h1 { text-shadow: 0 6px 24px rgba(0, 0, 0, 0.2); }
+body:has(.navbar) .hero-stats { border-color: rgba(180, 138, 255, 0.24); }
+body:has(.navbar) .hero-stats strong { color: #d5ff63; }
+body:has(.navbar) .hero-stats span { color: #c4b9d8; }
+body:has(.navbar) .hero-stats > div::before { background: linear-gradient(90deg, #b48aff, transparent); }
+
+body:has(.navbar) .profile-card {
+  background: linear-gradient(155deg, #292936, #1e1f2a);
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.3), 0 0 34px rgba(180, 138, 255, 0.055);
+}
+body:has(.navbar) .profile-card::before { background: linear-gradient(90deg, transparent, rgba(180, 138, 255, 0.7), transparent); }
+body:has(.navbar) .photo-frame {
+  border-color: rgba(180, 138, 255, 0.36);
+  background: radial-gradient(ellipse at 50% 32%, rgba(180, 138, 255, 0.14), transparent 64%), #171821;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+}
+body:has(.navbar) .profile-socials a,
+body:has(.navbar) .youtube-channel { background: rgba(180, 138, 255, 0.045); }
+body:has(.navbar) .profile-socials a:hover,
+body:has(.navbar) .youtube-channel:hover { background: rgba(180, 138, 255, 0.12); }
+body:has(.navbar) .big-stat {
+  background: linear-gradient(145deg, rgba(180, 138, 255, 0.11), rgba(46, 46, 59, 0.72));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
+}
+body:has(.navbar) .section-heading-row { border-bottom-color: rgba(121, 101, 155, 0.55); }
+body:has(.navbar) .section-heading-row::before { background: linear-gradient(90deg, #b48aff, rgba(213, 255, 99, 0.52), transparent); }
+body:has(.navbar) .section-label::after { background: linear-gradient(90deg, #b48aff, transparent); }
+
+body:has(.navbar) .scholar-metrics-card,
+body:has(.navbar) .mini-panel { background: linear-gradient(145deg, #252531, #1e1f2a); }
+body:has(.navbar) .scholar-metrics-list > div { background: rgba(16, 17, 24, 0.48); }
+body:has(.navbar) .scholar-citation-preview { background: #171821; }
+body:has(.navbar) .scholar-citation-preview span { background: rgba(16, 17, 24, 0.94); }
+body:has(.navbar) .tag-list span { background: rgba(180, 138, 255, 0.055); }
+body:has(.navbar) .publication-tags span,
+body:has(.navbar) .activity-type { background: rgba(180, 138, 255, 0.12); }
+body:has(.navbar) .publication-filter-note button[aria-pressed="true"],
+body:has(.navbar) .activity-filter-note button[aria-pressed="true"] { background: rgba(180, 138, 255, 0.15); }
+
+body:has(.navbar) .education-grid,
+body:has(.navbar) .education-card,
+body:has(.navbar) .research-card,
+body:has(.navbar) .publication-card,
+body:has(.navbar) .activity-card,
+body:has(.navbar) .experience-item,
+body:has(.navbar) .certification-card,
+body:has(.navbar) .review-card,
+body:has(.navbar) .achievement-card,
+body:has(.navbar) .professional-membership-card,
+body:has(.navbar) .patent-card,
+body:has(.navbar) .subject-taught-card,
+body:has(.navbar) .project-guided-card,
+body:has(.navbar) .identity-panel,
+body:has(.navbar) .contact-box,
+body:has(.navbar) .gallery-card {
+  background-color: var(--card);
+  background-image: linear-gradient(145deg, #252531, #1e1f2a);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+body:has(.navbar) .education-card:nth-child(4n + 1),
+body:has(.navbar) .research-card:nth-child(4n + 1),
+body:has(.navbar) .publication-card:nth-child(4n + 1),
+body:has(.navbar) .activity-card:nth-child(4n + 1),
+body:has(.navbar) .certification-card:nth-child(4n + 1),
+body:has(.navbar) .achievement-card:nth-child(4n + 1) {
+  background-image: linear-gradient(145deg, rgba(180, 138, 255, 0.08), #252531 62%);
+}
+body:has(.navbar) .research-card:hover,
+body:has(.navbar) .publication-card:hover,
+body:has(.navbar) .activity-card:hover,
+body:has(.navbar) .certification-card:hover,
+body:has(.navbar) .review-card:hover,
+body:has(.navbar) .achievement-card:hover,
+body:has(.navbar) .professional-membership-card:hover,
+body:has(.navbar) .subject-taught-card:hover,
+body:has(.navbar) .project-guided-card:hover {
+  border-color: rgba(180, 138, 255, 0.48);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.24), 0 0 18px rgba(180, 138, 255, 0.06);
+}
+body:has(.navbar) .experience-list::before { background: var(--border-strong); }
+body:has(.navbar) .experience-number,
+body:has(.navbar) .project-guided-topline span { background: var(--bg-soft); }
+body:has(.navbar) .gallery-card a { background: var(--bg-soft); }
+body:has(.navbar) .button-primary { background: #a879f5; color: #17121f; }
+body:has(.navbar) .button-secondary { border-color: var(--border-strong); color: #e8dfff; }
+body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"] { background: rgba(180, 138, 255, 0.08); }
+body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"]:hover { background: rgba(180, 138, 255, 0.16); }
+
 
 /* ============================================================
    FINAL REQUESTED UPDATES
