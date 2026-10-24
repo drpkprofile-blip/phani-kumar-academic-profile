@@ -24,6 +24,7 @@ test("home hero message supports admin-managed quotes and festival wishes with c
   const css = readFileSync(`${root}/app/globals.css`, "utf8");
   assert.match(page, /hero-message--\$\{profile\.heroMessage\.mode\}/);
   assert.match(page, /profile\.heroMessage\.mode === "greeting" \? profile\.heroMessage\.greeting : profile\.heroMessage\.quote/);
+  assert.match(page, /<section id="about" className="hero">\s*<aside className=\{`hero-message[\s\S]*?<\/aside>\s*<div className="hero-container">/);
   assert.match(page, /<div className="hero-nameplate">[\s\S]*?<h1 className="hero-name">\{profile\.name\}<\/h1>[\s\S]*?<h2 className="qualifications">\{profile\.qualifications\}<\/h2>[\s\S]*?<p className="hero-role">[\s\S]*?<p className="institution">\{profile\.institution\}<\/p>\s*<\/div>/);
   assert.match(css, /\.hero-nameplate\s*\{[^}]*border-left:\s*8px solid var\(--teal\)[^}]*background:\s*linear-gradient\(112deg, #0755b7, #0a438e\)/s);
   assert.match(editor, /Show the general quote[\s\S]*Show festival wishes/);
@@ -36,6 +37,9 @@ test("home hero message supports admin-managed quotes and festival wishes with c
   assert.match(css, /\.hero-message--greeting \.hero-message-kicker\s*\{[^}]*color:\s*var\(--teal\)/s);
   assert.match(css, /\.hero-message--greeting cite\s*\{[^}]*color:\s*#a8bfcb/s);
   assert.match(css, /@media \(max-width: 420px\)\s*\{[^}]*\.hero-message\s*\{/s);
+  assert.match(css, /\.hero > \.hero-message\s*\{[^}]*width:\s*min\(1360px, calc\(100% - 80px\)\)/s);
+  assert.match(css, /\.hero-container\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.08fr\) minmax\(360px, 0\.82fr\)/s);
+  assert.match(css, /@media \(max-width: 760px\)\s*\{[\s\S]*?\.hero-container\s*\{[^}]*width:\s*calc\(100% - 32px\)/s);
   const general = await compareProfile({ publications: [], heroPublications: "38+" });
   assert.match(general.rawCurrent, /Curiosity inspires discovery; knowledge creates lasting impact\./);
   const festival = await compareProfile(

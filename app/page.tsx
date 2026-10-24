@@ -101,17 +101,17 @@ export default async function Home() {
       </header>
 
       <section id="about" className="hero">
+        <aside className={`hero-message hero-message--${profile.heroMessage.mode}`} aria-label={profile.heroMessage.mode === "greeting" ? "Festival wishes" : "Featured quote"}>
+          <span className="hero-message-mark" aria-hidden="true">“</span>
+          <div className="hero-message-copy">
+            <p className="hero-message-kicker">{profile.heroMessage.mode === "greeting" ? "FESTIVAL WISHES" : "A THOUGHT FOR TODAY"}</p>
+            <blockquote>{profile.heroMessage.mode === "greeting" ? profile.heroMessage.greeting : profile.heroMessage.quote}</blockquote>
+            {(profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution) &&
+              <cite>— {profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution}</cite>}
+          </div>
+        </aside>
         <div className="hero-container">
           <div className="hero-content">
-            <aside className={`hero-message hero-message--${profile.heroMessage.mode}`} aria-label={profile.heroMessage.mode === "greeting" ? "Festival wishes" : "Featured quote"}>
-              <span className="hero-message-mark" aria-hidden="true">“</span>
-              <div className="hero-message-copy">
-                <p className="hero-message-kicker">{profile.heroMessage.mode === "greeting" ? "FESTIVAL WISHES" : "A THOUGHT FOR TODAY"}</p>
-                <blockquote>{profile.heroMessage.mode === "greeting" ? profile.heroMessage.greeting : profile.heroMessage.quote}</blockquote>
-                {(profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution) &&
-                  <cite>— {profile.heroMessage.mode === "greeting" ? profile.heroMessage.greetingAttribution : profile.heroMessage.quoteAttribution}</cite>}
-              </div>
-            </aside>
             <div className="hero-nameplate">
               <p className="eyebrow">{profile.profileLabel}</p>
 

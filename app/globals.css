@@ -2044,6 +2044,270 @@ main {
   }
 }
 
+/* Glacier & Indigo profile theme, scoped to the public profile page. */
+body:has(.navbar) {
+  --bg: #edf5f8;
+  --bg-soft: #e1edf3;
+  --card: #fbfdff;
+  --card-2: #e7f0f5;
+  --border: #c1d6e1;
+  --border-strong: #7188c4;
+  --teal: #078b9c;
+  --teal-dark: #455fc1;
+  --white: #243455;
+  --text: #354866;
+  --muted: #586d8d;
+  --muted-2: #7184a0;
+  background:
+    radial-gradient(ellipse at 13% 6%, rgba(69, 95, 193, 0.09), transparent 34rem),
+    radial-gradient(ellipse at 89% 24%, rgba(7, 139, 156, 0.08), transparent 38rem),
+    linear-gradient(rgba(69, 95, 193, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(69, 95, 193, 0.035) 1px, transparent 1px),
+    var(--bg);
+  color: var(--text);
+}
+
+body:has(.navbar) .navbar {
+  background: rgba(244, 249, 252, 0.96);
+  border-bottom-color: var(--border);
+}
+
+body:has(.navbar) .logo {
+  background: linear-gradient(145deg, rgba(69, 95, 193, 0.12), rgba(7, 139, 156, 0.035));
+  box-shadow: inset 0 0 18px rgba(69, 95, 193, 0.08);
+}
+
+body:has(.navbar) .nav-title { color: var(--muted); }
+
+body:has(.navbar) .admin-shortcut {
+  border-color: rgba(69, 95, 193, 0.5);
+  background: rgba(69, 95, 193, 0.06);
+  color: var(--white);
+}
+
+body:has(.navbar) .admin-shortcut:hover,
+body:has(.navbar) .admin-shortcut:focus-visible {
+  border-color: var(--teal-dark);
+  background: rgba(69, 95, 193, 0.12);
+  color: var(--white);
+}
+
+body:has(.navbar) .nav-links a {
+  border-color: rgba(69, 95, 193, 0.34);
+  background: rgba(69, 95, 193, 0.045);
+  color: #354b78;
+}
+
+body:has(.navbar) .nav-links a:hover {
+  border-color: #7089d7;
+  background: rgba(69, 95, 193, 0.12);
+  color: #263c75;
+  box-shadow: 0 0 0 3px rgba(69, 95, 193, 0.08);
+}
+
+body:has(.navbar) .nav-links a[aria-current="location"],
+body:has(.navbar) .nav-links a:active {
+  border-color: #455fc1;
+  background: #455fc1;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(69, 95, 193, 0.18);
+}
+
+body:has(.navbar) .nav-links a:focus-visible,
+body:has(.navbar) .nav-menu-toggle:focus-visible {
+  outline-color: #455fc1;
+}
+
+body:has(.navbar) .nav-menu-toggle {
+  border-color: rgba(69, 95, 193, 0.42);
+  background: rgba(69, 95, 193, 0.065);
+  color: #354b78;
+}
+
+body:has(.navbar) .nav-menu-toggle:hover,
+body:has(.navbar) .nav-menu-toggle:focus-visible,
+body:has(.navbar) .nav-menu-toggle[aria-expanded="true"] {
+  border-color: #7089d7;
+  background: rgba(69, 95, 193, 0.12);
+  color: #263c75;
+}
+
+body:has(.navbar) .hero::before {
+  border-color: rgba(69, 95, 193, 0.12);
+  background: radial-gradient(circle, rgba(7, 139, 156, 0.09), rgba(69, 95, 193, 0.025) 52%, transparent 70%);
+}
+
+body:has(.navbar) .hero::after {
+  background-image: radial-gradient(rgba(69, 95, 193, 0.22) 1px, transparent 1.4px);
+  opacity: 0.24;
+}
+
+body:has(.navbar) .hero > .hero-message {
+  border-color: rgba(69, 95, 193, 0.2);
+  border-left-color: var(--teal);
+  background: linear-gradient(110deg, #e1edf4, #f7fbfd);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.8), 0 14px 32px rgba(44, 68, 99, 0.08);
+}
+
+body:has(.navbar) .hero > .hero-message::after {
+  background: linear-gradient(90deg, #078b9c, rgba(69, 95, 193, 0.44), transparent 72%);
+}
+
+body:has(.navbar) .hero-message--quote {
+  border-color: rgba(189, 83, 110, 0.24);
+  border-left-color: #bd536e;
+  background: linear-gradient(110deg, #fbf0f1, #f7fbfd);
+}
+
+body:has(.navbar) .hero-message--greeting {
+  border-color: rgba(174, 130, 55, 0.28);
+  border-left-color: #ae8237;
+  background: linear-gradient(110deg, #fbf5e5, #f7fbfd);
+}
+
+body:has(.navbar) .hero-message--quote .hero-message-mark,
+body:has(.navbar) .hero-message--quote .hero-message-kicker,
+body:has(.navbar) .hero-message--quote blockquote,
+body:has(.navbar) .hero-message--quote cite {
+  color: #9c4663;
+}
+
+body:has(.navbar) .hero-message--greeting .hero-message-mark,
+body:has(.navbar) .hero-message--greeting .hero-message-kicker {
+  color: #455fc1;
+}
+
+body:has(.navbar) .hero-message--greeting blockquote { color: #86600c; }
+body:has(.navbar) .hero-message--greeting cite { color: #586d8d; }
+body:has(.navbar) .hero-message-kicker { color: var(--teal); }
+
+body:has(.navbar) .hero-nameplate {
+  border-left-color: #078b9c;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(181, 231, 223, 0.18), transparent 48%),
+    linear-gradient(116deg, #334a96 0%, #455fc1 70%, #3b56b4 100%);
+  box-shadow: 0 20px 44px rgba(46, 64, 111, 0.2), inset 0 1px rgba(255, 255, 255, 0.15);
+}
+
+body:has(.navbar) .hero-nameplate .eyebrow,
+body:has(.navbar) .hero-nameplate h1.hero-name,
+body:has(.navbar) .hero-nameplate .qualifications,
+body:has(.navbar) .hero-nameplate .hero-role,
+body:has(.navbar) .hero-nameplate .hero-role b,
+body:has(.navbar) .hero-nameplate .institution {
+  color: #fff;
+}
+
+body:has(.navbar) .hero h1 { text-shadow: 0 6px 24px rgba(38, 60, 117, 0.12); }
+body:has(.navbar) .hero-stats { border-color: rgba(69, 95, 193, 0.2); }
+body:has(.navbar) .hero-stats strong { color: #334a96; }
+body:has(.navbar) .hero-stats span { color: #087f90; }
+body:has(.navbar) .hero-stats > div::before { background: linear-gradient(90deg, #455fc1, transparent); }
+
+body:has(.navbar) .profile-card {
+  background: linear-gradient(155deg, #fff, #e8f1f7);
+  box-shadow: 0 24px 55px rgba(44, 68, 99, 0.13), 0 0 34px rgba(69, 95, 193, 0.045);
+}
+
+body:has(.navbar) .profile-card::before {
+  background: linear-gradient(90deg, transparent, rgba(7, 139, 156, 0.55), transparent);
+}
+
+body:has(.navbar) .photo-frame {
+  border-color: rgba(7, 139, 156, 0.32);
+  background: radial-gradient(ellipse at 50% 32%, rgba(181, 231, 223, 0.3), transparent 64%), #e3eef4;
+  box-shadow: 0 12px 30px rgba(44, 68, 99, 0.11);
+}
+
+body:has(.navbar) .profile-socials a,
+body:has(.navbar) .youtube-channel {
+  background: rgba(69, 95, 193, 0.035);
+}
+
+body:has(.navbar) .profile-socials a:hover,
+body:has(.navbar) .youtube-channel:hover {
+  background: rgba(69, 95, 193, 0.09);
+}
+
+body:has(.navbar) .big-stat {
+  background: linear-gradient(145deg, rgba(69, 95, 193, 0.055), rgba(7, 139, 156, 0.035));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.85);
+}
+
+body:has(.navbar) .section-heading-row { border-bottom-color: rgba(69, 95, 193, 0.22); }
+body:has(.navbar) .section-heading-row::before { background: linear-gradient(90deg, #078b9c, rgba(69, 95, 193, 0.6), transparent); }
+body:has(.navbar) .section-label::after { background: linear-gradient(90deg, #078b9c, transparent); }
+
+body:has(.navbar) .scholar-metrics-card,
+body:has(.navbar) .mini-panel {
+  background: linear-gradient(145deg, #fff, #e7f0f5);
+}
+
+body:has(.navbar) .scholar-metrics-list > div { background: rgba(69, 95, 193, 0.035); }
+body:has(.navbar) .scholar-citation-preview { background: #e4eef4; }
+body:has(.navbar) .scholar-citation-preview span { background: rgba(244, 249, 252, 0.95); }
+body:has(.navbar) .tag-list span { background: rgba(7, 139, 156, 0.035); }
+body:has(.navbar) .publication-tags span,
+body:has(.navbar) .activity-type { background: rgba(69, 95, 193, 0.07); }
+body:has(.navbar) .publication-filter-note button[aria-pressed="true"],
+body:has(.navbar) .activity-filter-note button[aria-pressed="true"] { background: rgba(69, 95, 193, 0.1); }
+body:has(.navbar) .nav-menu-toggle { color: #354b78; }
+body:has(.navbar) .projects-guided-empty-state,
+body:has(.navbar) .subjects-empty-state,
+body:has(.navbar) .gallery-empty-state { background: var(--card); }
+
+body:has(.navbar) .education-grid,
+body:has(.navbar) .education-card,
+body:has(.navbar) .research-card,
+body:has(.navbar) .publication-card,
+body:has(.navbar) .activity-card,
+body:has(.navbar) .experience-item,
+body:has(.navbar) .certification-card,
+body:has(.navbar) .review-card,
+body:has(.navbar) .achievement-card,
+body:has(.navbar) .professional-membership-card,
+body:has(.navbar) .patent-card,
+body:has(.navbar) .subject-taught-card,
+body:has(.navbar) .project-guided-card,
+body:has(.navbar) .identity-panel,
+body:has(.navbar) .contact-box,
+body:has(.navbar) .gallery-card {
+  background-color: var(--card);
+  background-image: linear-gradient(145deg, #fff, #f2f7fa);
+  box-shadow: 0 12px 28px rgba(44, 68, 99, 0.075);
+}
+
+body:has(.navbar) .education-card:nth-child(4n + 1),
+body:has(.navbar) .research-card:nth-child(4n + 1),
+body:has(.navbar) .publication-card:nth-child(4n + 1),
+body:has(.navbar) .activity-card:nth-child(4n + 1),
+body:has(.navbar) .certification-card:nth-child(4n + 1),
+body:has(.navbar) .achievement-card:nth-child(4n + 1) {
+  background-image: linear-gradient(145deg, rgba(69, 95, 193, 0.055), #fff 62%);
+}
+
+body:has(.navbar) .research-card:hover,
+body:has(.navbar) .publication-card:hover,
+body:has(.navbar) .activity-card:hover,
+body:has(.navbar) .certification-card:hover,
+body:has(.navbar) .review-card:hover,
+body:has(.navbar) .achievement-card:hover,
+body:has(.navbar) .professional-membership-card:hover,
+body:has(.navbar) .subject-taught-card:hover,
+body:has(.navbar) .project-guided-card:hover {
+  border-color: rgba(69, 95, 193, 0.45);
+  box-shadow: 0 16px 32px rgba(44, 68, 99, 0.12), 0 0 18px rgba(69, 95, 193, 0.04);
+}
+
+body:has(.navbar) .experience-list::before { background: var(--border-strong); }
+body:has(.navbar) .experience-number { background: var(--bg); }
+body:has(.navbar) .project-guided-topline span { background: var(--card-2); }
+body:has(.navbar) .gallery-card a { background: var(--bg-soft); }
+body:has(.navbar) .button-primary { background: #455fc1; color: #fff; }
+body:has(.navbar) .button-secondary { border-color: var(--border-strong); color: #354b78; }
+body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"] { background: rgba(69, 95, 193, 0.06); }
+body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"]:hover { background: rgba(69, 95, 193, 0.12); }
+
 
 /* ============================================================
    FINAL REQUESTED UPDATES
@@ -2574,5 +2838,227 @@ body {
 
   .hero-nameplate .qualifications {
     font-size: 15px;
+  }
+}
+
+/* Presentation-led home: a shared thought banner and a clearer profile split. */
+.hero {
+  padding: clamp(20px, 2.4vw, 34px) 0 58px;
+}
+
+.hero > .hero-message {
+  position: relative;
+  width: min(1360px, calc(100% - 80px));
+  min-height: 96px;
+  margin: 0 auto 26px;
+  padding: 18px 28px;
+  border-radius: 18px;
+  background: linear-gradient(108deg, rgba(15, 48, 65, 0.98), rgba(7, 27, 40, 0.98));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035), 0 18px 42px rgba(0, 0, 0, 0.16);
+}
+
+.hero > .hero-message::after {
+  position: absolute;
+  right: 28px;
+  bottom: 0;
+  left: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal), rgba(99, 200, 245, 0.42), transparent 72%);
+  content: "";
+  pointer-events: none;
+}
+
+.hero > .hero-message .hero-message-kicker {
+  font-size: 11px;
+}
+
+.hero > .hero-message blockquote {
+  font-size: clamp(19px, 1.8vw, 25px);
+}
+
+.hero-container {
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.82fr);
+  gap: clamp(30px, 4.2vw, 62px);
+  align-items: start;
+}
+
+.hero-nameplate {
+  margin-bottom: 0;
+  padding: clamp(22px, 2.5vw, 34px);
+  border-left-width: 7px;
+  border-radius: 8px 22px 22px 8px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(99, 200, 245, 0.2), transparent 48%),
+    linear-gradient(116deg, #0755b7 0%, #0a438e 66%, #0b326b 100%);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.24), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.hero-nameplate h1.hero-name {
+  font-size: clamp(40px, 4.25vw, 62px);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+
+.hero-nameplate .eyebrow {
+  font-size: 11px;
+}
+
+.hero-description {
+  max-width: 680px;
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.72;
+}
+
+.hero-buttons {
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.hero-buttons .button {
+  min-height: 54px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.hero-buttons .button-secondary[href="/admin/resume"] {
+  border-color: rgba(99, 200, 245, 0.45);
+  background: rgba(14, 52, 73, 0.36);
+}
+
+.hero-buttons .button-secondary[href="/admin/resume"]:hover {
+  border-color: #79d4ff;
+  background: rgba(99, 200, 245, 0.14);
+}
+
+.hero-stats--guided {
+  margin-top: 30px;
+}
+
+.hero-stats--guided strong {
+  color: #e8f4f7;
+  font-size: 31px;
+}
+
+.hero-stats--guided span {
+  font-size: 11px;
+  letter-spacing: 0.09em;
+}
+
+.profile-card {
+  border-radius: 24px;
+  padding: 18px;
+}
+
+.profile-card-top {
+  padding: 2px 2px 3px;
+}
+
+.photo-frame {
+  display: grid;
+  min-height: 360px;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 32%, rgba(99, 200, 245, 0.13), transparent 64%),
+    #071a27;
+}
+
+.photo-frame img {
+  max-height: 470px;
+}
+
+@media (max-width: 1250px) {
+  .hero-container {
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 0.78fr);
+    gap: 34px;
+  }
+
+  .hero > .hero-message {
+    width: min(1360px, calc(100% - 56px));
+  }
+}
+
+@media (max-width: 1000px) {
+  .hero-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+
+  .profile-card {
+    max-width: 680px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding: 22px 0 46px;
+  }
+
+  .hero > .hero-message {
+    width: calc(100% - 32px);
+    min-height: 92px;
+    margin-bottom: 22px;
+    padding: 15px 17px;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .hero > .hero-message::after {
+    right: 17px;
+    left: 17px;
+  }
+
+  .hero > .hero-message blockquote {
+    font-size: clamp(18px, 4.8vw, 22px);
+  }
+
+  .hero-container {
+    width: calc(100% - 32px);
+    gap: 28px;
+  }
+
+  .hero-nameplate {
+    padding: 24px 22px;
+  }
+
+  .hero-nameplate h1.hero-name {
+    font-size: clamp(39px, 10vw, 54px);
+  }
+
+  .hero-description {
+    font-size: 16px;
+  }
+
+  .photo-frame {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero > .hero-message {
+    width: calc(100% - 24px);
+    padding: 14px 13px;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .hero > .hero-message .hero-message-mark {
+    font-size: 44px;
+  }
+
+  .hero-nameplate {
+    padding: 20px 17px;
+  }
+
+  .hero-nameplate h1.hero-name {
+    font-size: clamp(34px, 9vw, 43px);
+  }
+
+  .hero-buttons .button {
+    min-height: 50px;
+    padding: 0 16px;
+    font-size: 14px;
   }
 }
