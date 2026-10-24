@@ -563,8 +563,6 @@ export default async function Home() {
                 : review;
 
               const separator = text.lastIndexOf(", ");
-              const manuscript =
-                separator > -1 ? text.slice(0, separator) : text;
               const journal =
                 separator > -1 ? text.slice(separator + 2) : "";
 
@@ -578,8 +576,7 @@ export default async function Home() {
                     {year && <span className="review-year">{year}</span>}
                   </div>
 
-                  <h3>{manuscript}</h3>
-                  {journal && <p className="review-journal">{journal}</p>}
+                  <h3>{journal || pageCopy.peerReview}</h3>
 
                   <div className="review-status">
                     <span>{pageCopy.peerReview}</span>

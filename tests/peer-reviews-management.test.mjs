@@ -100,6 +100,9 @@ test("Peer Reviews admin routes and dashboard module link exist without changing
   ]) assert.ok(existsSync(`${root}/${route}`), route);
   const dashboard = readFileSync(`${root}/app/admin/page.tsx`, "utf8");
   assert.match(dashboard, /Manage Peer Reviews/);
+  const managementPage = readFileSync(`${root}/app/admin/peer-reviews/page.tsx`, "utf8");
+  assert.match(managementPage, /<p className={styles\.reviewText}>{review\.review_text}<\/p>/,
+    "Admin Peer Reviews must retain the complete manuscript title and journal text");
   const migration = readFileSync(`${root}/supabase/migrations/20261005001700_peer_reviews_management.sql`, "utf8");
   assert.match(migration, /security invoker set search_path = ''/g);
   assert.match(migration, /set constraints public\.peer_reviews_display_order_unique deferred/i);

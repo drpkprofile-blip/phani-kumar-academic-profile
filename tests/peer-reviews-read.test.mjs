@@ -109,6 +109,17 @@ test("configured Peer Reviews render matches the saved static baseline exactly",
     assert.deepEqual([...html.matchAll(/class="review-year">(\d{4})</g)].map((match) => match[1]),
       ["2026", "2026", "2026", "2026", "2026", "2025", "2025", "2025", "2025", "2025", "2024"]);
     assert.equal((html.match(/class="review-meta-separator" aria-hidden="true">·</g) ?? []).length, 11);
+    const publicJournals = [...html.matchAll(/<h3>(.*?)<\/h3>/g)].map((match) => match[1].replace(/&amp;/g, "&"));
+    const expectedJournals = source.map((review) => {
+      const text = review.replace(/\s*\(\d{4}\)$/, "");
+      return text.slice(text.lastIndexOf(", ") + 2);
+    });
+    assert.deepEqual(publicJournals, expectedJournals);
+    for (const review of source) {
+      const text = review.replace(/\s*\(\d{4}\)$/, "");
+      const manuscript = text.slice(0, text.lastIndexOf(", "));
+      assert.ok(!html.includes(manuscript), `Public Peer Reviews should hide manuscript title: ${manuscript}`);
+    }
     assert.match(html, /<strong>16<\/strong><span>REVIEWS COMPLETED<\/span>/);
   });
 });
