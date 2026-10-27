@@ -98,7 +98,7 @@ export const pageCopy = {
   "journalPeerReviews": "Journal Peer Reviews",
   "peerReviewsDescription": "Peer-review activity by journal and review date. Manuscript titles are kept private.",
   "dateReviewed": "DATE REVIEWED",
-  "yearNotProvided": "Year not listed",
+  "yearNotProvided": "Date not listed",
   "reviewsCompleted": "REVIEWS COMPLETED",
   "peerReview": "PEER REVIEW",
   "journalManuscript": "JOURNAL MANUSCRIPT",

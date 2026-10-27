@@ -30,6 +30,7 @@ export type ResumeModel = {
   peerReviews: string[];
   peerReviewCounterText: string;
   completedReviewsCount: number;
+  peerReviewManuscriptsCount: number;
   academicIdentity: AcademicIdentity[];
   profileLinks: ProfileLink[];
 };

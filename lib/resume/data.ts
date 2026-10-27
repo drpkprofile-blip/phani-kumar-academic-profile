@@ -45,9 +45,10 @@ export async function loadResumeModel(): Promise<ResumeModel> {
     projects,
     guidedProjectCounts: { ug: 14, pg: 4 },
     peerReviews: peerReviews.peerReviews.map((review) =>
-      `${review.journalName} (${review.reviewYear ?? "year not listed"})`),
+      `${review.journalName} (${review.reviewDate})`),
     peerReviewCounterText: peerReviews.heroCounterText,
     completedReviewsCount: peerReviews.completedReviewsCount,
+    peerReviewManuscriptsCount: peerReviews.manuscriptsCount,
     academicIdentity: profile.academicIdentity,
     profileLinks: profile.profileLinks,
   });

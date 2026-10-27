@@ -1,23 +1,31 @@
-// Keep the original review text and the existing display parsing unchanged.
-export type PeerReview = string;
-
-// Public-safe projection: manuscript titles are never part of this shape.
+// Public-safe record shape. Manuscript titles live in the admin-only table.
 export type PublicPeerReview = {
   journalName: string;
-  reviewYear: number | null;
+  reviewDate: string;
   displayOrder: number;
 };
 
-export const peerReviews: PeerReview[] = [
-  "Diffusion-Based Generative Augmentation for Dataset Construction in Door-State Detection of Temporary Electrical Distribution Boxes on Construction Sites, Engineering Research Express (2026)",
-  "Adaptive MPC with EKF-Based Obstacle Prediction for AGV Navigation, Engineering Research Express (2026)",
-  "Enhanced Lichtenberg Optimization Algorithm for the Optimal Design and Control of MRWBLDC Motors, Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering (2026)",
-  "TIRP: A Topology-Informed Refinement Model for Multimodal Trajectory Prediction in Autonomous Driving, Measurement Science and Technology (2026)",
-  "Parallel Hybrid Interval Type-2 Fuzzy NARX Network for Robust Line-Following Control of Autonomous Guided Vehicles, Measurement Science and Technology (2026)",
-  "Effect of Stress Concentration Caused by 3D Surface Topography on Gear Bending Fatigue Life, Engineering Research Express (2025)",
-  "Chaotic African Vultures Optimization Based Non-Linear FOPID Controller for Frequency Regulation in Standalone Microgrid System, Engineering Research Express (2025)",
-  "CNN-BiLSTM-AM: A Hybrid Deep Learning Model for Real-Time Vehicle Longitudinal Control in Bench Testing, Engineering Research Express (2025)",
-  "A Comparative Study on the Structural and Stress Performance of Phased and Non-Phased Gear Systems, Engineering Research Express (2025)",
-  "Electric Vehicle Battery Pack State of Health Assessment by Signal Tracking Regularized Box Particle Filter, Engineering Research Express (2025)",
-  "Effects of Discrete Fibre Reinforcements on the Wear Resistance Behaviour of Polyamide-Based Spur Gears, Physica Scripta (2024)",
+// Verified against the signed-in Web of Science summary: 20 review dates across 14 manuscripts.
+// This fallback intentionally contains no manuscript titles.
+export const peerReviews: PublicPeerReview[] = [
+  { journalName: "Journal of Polymer Research", reviewDate: "2026-10-27", displayOrder: 1 },
+  { journalName: "Engineering Research Express", reviewDate: "2026-10-12", displayOrder: 2 },
+  { journalName: "Journal of the Brazilian Society of Mechanical Sciences and Engineering", reviewDate: "2026-09-08", displayOrder: 3 },
+  { journalName: "Engineering Research Express", reviewDate: "2026-08-23", displayOrder: 4 },
+  { journalName: "Engineering Research Express", reviewDate: "2026-07-24", displayOrder: 5 },
+  { journalName: "Engineering Research Express", reviewDate: "2026-05-24", displayOrder: 6 },
+  { journalName: "Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering", reviewDate: "2026-04-27", displayOrder: 7 },
+  { journalName: "Measurement Science and Technology", reviewDate: "2026-03-22", displayOrder: 8 },
+  { journalName: "Measurement Science and Technology", reviewDate: "2026-02-27", displayOrder: 9 },
+  { journalName: "Measurement Science and Technology", reviewDate: "2026-02-22", displayOrder: 10 },
+  { journalName: "Measurement Science and Technology", reviewDate: "2026-01-12", displayOrder: 11 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-09-30", displayOrder: 12 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-08-24", displayOrder: 13 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-06-14", displayOrder: 14 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-05-27", displayOrder: 15 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-04-29", displayOrder: 16 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-04-08", displayOrder: 17 },
+  { journalName: "Engineering Research Express", reviewDate: "2025-02-23", displayOrder: 18 },
+  { journalName: "Physica Scripta", reviewDate: "2024-11-18", displayOrder: 19 },
+  { journalName: "Physica Scripta", reviewDate: "2024-10-15", displayOrder: 20 },
 ];

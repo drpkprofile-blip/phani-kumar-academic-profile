@@ -106,26 +106,32 @@ export type Database = {
           created_at: string
           display_order: number
           id: number
-          review_text: string
-          source_order: number | null
+          journal_name: string
+          review_date: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           display_order: number
           id?: number
-          review_text: string
-          source_order?: number | null
+          journal_name: string
+          review_date: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           display_order?: number
           id?: number
-          review_text?: string
-          source_order?: number | null
+          journal_name?: string
+          review_date?: string
           updated_at?: string
         }
+        Relationships: []
+      }
+      peer_review_titles: {
+        Row: { review_id: number; publication_title: string }
+        Insert: { review_id: number; publication_title: string }
+        Update: { review_id?: number; publication_title?: string }
         Relationships: []
       }
       peer_review_settings: {
@@ -133,6 +139,7 @@ export type Database = {
           completed_reviews_count: number
           created_at: string
           hero_counter_text: string
+          manuscripts_count: number
           singleton: boolean
           updated_at: string
         }
@@ -140,6 +147,7 @@ export type Database = {
           completed_reviews_count: number
           created_at?: string
           hero_counter_text: string
+          manuscripts_count: number
           singleton?: boolean
           updated_at?: string
         }
@@ -147,6 +155,7 @@ export type Database = {
           completed_reviews_count?: number
           created_at?: string
           hero_counter_text?: string
+          manuscripts_count?: number
           singleton?: boolean
           updated_at?: string
         }
@@ -601,7 +610,7 @@ export type Database = {
     }
     Views: {
       peer_reviews_public: {
-        Row: { id: number; display_order: number; journal_name: string; review_year: number | null }
+        Row: { id: number; display_order: number; journal_name: string; review_date: string }
         Relationships: []
       }
     }
@@ -692,7 +701,13 @@ export type Database = {
         Returns: number
       }
       admin_save_peer_review: {
-        Args: { p_expected_updated_at?: string; p_id?: number; p_review_text?: string }
+        Args: {
+          p_expected_updated_at?: string
+          p_id?: number
+          p_publication_title?: string
+          p_journal_name?: string
+          p_review_date?: string
+        }
         Returns: number
       }
       admin_delete_peer_review: {
@@ -704,7 +719,7 @@ export type Database = {
         Returns: undefined
       }
       admin_update_peer_review_settings: {
-        Args: { p_completed_reviews_count: number; p_expected_updated_at: string; p_hero_counter_text: string }
+        Args: { p_completed_reviews_count: number; p_expected_updated_at: string; p_hero_counter_text: string; p_manuscripts_count: number }
         Returns: undefined
       }
       admin_delete_project_guided: {

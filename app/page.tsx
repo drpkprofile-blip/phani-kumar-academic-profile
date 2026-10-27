@@ -69,7 +69,7 @@ export default async function Home() {
   const guidedProjectCounts = await getPublicGuidedProjectCounts();
   const galleryItems = await getPublicGalleryItems();
   const profileVisitCount = await getPublicProfileVisitCount();
-  const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount } = await getPublicPeerReviews();
+  const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount, manuscriptsCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
 
   return (
@@ -547,7 +547,7 @@ export default async function Home() {
             <div>
               <p className="section-label">{pageCopy.section09PeerReviews}</p>
               <h2>{pageCopy.journalPeerReviews}</h2>
-              <p>{pageCopy.peerReviewsDescription}</p>
+              <p>{pageCopy.peerReviewsDescription} {manuscriptsCount} manuscripts reviewed.</p>
             </div>
             <div className="big-stat">
               <strong>{peerReviewCount}</strong>
@@ -566,7 +566,7 @@ export default async function Home() {
                   </div>
                   <div className="review-record-date">
                     <span>{pageCopy.dateReviewed}</span>
-                    <strong>{review.reviewYear ?? pageCopy.yearNotProvided}</strong>
+                    <strong>{formatAcademicDate(review.reviewDate) || pageCopy.yearNotProvided}</strong>
                   </div>
                 </article>
               ))}

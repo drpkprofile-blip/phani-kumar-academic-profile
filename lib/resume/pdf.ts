@@ -400,7 +400,7 @@ export async function renderResumePdf(
 
     if (model.completedReviewsCount > 0) {
       section(doc, "Academic Service");
-      paragraph(doc, `Completed peer reviews: ${model.completedReviewsCount}`);
+      paragraph(doc, `Completed peer reviews: ${model.completedReviewsCount} across ${model.peerReviewManuscriptsCount} manuscripts`);
     }
 
     if (model.subjects.length) {

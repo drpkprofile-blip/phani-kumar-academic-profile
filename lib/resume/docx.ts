@@ -289,7 +289,7 @@ export async function renderResumeDocx(model: ResumeModel, images: ResumeImages 
     for (const item of activities) body.push(...entry(`${item.title} (${item.year})`, [item.type, item.institution, item.date, item.duration, item.details].filter(Boolean).join(" | ")));
   }
   if (model.completedReviewsCount > 0) {
-    body.push(section("Academic Service"), p(`Completed peer reviews: ${model.completedReviewsCount}`));
+    body.push(section("Academic Service"), p(`Completed peer reviews: ${model.completedReviewsCount} across ${model.peerReviewManuscriptsCount} manuscripts`));
   }
   if (model.subjects.length) {
     body.push(section(`Subjects Taught (${model.subjects.length})`));

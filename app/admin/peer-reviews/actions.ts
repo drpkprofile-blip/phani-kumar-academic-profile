@@ -24,7 +24,7 @@ export async function savePeerReview(_previous: PeerReviewFormState, form: FormD
   const { supabase } = await requireAdminPage();
   const parsed = parsePeerReviewForm(form);
   if (Object.keys(parsed.errors ?? {}).length) {
-    return { message: "Please check the review text.", errors: parsed.errors, values: parsed.values };
+    return { message: "Please complete the manuscript title, journal, and review date.", errors: parsed.errors, values: parsed.values };
   }
   const rawId = form.get("id");
   const id = rawId === "" ? null : positivePeerReviewInteger(rawId);
@@ -34,7 +34,9 @@ export async function savePeerReview(_previous: PeerReviewFormState, form: FormD
     return { message: "Invalid record reference. Reload this page.", values: parsed.values };
   }
   const { error } = await supabase.rpc("admin_save_peer_review", {
-    p_review_text: parsed.data.review_text,
+    p_publication_title: parsed.data.publication_title,
+    p_journal_name: parsed.data.journal_name,
+    p_review_date: parsed.data.review_date,
     ...(id === null ? {} : { p_id: id, p_expected_updated_at: timestamp }),
   });
   if (error) return {
@@ -87,8 +89,9 @@ export async function updatePeerReviewSettings(form: FormData) {
   const { supabase } = await requireAdminPage();
   const heroCounter = form.get("hero_counter_text");
   const completedCount = nonNegativeReviewCount(form.get("completed_reviews_count"));
+  const manuscriptsCount = nonNegativeReviewCount(form.get("manuscripts_count"));
   const expected = form.get("updated_at");
-  if (typeof heroCounter !== "string" || !heroCounter.trim() || [...heroCounter].length > 64 || completedCount === null) {
+  if (typeof heroCounter !== "string" || !heroCounter.trim() || [...heroCounter].length > 64 || completedCount === null || manuscriptsCount === null) {
     redirect("/admin/peer-reviews?error=counter");
   }
   if (typeof expected !== "string" || !Number.isFinite(Date.parse(expected))) {
@@ -97,6 +100,7 @@ export async function updatePeerReviewSettings(form: FormData) {
   const { error } = await supabase.rpc("admin_update_peer_review_settings", {
     p_hero_counter_text: heroCounter,
     p_completed_reviews_count: completedCount,
+    p_manuscripts_count: manuscriptsCount,
     p_expected_updated_at: expected,
   });
   if (error) failed(error.code);

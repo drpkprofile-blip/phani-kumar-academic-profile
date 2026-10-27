@@ -5,8 +5,8 @@ import type { PublicPeerReview } from "../data/peer-reviews";
 import { counters } from "../data/counters";
 import { createClient } from "./supabase/server";
 import type { Database } from "./supabase/database.types";
-import { parsePeerReview, sortPeerReviewsByExplicitYear, sortPublicPeerReviewRows } from "./peer-review-text";
-export { parsePeerReview, peerReviewYear, sortPeerReviewRowsByExplicitYear, sortPeerReviewsByExplicitYear, sortPublicPeerReviewRows } from "./peer-review-text";
+import { sortPublicPeerReviewRowsNewestFirst } from "./peer-review-text";
+export { sortPeerReviewRowsNewestFirst, sortPublicPeerReviewRowsNewestFirst } from "./peer-review-text";
 
 type PublicPeerReviewRow = Database["public"]["Views"]["peer_reviews_public"]["Row"];
 type PeerReviewSettingsRow = Database["public"]["Tables"]["peer_review_settings"]["Row"];
@@ -15,23 +15,22 @@ export type PublicPeerReviews = {
   peerReviews: PublicPeerReview[];
   heroCounterText: string;
   completedReviewsCount: number;
+  manuscriptsCount: number;
 };
 
 export function mapPeerReview(row: PublicPeerReviewRow): PublicPeerReview {
-  return { journalName: row.journal_name, reviewYear: row.review_year, displayOrder: row.display_order };
+  return { journalName: row.journal_name, reviewDate: row.review_date, displayOrder: row.display_order };
 }
 
 function publicReferencePeerReviews(): PublicPeerReview[] {
-  return sortPeerReviewsByExplicitYear([...referencePeerReviews]).map((review, index) => {
-    const { journalName, year } = parsePeerReview(review);
-    return { journalName, reviewYear: year ? Number(year) : null, displayOrder: index + 1 };
-  });
+  return sortPublicPeerReviewRowsNewestFirst([...referencePeerReviews]);
 }
 
 export function mapPeerReviewSettings(row: PeerReviewSettingsRow) {
   return {
     heroCounterText: row.hero_counter_text,
     completedReviewsCount: row.completed_reviews_count,
+    manuscriptsCount: row.manuscripts_count,
   };
 }
 
@@ -42,6 +41,7 @@ export async function getPublicPeerReviews(): Promise<PublicPeerReviews> {
       peerReviews: publicReferencePeerReviews(),
       heroCounterText: counters.heroPeerReviews,
       completedReviewsCount: counters.peerReviewCount,
+      manuscriptsCount: 14,
     };
   }
 
@@ -49,8 +49,8 @@ export async function getPublicPeerReviews(): Promise<PublicPeerReviews> {
   const [reviewsResult, settingsResult] = await Promise.all([
     supabase
       .from("peer_reviews_public")
-      .select("id,display_order,journal_name,review_year")
-      .order("review_year", { ascending: false, nullsFirst: false })
+      .select("id,display_order,journal_name,review_date")
+      .order("review_date", { ascending: false })
       .order("display_order", { ascending: true }),
     supabase
       .from("peer_review_settings")
@@ -66,12 +66,14 @@ export async function getPublicPeerReviews(): Promise<PublicPeerReviews> {
     console.warn("Sanitized Peer Review view is not available; using the safe public reference list.");
     return {
       peerReviews: publicReferencePeerReviews(),
-      ...mapPeerReviewSettings(settingsResult.data),
+      heroCounterText: counters.heroPeerReviews,
+      completedReviewsCount: counters.peerReviewCount,
+      manuscriptsCount: 14,
     };
   }
 
   return {
-    peerReviews: sortPublicPeerReviewRows(reviewsResult.data.map(mapPeerReview)),
+    peerReviews: sortPublicPeerReviewRowsNewestFirst(reviewsResult.data.map(mapPeerReview)),
     ...mapPeerReviewSettings(settingsResult.data),
   };
 }

@@ -12,9 +12,9 @@ export type ProfileCounters = {
 // These supplied display totals are independent of the listed record counts.
 export const counters: ProfileCounters = {
   heroPublications: "40+",
-  heroPeerReviews: "16+",
+  heroPeerReviews: "20+",
   experienceYears: "20+",
-  peerReviewCount: 16,
+  peerReviewCount: 20,
 };
 
 export const recordCounts = {

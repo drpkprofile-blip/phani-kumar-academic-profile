@@ -1,15 +1,26 @@
 export type PeerReviewFormState = {
   message?: string;
-  errors?: { review_text?: string };
-  values?: { review_text: string };
+  errors?: { publication_title?: string; journal_name?: string; review_date?: string };
+  values?: { publication_title: string; journal_name: string; review_date: string };
 };
 
 export function parsePeerReviewForm(form: FormData) {
-  const raw = form.get("review_text");
-  const reviewText = typeof raw === "string" ? raw : "";
+  const field = (name: string) => {
+    const value = form.get(name);
+    return typeof value === "string" ? value.trim() : "";
+  };
+  const publicationTitle = field("publication_title");
+  const journalName = field("journal_name");
+  const reviewDate = field("review_date");
   const errors: PeerReviewFormState["errors"] = {};
-  if (!reviewText.trim()) errors.review_text = "Enter nonblank review text.";
-  return { values: { review_text: reviewText }, errors, data: { review_text: reviewText } };
+  if (!publicationTitle) errors.publication_title = "Enter the manuscript title. It is visible to admins only.";
+  if (!journalName) errors.journal_name = "Enter the journal name.";
+  const parsedDate = /^\d{4}-\d{2}-\d{2}$/.test(reviewDate) ? new Date(`${reviewDate}T00:00:00Z`) : null;
+  if (!parsedDate || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== reviewDate) {
+    errors.review_date = "Enter the exact review date.";
+  }
+  const values = { publication_title: publicationTitle, journal_name: journalName, review_date: reviewDate };
+  return { values, errors, data: values };
 }
 
 export function positivePeerReviewInteger(value: FormDataEntryValue | null): number | null {
