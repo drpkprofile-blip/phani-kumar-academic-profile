@@ -600,7 +600,10 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      peer_reviews_public: {
+        Row: { id: number; display_order: number; journal_name: string; review_year: number | null }
+        Relationships: []
+      }
     }
     Functions: {
       record_profile_visit: { Args: never; Returns: number }

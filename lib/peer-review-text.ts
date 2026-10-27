@@ -35,3 +35,10 @@ export function sortPeerReviewRowsByExplicitYear<T extends { review_text: string
     peerReviewYear(b.review_text) - peerReviewYear(a.review_text)
       || a.display_order - b.display_order);
 }
+
+export function sortPublicPeerReviewRows<T extends { reviewYear: number | null; displayOrder: number }>(
+  reviews: readonly T[],
+): T[] {
+  return [...reviews].sort((a, b) =>
+    (b.reviewYear ?? 0) - (a.reviewYear ?? 0) || a.displayOrder - b.displayOrder);
+}

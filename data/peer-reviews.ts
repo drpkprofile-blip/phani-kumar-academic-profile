@@ -1,6 +1,13 @@
 // Keep the original review text and the existing display parsing unchanged.
 export type PeerReview = string;
 
+// Public-safe projection: manuscript titles are never part of this shape.
+export type PublicPeerReview = {
+  journalName: string;
+  reviewYear: number | null;
+  displayOrder: number;
+};
+
 export const peerReviews: PeerReview[] = [
   "Diffusion-Based Generative Augmentation for Dataset Construction in Door-State Detection of Temporary Electrical Distribution Boxes on Construction Sites, Engineering Research Express (2026)",
   "Adaptive MPC with EKF-Based Obstacle Prediction for AGV Navigation, Engineering Research Express (2026)",

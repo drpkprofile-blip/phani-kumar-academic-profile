@@ -27,5 +27,9 @@ export default function SocialLinkIcon({ label }: SocialLinkIconProps) {
     return <svg className="profile-social-icon profile-social-icon--irins" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 8h8M12 8v9M8 17h8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/><circle cx="12" cy="5" r="1" fill="currentColor"/></svg>;
   }
 
+  if (name.includes("web of science")) {
+    return <svg className="profile-social-icon profile-social-icon--wos" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.8"/><text x="12" y="15.5" textAnchor="middle" fontFamily="Arial, sans-serif" fontSize="9" fontWeight="700" fill="currentColor">WoS</text></svg>;
+  }
+
   return <svg className="profile-social-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M6 12h12M12 6v12" stroke="currentColor" strokeWidth="2"/></svg>;
 }

@@ -95,6 +95,10 @@ export const profile = {
       label: "IRINS",
       href: "https://vidwan.inflibnet.ac.in/profile/262584",
     },
+    {
+      label: "Web of Science",
+      href: "https://www.webofscience.com/",
+    },
   ] satisfies ProfileLink[],
 
   googleScholarMetrics: {

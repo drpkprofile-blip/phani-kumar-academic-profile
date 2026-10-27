@@ -43,6 +43,17 @@ function jsonArray<T>(value: Json, fallback: T[]): T[] {
   return Array.isArray(value) ? value as T[] : fallback;
 }
 
+const webOfScienceLink: ProfileLink = {
+  label: "Web of Science",
+  href: "https://www.webofscience.com/",
+};
+
+function withPublicWebOfScienceLink(links: ProfileLink[]): ProfileLink[] {
+  const existingIndex = links.findIndex((link) => link.label.toLowerCase() === "web of science");
+  if (existingIndex < 0) return [...links, webOfScienceLink];
+  return links.map((link, index) => index === existingIndex ? webOfScienceLink : link);
+}
+
 function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
   const youtube = row.youtube_channel;
   const youtubeChannel = !Array.isArray(youtube) && youtube !== null && typeof youtube === "object"
@@ -78,7 +89,7 @@ function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
         i10IndexText: row.google_scholar_i10_index_text,
       },
       academicIdentity: jsonArray<AcademicIdentity>(row.academic_identity, [...referenceProfile.academicIdentity]),
-      profileLinks: jsonArray<ProfileLink>(row.profile_links, [...referenceProfile.profileLinks]),
+      profileLinks: withPublicWebOfScienceLink(jsonArray<ProfileLink>(row.profile_links, [...referenceProfile.profileLinks])),
       youtubeChannel: {
         title: youtubeChannel.title ?? referenceProfile.youtubeChannel.title,
         href: youtubeChannel.href ?? referenceProfile.youtubeChannel.href,

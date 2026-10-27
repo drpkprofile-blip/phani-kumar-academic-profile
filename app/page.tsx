@@ -14,7 +14,6 @@ import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { getPublicGuidedProjectCounts } from "../lib/projects-guided-settings";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
-import { parsePeerReview } from "../lib/peer-review-text";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { getPublicGalleryItems } from "../lib/gallery";
 import { getPublicProfileVisitCount } from "../lib/profile-visits";
@@ -557,28 +556,21 @@ export default async function Home() {
           </div>
 
           <div className="review-grid">
-            {peerReviews.map((review, index) => {
-              const { journalName, year } = parsePeerReview(review);
-
-              return (
-                <article className="review-card" key={index}>
-                  <div className="review-card-top">
-                    <span className="review-number">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    {year && <span className="review-meta-separator" aria-hidden="true">·</span>}
-                    {year && <span className="review-year">{year}</span>}
+            <div className="review-record-list" aria-label="Peer review records">
+              {peerReviews.map((review, index) => (
+                <article className="review-card" key={`${review.displayOrder}-${index}`}>
+                  <span className="review-number">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="review-record-details">
+                    <span className="review-record-label">{pageCopy.peerReview}</span>
+                    <h3>{review.journalName || pageCopy.peerReview}</h3>
                   </div>
-
-                  <h3>{journalName || pageCopy.peerReview}</h3>
-
-                  <div className="review-status">
-                    <span>{pageCopy.peerReview}</span>
-                    <span>{pageCopy.journalManuscript}</span>
+                  <div className="review-record-date">
+                    <span>{pageCopy.dateReviewed}</span>
+                    <strong>{review.reviewYear ?? pageCopy.yearNotProvided}</strong>
                   </div>
                 </article>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </section>
