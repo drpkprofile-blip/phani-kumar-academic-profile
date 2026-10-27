@@ -3164,7 +3164,7 @@ body {
 }
 
 .hero-buttons .button {
-  min-height: 54px;
+  min-height: 50px;
   border-radius: 12px;
   font-size: 15px;
 }
