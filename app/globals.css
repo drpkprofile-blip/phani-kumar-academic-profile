@@ -2167,7 +2167,6 @@ body:has(.navbar) .hero-message--greeting {
 
 body:has(.navbar) .hero-message--quote .hero-message-mark,
 body:has(.navbar) .hero-message--quote .hero-message-kicker,
-body:has(.navbar) .hero-message--quote blockquote,
 body:has(.navbar) .hero-message--quote cite {
   color: #9c4663;
 }
@@ -2177,7 +2176,8 @@ body:has(.navbar) .hero-message--greeting .hero-message-kicker {
   color: #455fc1;
 }
 
-body:has(.navbar) .hero-message--greeting blockquote { color: #86600c; }
+body:has(.navbar) .hero-message--quote blockquote { color: #d7a817; }
+body:has(.navbar) .hero-message--greeting blockquote { color: #f1ca50; }
 body:has(.navbar) .hero-message--greeting cite { color: #586d8d; }
 body:has(.navbar) .hero-message-kicker { color: var(--teal); }
 
@@ -3383,3 +3383,114 @@ body:has(.navbar) .hero-nameplate .institution { color: #fff; }
 }
 
 body:has(.navbar) .profile-socials a { gap: 8px; }
+
+/* Give filter chips clearer labels while keeping the controls compact. */
+body:has(.navbar) .publication-filter-note,
+body:has(.navbar) .activity-filter-note {
+  gap: 9px;
+}
+
+body:has(.navbar) .publication-filter-note button,
+body:has(.navbar) .activity-filter-note button {
+  min-height: 42px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* Shorten the portrait block so the profile links sit higher in the card. */
+body:has(.navbar) .photo-frame {
+  min-height: 0;
+  height: auto;
+}
+
+body:has(.navbar) .photo-frame img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 760px) {
+  body:has(.navbar) .photo-frame img {
+    max-height: 360px;
+  }
+}
+
+/* Add the requested royal-blue / white accent to the quieter controls. */
+body:has(.navbar) .publication-filter-note button[aria-pressed="true"],
+body:has(.navbar) .activity-filter-note button[aria-pressed="true"] {
+  border-color: #83b9ff;
+  background: #1d428e;
+  color: #fff;
+  box-shadow: 0 5px 16px rgba(29, 66, 142, 0.28), inset 0 1px rgba(255, 255, 255, 0.16);
+}
+
+body:has(.navbar) .publication-filter-note button:hover,
+body:has(.navbar) .activity-filter-note button:hover {
+  border-color: #83b9ff;
+  color: #fff;
+}
+
+body:has(.navbar) .profile-socials a,
+body:has(.navbar) .youtube-channel {
+  border-color: rgba(131, 185, 255, 0.26);
+  background: linear-gradient(135deg, #193d83, #142f66);
+  color: #fff;
+}
+
+body:has(.navbar) .profile-socials a:hover,
+body:has(.navbar) .youtube-channel:hover {
+  border-color: rgba(131, 185, 255, 0.62);
+  background: linear-gradient(135deg, #2452a5, #193d83);
+}
+
+body:has(.navbar) .profile-socials a:focus-visible,
+body:has(.navbar) .youtube-channel:focus-visible {
+  outline: 2px solid #83b9ff;
+  outline-offset: 3px;
+}
+
+/* Keep the home message banner compact without crowding its text. */
+body:has(.navbar) .hero > .hero-message {
+  min-height: 0;
+  margin-bottom: 18px;
+  padding-block: 12px;
+}
+
+.peer-review-source-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin-top: 10px;
+  padding: 8px 13px;
+  border: 1px solid rgba(131, 185, 255, 0.45);
+  border-radius: 9px;
+  background: #1d428e;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.peer-review-source-link:hover,
+.peer-review-source-link:focus-visible {
+  border-color: #a9ceff;
+  background: #2452a5;
+  color: #fff;
+}
+
+.peer-review-source-link:focus-visible {
+  outline: 2px solid #83b9ff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  body:has(.navbar) .hero > .hero-message {
+    min-height: 0;
+    margin-bottom: 18px;
+    padding-block: 11px;
+  }
+}

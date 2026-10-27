@@ -50,6 +50,7 @@ export default async function Home() {
   const { profile, experienceCounterText, education, researchAreas, experience } = await getPublicProfileSettings();
   const googleScholarUrl = profile.profileLinks.find((link) => link.label === "Google Scholar" && link.href)?.href
     ?? profile.academicIdentity.find((item) => item.label === "Google Scholar ID" && item.href)?.href;
+  const webOfScienceUrl = profile.profileLinks.find((link) => link.label.toLowerCase() === "web of science" && link.href)?.href;
   const scholarMetrics = {
     citations: primaryScholarMetric(profile.googleScholarMetrics.citationsText),
     hIndex: primaryScholarMetric(profile.googleScholarMetrics.hIndexText),
@@ -174,7 +175,7 @@ export default async function Home() {
             </div>
 
             <div className="profile-socials">
-              {profile.profileLinks.map((social) =>
+              {profile.profileLinks.filter((social) => social.label.toLowerCase() !== "web of science").map((social) =>
                 social.href ? (
                   <a
                     key={social.label}
@@ -289,7 +290,7 @@ export default async function Home() {
 
               <div className="identity-links-content">
                 <div className="identity-socials">
-                {profile.profileLinks.filter((link) => link.label !== "Google Scholar").map((link) =>
+                {profile.profileLinks.filter((link) => link.label !== "Google Scholar" && link.label.toLowerCase() !== "web of science").map((link) =>
                   link.href ? (
                     <a
                       key={link.label}
@@ -545,6 +546,11 @@ export default async function Home() {
               <p className="section-label">{pageCopy.section09PeerReviews}</p>
               <h2>{pageCopy.journalPeerReviews}</h2>
               <p>{pageCopy.peerReviewsDescription} {manuscriptsCount} manuscripts reviewed.</p>
+              {webOfScienceUrl && (
+                <a className="peer-review-source-link" href={webOfScienceUrl} target="_blank" rel="noopener noreferrer">
+                  Web of Science profile ↗
+                </a>
+              )}
             </div>
             <div className="big-stat">
               <strong>{peerReviewCount}</strong>
