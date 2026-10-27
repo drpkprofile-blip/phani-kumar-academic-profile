@@ -110,10 +110,8 @@ test("configured Peer Reviews render matches the saved static baseline exactly",
       ["2026", "2026", "2026", "2026", "2026", "2025", "2025", "2025", "2025", "2025", "2024"]);
     assert.equal((html.match(/class="review-meta-separator" aria-hidden="true">·</g) ?? []).length, 11);
     const publicJournals = [...html.matchAll(/<h3>(.*?)<\/h3>/g)].map((match) => match[1].replace(/&amp;/g, "&"));
-    const expectedJournals = source.map((review) => {
-      const text = review.replace(/\s*\(\d{4}\)$/, "");
-      return text.slice(text.lastIndexOf(", ") + 2);
-    });
+    const parsePeerReview = loadModule("lib/peer-review-text.ts").parsePeerReview;
+    const expectedJournals = source.map((review) => parsePeerReview(review).journalName);
     assert.deepEqual(publicJournals, expectedJournals);
     for (const review of source) {
       const text = review.replace(/\s*\(\d{4}\)$/, "");
@@ -127,8 +125,15 @@ test("configured Peer Reviews render matches the saved static baseline exactly",
 test("Peer Reviews sort by the explicit trailing year without changing stored text", async () => {
   await withConfiguration(async () => {
     const shuffled = [rows[10], rows[5], rows[0], rows[8]];
-    const result = await reader({ data: shuffled, error: null }).getPublicPeerReviews();
+    const helper = reader({ data: shuffled, error: null });
+    const result = await helper.getPublicPeerReviews();
     assert.deepEqual(result.peerReviews, [rows[0].review_text, rows[5].review_text, rows[8].review_text, rows[10].review_text]);
+    assert.deepEqual(helper.sortPeerReviewRowsByExplicitYear(shuffled), [rows[0], rows[5], rows[8], rows[10]]);
+    assert.deepEqual(loadModule("lib/peer-review-text.ts").parsePeerReview(rows[2].review_text), {
+      publicationTitle: "Enhanced Lichtenberg Optimization Algorithm for the Optimal Design and Control of MRWBLDC Motors",
+      journalName: "Proceedings of the Institution of Mechanical Engineers, Part G: Journal of Aerospace Engineering",
+      year: "2026",
+    });
     assert.ok(result.peerReviews.every((review) => source.includes(review)));
   });
 });

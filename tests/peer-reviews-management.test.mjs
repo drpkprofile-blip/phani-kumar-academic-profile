@@ -101,8 +101,14 @@ test("Peer Reviews admin routes and dashboard module link exist without changing
   const dashboard = readFileSync(`${root}/app/admin/page.tsx`, "utf8");
   assert.match(dashboard, /Manage Peer Reviews/);
   const managementPage = readFileSync(`${root}/app/admin/peer-reviews/page.tsx`, "utf8");
-  assert.match(managementPage, /<p className={styles\.reviewText}>{review\.review_text}<\/p>/,
-    "Admin Peer Reviews must retain the complete manuscript title and journal text");
+  assert.match(managementPage, /sortPeerReviewRowsByExplicitYear\(reviewsResult\.data\)/,
+    "Admin Peer Reviews must sort newest review years first");
+  assert.match(managementPage, /Publication title:/,
+    "Admin Peer Reviews must retain manuscript titles in the private management page");
+  assert.match(managementPage, /Journal:/);
+  assert.match(managementPage, /Review year:/);
+  assert.doesNotMatch(managementPage, /movePeerReview/,
+    "Chronological ordering is automatic rather than manually overridden");
   const migration = readFileSync(`${root}/supabase/migrations/20261005001700_peer_reviews_management.sql`, "utf8");
   assert.match(migration, /security invoker set search_path = ''/g);
   assert.match(migration, /set constraints public\.peer_reviews_display_order_unique deferred/i);

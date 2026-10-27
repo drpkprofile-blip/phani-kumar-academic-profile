@@ -14,6 +14,7 @@ import { getPublicSubjectsTaught } from "../lib/subjects-taught";
 import { getPublicProjectsGuided } from "../lib/projects-guided";
 import { getPublicGuidedProjectCounts } from "../lib/projects-guided-settings";
 import { getPublicPeerReviews } from "../lib/peer-reviews";
+import { parsePeerReview } from "../lib/peer-review-text";
 import { getPublicProfileSettings } from "../lib/profile-settings";
 import { getPublicGalleryItems } from "../lib/gallery";
 import { getPublicProfileVisitCount } from "../lib/profile-visits";
@@ -557,15 +558,7 @@ export default async function Home() {
 
           <div className="review-grid">
             {peerReviews.map((review, index) => {
-              const yearMatch = review.match(/\((\d{4})\)$/);
-              const year = yearMatch ? yearMatch[1] : "";
-              const text = year
-                ? review.replace(/\s*\(\d{4}\)$/, "")
-                : review;
-
-              const separator = text.lastIndexOf(", ");
-              const journal =
-                separator > -1 ? text.slice(separator + 2) : "";
+              const { journalName, year } = parsePeerReview(review);
 
               return (
                 <article className="review-card" key={index}>
@@ -577,7 +570,7 @@ export default async function Home() {
                     {year && <span className="review-year">{year}</span>}
                   </div>
 
-                  <h3>{journal || pageCopy.peerReview}</h3>
+                  <h3>{journalName || pageCopy.peerReview}</h3>
 
                   <div className="review-status">
                     <span>{pageCopy.peerReview}</span>

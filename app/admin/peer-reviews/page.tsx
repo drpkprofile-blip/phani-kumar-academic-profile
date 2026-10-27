@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { requireAdminPage } from "../../../lib/auth/admin-page";
 import { logout } from "../actions";
-import { movePeerReview, updatePeerReviewSettings } from "./actions";
+import { updatePeerReviewSettings } from "./actions";
 import styles from "../admin.module.css";
+import { parsePeerReview, sortPeerReviewRowsByExplicitYear } from "../../../lib/peer-review-text";
 
 const successes: Record<string, string> = {
   added: "Peer review added.", saved: "Peer review saved.", deleted: "Peer review deleted.",
-  reordered: "Peer Review order updated.", settings: "Peer Review counters updated.",
+  settings: "Peer Review counters updated.",
 };
 const errors: Record<string, string> = {
   stale: "The data changed. Reload and try again.", operation: "Unable to complete the operation. Please try again.",
-  confirmation: "Deletion requires explicit confirmation.", position: "Choose a valid review position.",
+  confirmation: "Deletion requires explicit confirmation.",
   counter: "Enter a non-empty hero counter and a non-negative whole-number completed count.",
 };
 
@@ -23,10 +24,10 @@ export default async function PeerReviewsAdmin({ searchParams }: { searchParams:
   if (reviewsResult.error || !reviewsResult.data || settingsResult.error || !settingsResult.data) {
     throw new Error("Unable to load Peer Reviews management.");
   }
+  const reviews = sortPeerReviewRowsByExplicitYear(reviewsResult.data);
   const { success, error } = await searchParams;
-  const order = JSON.stringify(reviewsResult.data.map((review) => review.id));
   return <main className={styles.shell}><section className={`${styles.panel} ${styles.management}`} aria-labelledby="peer-reviews-admin-title">
-    <h1 id="peer-reviews-admin-title">Peer Reviews ({reviewsResult.data.length})</h1>
+    <h1 id="peer-reviews-admin-title">Peer Reviews ({reviews.length})</h1>
     <p className={styles.email}>{user.email}</p>
     <div className={styles.toolbar}>
       <Link className={styles.secondary} href="/admin">Admin Dashboard</Link>
@@ -53,25 +54,22 @@ export default async function PeerReviewsAdmin({ searchParams }: { searchParams:
     </section>
 
     <div className={styles.toolbar}><h2>Review records</h2></div>
+    <p className={styles.note}>Sorted by review year, newest first. Records in the same year keep their saved order.</p>
     <div className={styles.list}>
-      {reviewsResult.data.map((review, index) => <article className={styles.record} key={review.id}>
-        <div className={styles.badges}><span>#{String(review.display_order).padStart(2, "0")}</span></div>
-        <p className={styles.reviewText}>{review.review_text}</p>
+      {reviews.map((review, index) => {
+        const details = parsePeerReview(review.review_text);
+        return <article className={styles.record} key={review.id}>
+        <div className={styles.badges}><span>#{String(index + 1).padStart(2, "0")}</span></div>
+        <p className={styles.reviewText}><strong>Publication title:</strong> {details.publicationTitle}</p>
+        {details.journalName && <p className={styles.reviewText}><strong>Journal:</strong> {details.journalName}</p>}
+        {details.year && <p className={styles.reviewText}><strong>Review year:</strong> {details.year}</p>}
         <div className={styles.controls}>
           <Link className={styles.secondary} href={`/admin/peer-reviews/${review.id}/edit`}>Edit</Link>
           <Link className={styles.danger} href={`/admin/peer-reviews/${review.id}/delete`}>Delete</Link>
-          <form action={movePeerReview} className={styles.reorder} aria-label={`Reorder peer review ${review.display_order}`}>
-            <input type="hidden" name="id" value={review.id} />
-            <input type="hidden" name="order" value={order} />
-            <button className={styles.secondary} name="direction" value="up" disabled={index === 0} aria-label="Move up">↑</button>
-            <button className={styles.secondary} name="direction" value="down" disabled={index === reviewsResult.data.length - 1} aria-label="Move down">↓</button>
-            <label htmlFor={`review-position-${review.id}`}>Position</label>
-            <input id={`review-position-${review.id}`} name="position" type="number" min="1" max={reviewsResult.data.length} defaultValue={review.display_order} required />
-            <button className={styles.secondary} type="submit">Move</button>
-          </form>
         </div>
-      </article>)}
-      {reviewsResult.data.length === 0 && <p>No peer reviews have been added yet.</p>}
+      </article>;
+      })}
+      {reviews.length === 0 && <p>No peer reviews have been added yet.</p>}
     </div>
   </section></main>;
 }

@@ -20,6 +20,7 @@ export function loadModule(path, mocks = {}, source) {
     if (name === "./publication-browser") return loadModule("app/publication-browser.tsx", mocks);
     if (name === "./primary-navigation") return loadModule("app/primary-navigation.tsx", mocks);
     if (name === "./profile-visit-counter") return loadModule("app/profile-visit-counter.tsx", mocks);
+    if (name === "./social-link-icon") return loadModule("app/social-link-icon.tsx", mocks);
     // Isolate unrelated publication tests from Activities network reads.
     if (name === "../lib/activities") return { getPublicActivities: async () => loadModule("data/activities.ts") };
     if (name.startsWith(".")) return loadModule(`${resolve(dirname(absolute), name)}.ts`, mocks);

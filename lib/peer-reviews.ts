@@ -5,6 +5,8 @@ import type { PeerReview } from "../data/peer-reviews";
 import { counters } from "../data/counters";
 import { createClient } from "./supabase/server";
 import type { Database } from "./supabase/database.types";
+import { sortPeerReviewsByExplicitYear } from "./peer-review-text";
+export { parsePeerReview, peerReviewYear, sortPeerReviewRowsByExplicitYear, sortPeerReviewsByExplicitYear } from "./peer-review-text";
 
 type PeerReviewRow = Database["public"]["Tables"]["peer_reviews"]["Row"];
 type PeerReviewSettingsRow = Database["public"]["Tables"]["peer_review_settings"]["Row"];
@@ -17,14 +19,6 @@ export type PublicPeerReviews = {
 
 export function mapPeerReview(row: PeerReviewRow): PeerReview {
   return row.review_text;
-}
-
-function sortPeerReviewsByExplicitYear(reviews: PeerReview[]): PeerReview[] {
-  return reviews.map((review, index) => ({
-    review,
-    index,
-    year: Number(review.match(/\((\d{4})\)$/)?.[1] ?? 0),
-  })).sort((a, b) => b.year - a.year || a.index - b.index).map(({ review }) => review);
 }
 
 export function mapPeerReviewSettings(row: PeerReviewSettingsRow) {
