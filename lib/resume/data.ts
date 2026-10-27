@@ -10,9 +10,6 @@ import { getPublicProjectsGuided } from "../projects-guided";
 import { getPublicPublications } from "../publications";
 import { getPublicProfileSettings } from "../profile-settings";
 import { getPublicSubjectsTaught } from "../subjects-taught";
-import { educationNewestFirst } from "../../data/education";
-import { experience } from "../../data/experience";
-import { researchAreas } from "../../data/research";
 import { buildResumeModel, type ResumeModel } from "./model";
 
 export async function loadResumeModel(): Promise<ResumeModel> {
@@ -32,9 +29,9 @@ export async function loadResumeModel(): Promise<ResumeModel> {
   return buildResumeModel({
     profile,
     experienceCounterText: profileSettings.experienceCounterText,
-    education: educationNewestFirst,
-    experience,
-    researchAreas,
+    education: profileSettings.education,
+    experience: profileSettings.experience,
+    researchAreas: profileSettings.researchAreas,
     publications: publications.publications,
     patents,
     activities: activityData.activities,

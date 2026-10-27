@@ -36,9 +36,11 @@
 .rowEditor { display: grid; gap: 14px; min-width: 0; margin: 0; padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
 .rowEditor legend { padding: 0 8px; color: var(--teal); font-weight: 700; }
 .profileRow { display: grid; grid-template-columns: minmax(120px, .8fr) minmax(180px, 1.2fr) auto; gap: 12px; align-items: end; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); }
+.profileRecordRow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: end; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); }
+.profileRecordRow > strong, .profileRecordRow > button { grid-column: 1 / -1; }
 .resumePanel { max-width: 760px; background: linear-gradient(145deg, rgba(15, 44, 61, .98), rgba(7, 25, 38, .98)); box-shadow: 0 24px 64px rgba(0, 0, 0, .24), inset 0 1px rgba(56, 214, 204, .16); }
 .resumeEyebrow { margin: 0 0 8px; color: var(--teal); font-size: .76rem; font-weight: 800; letter-spacing: .18em; }
 .resumeActions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .resumePrivacy { margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: .88rem; }
-@media (max-width: 700px) { .profileRow { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .profileRow, .profileRecordRow { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .shell { padding: 24px 12px; } .panel { padding: 20px; } .reorder { margin-left: 0; width: 100%; } }

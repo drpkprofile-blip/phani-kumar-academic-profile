@@ -10,7 +10,7 @@ export default async function AdminProfileSettings({ searchParams }: { searchPar
   const { user, supabase } = await requireAdminPage();
   const { data, error } = await supabase.from("profile_settings").select("*").eq("singleton", true).single();
   if (error || !data) throw new Error("Unable to load profile settings.");
-  const { profile, experienceCounterText } = mapProfileSettingsRow(data);
+  const { profile, experienceCounterText, education, researchAreas, experience } = mapProfileSettingsRow(data);
   const query = await searchParams;
   const initial = {
     name: profile.name, first_name: profile.firstName, last_name: profile.lastName,
@@ -31,10 +31,13 @@ export default async function AdminProfileSettings({ searchParams }: { searchPar
     youtube_image: profile.youtubeChannel.image,
     technical_tools: profile.technicalTools, skills: profile.skills,
     research_interests: profile.researchInterests,
+    education_records: education,
+    research_area_records: researchAreas,
+    experience_records: experience,
     academic_identity: profile.academicIdentity, profile_links: profile.profileLinks,
   };
   return <main className={styles.shell}><section className={`${styles.panel} ${styles.management}`} aria-labelledby="profile-settings-title">
-    <h1 id="profile-settings-title">Profile &amp; Links</h1><p className={styles.email}>{user.email}</p>
+    <h1 id="profile-settings-title">Profile Studio</h1><p className={styles.email}>{user.email}</p>
     <div className={styles.toolbar}><Link className={styles.secondary} href="/admin">Admin Dashboard</Link><Link className={styles.secondary} href="/" prefetch={false}>Back to Public Website</Link><form action={logout}><button className={styles.secondary} type="submit">Logout</button></form></div>
     {query.success === "saved" && <p role="status" className={styles.success}>Profile settings saved.</p>}
     {query.photo === "saved" && <p role="status" className={styles.success}>Profile photo updated.</p>}

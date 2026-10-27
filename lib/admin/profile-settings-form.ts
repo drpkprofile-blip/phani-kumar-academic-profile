@@ -1,4 +1,7 @@
 import type { AcademicIdentity, ProfileLink } from "../../data/profile";
+import type { Education } from "../../data/education";
+import type { Experience } from "../../data/experience";
+import type { ResearchArea } from "../../data/research";
 
 export type ProfileSettingsValues = {
   name: string; first_name: string; last_name: string; qualifications: string;
@@ -9,6 +12,7 @@ export type ProfileSettingsValues = {
   google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
   technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
+  education_records: Education[]; research_area_records: ResearchArea[]; experience_records: Experience[];
   hero_message_mode: string; hero_quote: string; hero_quote_attribution: string;
   hero_greeting: string; hero_greeting_attribution: string;
 };
@@ -57,6 +61,32 @@ function parseList(value: FormDataEntryValue | null): string[] | null {
   return value.split(/\r?\n/).map((item) => item.trim()).filter(Boolean);
 }
 
+function parseRecordList(value: FormDataEntryValue | null, keys: string[], required: string[], urlKeys: string[] = []): { rows: Array<Record<string, string>>; error?: string } {
+  if (typeof value !== "string" || value.length > 100_000) return { rows: [], error: "Check the record list size and format." };
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed) || parsed.length > 100) return { rows: [], error: "Use no more than 100 records." };
+    const rows: Array<Record<string, string>> = [];
+    for (const raw of parsed) {
+      if (typeof raw !== "object" || raw === null || Array.isArray(raw)) return { rows: [], error: "Check each record." };
+      const source = raw as Record<string, unknown>;
+      const row: Record<string, string> = {};
+      for (const key of keys) {
+        const item = source[key];
+        const text = typeof item === "string" ? item.trim() : "";
+        if (text.length > (key === "text" || key === "detail" ? 4000 : key.toLowerCase().includes("url") || key.toLowerCase().includes("proof") ? 2048 : 500)) {
+          return { rows: [], error: "One or more fields exceed the allowed length." };
+        }
+        if (required.includes(key) && !text) return { rows: [], error: "Complete the required fields in every record." };
+        if (urlKeys.includes(key) && text && !safeHttpUrl(text)) return { rows: [], error: "Proof fields must use a valid HTTP or HTTPS URL." };
+        row[key] = text;
+      }
+      rows.push(row);
+    }
+    return { rows };
+  } catch { return { rows: [], error: "Check the record list format." }; }
+}
+
 export function parseProfileSettingsForm(form: FormData): { values: ProfileSettingsValues; errors: ProfileSettingsErrors } {
   const values = Object.fromEntries(scalarFields.map((field) => [field, form.get(field)])) as Record<(typeof scalarFields)[number], FormDataEntryValue | null>;
   const errors: ProfileSettingsErrors = {};
@@ -103,12 +133,21 @@ export function parseProfileSettingsForm(form: FormData): { values: ProfileSetti
   const skills = parseList(form.get("skills"));
   const interests = parseList(form.get("research_interests"));
   if (!tools || !skills || !interests) errors.technical_tools = "Keep each list under 12,000 characters.";
+  const education = parseRecordList(form.get("education_records"), ["year", "degree", "institution", "field", "detail", "proof", "marksProof"], ["year", "degree", "institution", "field"], ["proof", "marksProof"]);
+  const research = parseRecordList(form.get("research_area_records"), ["title", "text"], ["title", "text"]);
+  const work = parseRecordList(form.get("experience_records"), ["period", "role", "institution", "department"], ["period", "role", "institution", "department"]);
+  if (education.error) errors.education_records = education.error;
+  if (research.error) errors.research_area_records = research.error;
+  if (work.error) errors.experience_records = work.error;
   const mapped = Object.fromEntries(scalarFields.map((field) => [field, typeof values[field] === "string" ? values[field] as string : ""])) as unknown as ProfileSettingsValues;
   return {
     values: {
       ...mapped,
       technical_tools: tools ?? [], skills: skills ?? [], research_interests: interests ?? [],
       academic_identity: identity.rows, profile_links: links.rows,
+      education_records: education.rows as unknown as Education[],
+      research_area_records: research.rows as unknown as ResearchArea[],
+      experience_records: work.rows as unknown as Experience[],
     },
     errors,
   };
@@ -133,5 +172,8 @@ export function profileSettingsToRow(values: ProfileSettingsValues) {
     hero_quote_attribution: values.hero_quote_attribution,
     hero_greeting: values.hero_greeting,
     hero_greeting_attribution: values.hero_greeting_attribution,
+    education_records: values.education_records,
+    research_area_records: values.research_area_records,
+    experience_records: values.experience_records,
   };
 }

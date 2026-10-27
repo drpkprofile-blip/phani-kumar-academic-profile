@@ -45,8 +45,8 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
           <form action={logout}><button className={styles.secondary} type="submit">Logout</button></form>
         </div>
         <section className={styles.module} aria-label="Profile settings management">
-          <h2>Profile, Photo &amp; Links</h2><p>Manage public profile information, research links, contact details and the experience counter.</p>
-          <Link className={styles.button} href="/admin/profile">Manage Profile</Link>
+          <h2>Profile Studio</h2><p>Manage the home page, profile information, academic history, research areas, experience, links and photos.</p>
+          <Link className={styles.button} href="/admin/profile">Open Profile Studio</Link>
         </section>
         <section className={styles.module} aria-label="Private resume generation">
           <h2>Academic Resume</h2><p>Generate and download a current, complete PDF resume from the profile and academic records.</p>

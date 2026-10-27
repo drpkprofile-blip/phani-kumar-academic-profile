@@ -3,6 +3,9 @@
 import { Fragment, useState } from "react";
 import { useActionState } from "react";
 import type { AcademicIdentity, ProfileLink } from "../../../data/profile";
+import type { Education } from "../../../data/education";
+import type { Experience } from "../../../data/experience";
+import type { ResearchArea } from "../../../data/research";
 import { saveProfileSettings, type ProfileFormState } from "./actions";
 import styles from "../admin.module.css";
 
@@ -15,6 +18,7 @@ type ProfileEditorValues = {
   google_scholar_h_index_text: string; google_scholar_i10_index_text: string;
   technical_tools: string[]; skills: string[];
   research_interests: string[]; academic_identity: AcademicIdentity[]; profile_links: ProfileLink[];
+  education_records: Education[]; research_area_records: ResearchArea[]; experience_records: Experience[];
   hero_message_mode: string; hero_quote: string; hero_quote_attribution: string;
   hero_greeting: string; hero_greeting_attribution: string;
 };
@@ -55,7 +59,7 @@ function RowEditor<T extends { label: string; href?: string }>({
   }
   return <fieldset className={styles.rowEditor}>
     <legend>{title}</legend>
-    {rows.map((row, index) => <div className={styles.profileRow} key={`${title}-${index}`}>
+    {rows.map((row, index) => <div className={styles.profileRecordRow} key={`${title}-${index}`}>
       <label className={styles.field}>Label<input value={row.label} onChange={(event) => update(index, "label", event.target.value)} /></label>
       {identity && <label className={styles.field}>Value<input value={String((row as T & { value?: string }).value ?? "")} onChange={(event) => update(index, "value", event.target.value)} /></label>}
       <label className={styles.field}>URL (optional)<input type="url" value={row.href ?? ""} onChange={(event) => update(index, "href", event.target.value)} /></label>
@@ -65,10 +69,36 @@ function RowEditor<T extends { label: string; href?: string }>({
   </fieldset>;
 }
 
+function RecordListEditor<T extends object>({
+  title, rows, onChange, fields, createRow,
+}: {
+  title: string;
+  rows: T[];
+  onChange: (rows: T[]) => void;
+  fields: Array<{ key: keyof T; label: string; multiline?: boolean }>;
+  createRow: () => T;
+}) {
+  return <fieldset className={styles.rowEditor}>
+    <legend>{title}</legend>
+    {rows.map((row, index) => <div className={styles.profileRecordRow} key={`${title}-${index}`}>
+      <strong>{index + 1}</strong>
+      {fields.map((field) => <label className={styles.field} key={String(field.key)}>{field.label}
+        {field.multiline ? <textarea rows={3} value={String(row[field.key] ?? "")} onChange={(event) => onChange(rows.map((entry, entryIndex) => entryIndex === index ? { ...entry, [field.key]: event.target.value } as T : entry))} />
+          : <input value={String(row[field.key] ?? "")} onChange={(event) => onChange(rows.map((entry, entryIndex) => entryIndex === index ? { ...entry, [field.key]: event.target.value } as T : entry))} />}
+      </label>)}
+      <button type="button" className={styles.danger} onClick={() => onChange(rows.filter((_, rowIndex) => rowIndex !== index))} aria-label={`Remove ${title} record ${index + 1}`}>Remove</button>
+    </div>)}
+    <button type="button" className={styles.secondary} onClick={() => onChange([...rows, createRow()])}>Add {title.toLowerCase()}</button>
+  </fieldset>;
+}
+
 export default function ProfileEditor({ initial }: { initial: ProfileEditorValues }) {
   const [state, action, pending] = useActionState<ProfileFormState, FormData>(saveProfileSettings, {});
   const [identity, setIdentity] = useState(initial.academic_identity);
   const [links, setLinks] = useState(initial.profile_links);
+  const [education, setEducation] = useState(initial.education_records.map((item) => ({ ...item, detail: item.detail ?? "", proof: item.proof ?? "", marksProof: item.marksProof ?? "" })));
+  const [researchAreas, setResearchAreas] = useState(initial.research_area_records);
+  const [experience, setExperience] = useState(initial.experience_records);
   function listField(name: "technical_tools" | "skills" | "research_interests", label: string, values: string[]) {
     return <label className={styles.field} htmlFor={name}>{label} (one item per line)
       <textarea id={name} name={name} rows={5} defaultValue={values.join("\n")} />
@@ -77,6 +107,7 @@ export default function ProfileEditor({ initial }: { initial: ProfileEditorValue
 
   return <form action={action} className={styles.form}>
     {state.message && <p role="alert" className={styles.error}>{state.message}</p>}
+    <h2>Home page and public identity</h2>
     {fields.map(({ name, label, multiline }) => <Fragment key={name}>
       {name === "hero_message_mode" && <h2>Home page message</h2>}
       <label className={styles.field} htmlFor={name}>{label}
@@ -94,10 +125,25 @@ export default function ProfileEditor({ initial }: { initial: ProfileEditorValue
     </Fragment>)}
     <input type="hidden" name="academic_identity" value={JSON.stringify(identity)} />
     <input type="hidden" name="profile_links" value={JSON.stringify(links)} />
+    <input type="hidden" name="education_records" value={JSON.stringify(education)} />
+    <input type="hidden" name="research_area_records" value={JSON.stringify(researchAreas)} />
+    <input type="hidden" name="experience_records" value={JSON.stringify(experience)} />
+    <h2>Academic identity and public links</h2>
     <RowEditor title="Academic and research IDs" rows={identity} onChange={setIdentity} identity />
     {state.errors?.academic_identity && <p className={styles.error}>{state.errors.academic_identity}</p>}
     <RowEditor title="Social and research links" rows={links} onChange={setLinks} />
     {state.errors?.profile_links && <p className={styles.error}>{state.errors.profile_links}</p>}
+    <h2>Academic records and career</h2>
+    <RecordListEditor title="Education record" rows={education} onChange={setEducation} createRow={() => ({ year: "", degree: "", institution: "", field: "", detail: "", proof: "", marksProof: "" })}
+      fields={[{ key: "year", label: "Year / date" }, { key: "degree", label: "Degree" }, { key: "institution", label: "Institution" }, { key: "field", label: "Field" }, { key: "detail", label: "Additional detail", multiline: true }, { key: "proof", label: "Proof URL" }, { key: "marksProof", label: "Marks memo URL" }]} />
+    {state.errors?.education_records && <p className={styles.error}>{state.errors.education_records}</p>}
+    <RecordListEditor title="Research area" rows={researchAreas} onChange={setResearchAreas} createRow={() => ({ title: "", text: "" })}
+      fields={[{ key: "title", label: "Area title" }, { key: "text", label: "Description", multiline: true }]} />
+    {state.errors?.research_area_records && <p className={styles.error}>{state.errors.research_area_records}</p>}
+    <RecordListEditor title="Experience record" rows={experience} onChange={setExperience} createRow={() => ({ period: "", role: "", institution: "", department: "" })}
+      fields={[{ key: "period", label: "Period" }, { key: "role", label: "Position" }, { key: "institution", label: "Institution" }, { key: "department", label: "Department" }]} />
+    {state.errors?.experience_records && <p className={styles.error}>{state.errors.experience_records}</p>}
+    <h2>Research interests and technical profile</h2>
     {listField("research_interests", "Research interests", state.values?.research_interests ?? initial.research_interests)}
     {listField("technical_tools", "Technical tools", state.values?.technical_tools ?? initial.technical_tools)}
     {listField("skills", "Skills", state.values?.skills ?? initial.skills)}

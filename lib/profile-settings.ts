@@ -1,6 +1,9 @@
 import "server-only";
 
 import { profile as referenceProfile, type AcademicIdentity, type HeroMessage, type ProfileLink } from "../data/profile";
+import { educationNewestFirst, type Education } from "../data/education";
+import { experience as referenceExperience, type Experience } from "../data/experience";
+import { researchAreas as referenceResearchAreas, type ResearchArea } from "../data/research";
 import { counters } from "../data/counters";
 import { pageLinks } from "../data/page-content";
 import { createClient } from "./supabase/server";
@@ -31,6 +34,9 @@ export const defaultHeroMessage: HeroMessage = {
 export type PublicProfileSettings = {
   profile: ManagedProfile;
   experienceCounterText: string;
+  education: Education[];
+  researchAreas: ResearchArea[];
+  experience: Experience[];
 };
 
 const referenceManagedProfile: ManagedProfile = {
@@ -100,6 +106,9 @@ function mapProfileSettings(row: ProfileSettingsRow): PublicProfileSettings {
       researchInterests: jsonArray<string>(row.research_interests, [...referenceProfile.researchInterests]),
     },
     experienceCounterText: row.experience_counter_text,
+    education: jsonArray<Education>(row.education_records, [...educationNewestFirst]),
+    researchAreas: jsonArray<ResearchArea>(row.research_area_records, [...referenceResearchAreas]),
+    experience: jsonArray<Experience>(row.experience_records, [...referenceExperience]),
   };
 }
 
@@ -108,6 +117,9 @@ export async function getPublicProfileSettings(): Promise<PublicProfileSettings>
     return {
       profile: referenceManagedProfile,
       experienceCounterText: counters.experienceYears,
+      education: [...educationNewestFirst],
+      researchAreas: [...referenceResearchAreas],
+      experience: [...referenceExperience],
     };
   }
 
@@ -121,6 +133,9 @@ export async function getPublicProfileSettings(): Promise<PublicProfileSettings>
     return {
       profile: referenceManagedProfile,
       experienceCounterText: counters.experienceYears,
+      education: [...educationNewestFirst],
+      researchAreas: [...referenceResearchAreas],
+      experience: [...referenceExperience],
     };
   }
   if (error || !data) throw new Error("Unable to read public profile settings from Supabase");

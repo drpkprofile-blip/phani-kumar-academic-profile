@@ -1,8 +1,5 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { researchAreas } from "../data/research";
-import { educationNewestFirst as education } from "../data/education";
-import { experience } from "../data/experience";
 import { pageCopy, pageLinks } from "../data/page-content";
 import { getPublicPublications } from "../lib/publications";
 import { getPublicPatents } from "../lib/patents";
@@ -50,7 +47,7 @@ function ExternalLink({
 }
 
 export default async function Home() {
-  const { profile, experienceCounterText } = await getPublicProfileSettings();
+  const { profile, experienceCounterText, education, researchAreas, experience } = await getPublicProfileSettings();
   const googleScholarUrl = profile.profileLinks.find((link) => link.label === "Google Scholar" && link.href)?.href
     ?? profile.academicIdentity.find((item) => item.label === "Google Scholar ID" && item.href)?.href;
   const scholarMetrics = {
