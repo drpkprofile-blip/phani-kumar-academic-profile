@@ -3494,3 +3494,14 @@ body:has(.navbar) .hero > .hero-message {
     padding-block: 11px;
   }
 }
+
+/* Bring the quote closer to the navigation and reclaim the empty top band. */
+body:has(.navbar) .hero {
+  padding-top: clamp(8px, 0.8vw, 14px);
+}
+
+@media (max-width: 760px) {
+  body:has(.navbar) .hero {
+    padding-top: 8px;
+  }
+}
