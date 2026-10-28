@@ -125,12 +125,12 @@ export default async function Home() {
               <p className="institution">{profile.institution}</p>
             </div>
 
-            <p className="hero-description">{profile.description}</p>
-
-            <div className="hero-buttons">
-              <a href={pageLinks.research} className="button button-primary">{pageCopy.exploreResearch}</a>
-              <a href={pageLinks.contact} className="button button-secondary">{pageCopy.contactMe}</a>
-              <a href="/admin/resume" className="button button-secondary">Download CV</a>
+            <div className="hero-summary-row">
+              <p className="hero-description">{profile.description}</p>
+              <div className="hero-download-actions">
+                <a href="/admin/resume" className="button button-secondary hero-download">Download CV</a>
+                <a href="/journal-bio/download" className="button button-secondary hero-download hero-journal-bio">Journal Bio</a>
+              </div>
             </div>
 
             <div className="hero-stats hero-stats--guided">

@@ -3158,6 +3158,32 @@ body {
   line-height: 1.72;
 }
 
+.hero-summary-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(16px, 2vw, 28px);
+  margin-top: 20px;
+}
+
+.hero-summary-row .hero-description {
+  flex: 1 1 480px;
+  min-width: 0;
+  margin: 0;
+}
+
+.hero-download-actions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.hero-download {
+  flex-shrink: 0;
+}
+
 .hero-buttons {
   gap: 12px;
   margin-top: 24px;
@@ -3169,12 +3195,12 @@ body {
   font-size: 15px;
 }
 
-.hero-buttons .button-secondary[href="/admin/resume"] {
+.hero-download {
   border-color: rgba(99, 200, 245, 0.45);
   background: rgba(14, 52, 73, 0.36);
 }
 
-.hero-buttons .button-secondary[href="/admin/resume"]:hover {
+.hero-download:hover {
   border-color: #79d4ff;
   background: rgba(99, 200, 245, 0.14);
 }
@@ -3275,6 +3301,21 @@ body {
 
   .hero-description {
     font-size: 16px;
+  }
+
+  .hero-summary-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .hero-summary-row .hero-description {
+    flex: 0 1 auto;
+    width: 100%;
+  }
+
+  .hero-download-actions {
+    width: 100%;
   }
 
   .photo-frame {
