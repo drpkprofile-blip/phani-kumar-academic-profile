@@ -3167,17 +3167,19 @@ body {
 }
 
 .hero-summary-row .hero-description {
-  flex: 1 1 480px;
+  flex: 1 1 0;
+  max-width: none;
   min-width: 0;
   margin: 0;
 }
 
 .hero-download-actions {
   display: flex;
-  flex: 0 1 auto;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  flex-direction: column;
   gap: 10px;
-  align-items: flex-start;
+  align-items: flex-end;
+  margin-left: auto;
 }
 
 .hero-download {
@@ -3316,6 +3318,10 @@ body {
 
   .hero-download-actions {
     width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-left: 0;
   }
 
   .photo-frame {
