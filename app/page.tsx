@@ -18,6 +18,7 @@ import { formatAcademicDate } from "../lib/date-format";
 import { primaryScholarMetric } from "../lib/scholar-metrics";
 import ActivityBrowser from "./activity-browser";
 import PublicationBrowser from "./publication-browser";
+import ProjectGuidedBrowser from "./project-guided-browser";
 import PrimaryNavigation from "./primary-navigation";
 import ProfileVisitCounter from "./profile-visit-counter";
 import SocialLinkIcon from "./social-link-icon";
@@ -694,23 +695,7 @@ export default async function Home() {
           {projectsGuided.length === 0 ? (
             <div className="projects-guided-empty-state" role="status">{pageCopy.projectsGuidedEmpty}</div>
           ) : (
-            <div className="projects-guided-grid">
-              {projectsGuided.map((project) => (
-                <article className="project-guided-card" key={project.id}>
-                  <div className="project-guided-topline">
-                    <span>{String(project.displayOrder).padStart(2, "0")}</span>
-                    {project.projectLevel && <span>{project.projectLevel}</span>}
-                  </div>
-                  <h3>{project.projectTitle}</h3>
-                  {[project.degreeProgram, project.branch, project.academicYear, project.batch]
-                    .filter(Boolean).map((detail, index) => <p key={`${index}-${detail}`}>{detail}</p>)}
-                  {project.studentNames && <p><strong>{pageCopy.students}:</strong> {project.studentNames.join(", ")}</p>}
-                  {project.guideName && <p><strong>{pageCopy.guide}:</strong> {project.guideName}</p>}
-                  {project.coGuideNames && <p><strong>{pageCopy.coGuides}:</strong> {project.coGuideNames.join(", ")}</p>}
-                  {project.proofUrl && <div className="proof-row"><ExternalLink url={project.proofUrl}>{pageCopy.proof}</ExternalLink></div>}
-                </article>
-              ))}
-            </div>
+            <ProjectGuidedBrowser projects={projectsGuided} />
           )}
         </div>
       </section>
