@@ -22,7 +22,7 @@ export default function ActivityForm({id,updatedAt,initial,categories}:{id?:numb
         {error&&<span id={`${name}-error`} className={styles.error}>{error}</span>}
       </label>;
     })}
-    <p className={styles.note}>Leave missing information blank. Dates and durations are kept as entered. New activities and year changes append to the selected year.</p>
+    <p className={styles.note}>Leave missing information blank. Dates and durations are kept as entered. Saving sorts that year by the newest recognized date first. Entries with the same date or no readable date keep their current order; adjust them with Position on the Activities page.</p>
     <div className={styles.controls}><button className={styles.button} disabled={pending}>{pending?"Saving…":id?"Save activity":"Add activity"}</button><a className={styles.secondary} href="/admin/activities">Cancel</a></div>
   </form>;
 }

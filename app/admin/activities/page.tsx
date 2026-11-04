@@ -1,9 +1,9 @@
 import { requireAdminPage } from "../../../lib/auth/admin-page";
 import { logout } from "../actions";
-import { moveActivity } from "./actions";
+import { moveActivity, sortActivitiesByDate } from "./actions";
 import styles from "../admin.module.css";
 import Link from "next/link";
-const successes:Record<string,string>={added:"Activity added.",saved:"Activity saved.",deleted:"Activity deleted.",reordered:"Activity order updated."};
+const successes:Record<string,string>={added:"Activity added and sorted by date.",saved:"Activity saved and sorted by date.",deleted:"Activity deleted.",reordered:"Activity order updated.","date-sorted":"Activities sorted by latest date. You can still adjust their positions below."};
 const errors:Record<string,string>={stale:"The activity or year order changed. Reload and try again.",operation:"Unable to complete the operation. Please try again.",confirmation:"Deletion requires explicit confirmation.",position:"Choose a valid position within this year."};
 export default async function ActivitiesManagement({searchParams}:{searchParams:Promise<{success?:string;error?:string}>}) {
   const {user,supabase}=await requireAdminPage();
@@ -16,7 +16,7 @@ export default async function ActivitiesManagement({searchParams}:{searchParams:
     {success&&Object.hasOwn(successes,success)&&<p role="status" className={styles.success}>{successes[success]}</p>}
     {error&&Object.hasOwn(errors,error)&&<p role="alert" className={styles.error}>{errors[error]}</p>}
     {years.map(year=>{const group=activities.filter(a=>a.year===year);const order=JSON.stringify(group.map(a=>a.id));return <section key={year} aria-label={`Activities ${year}`}>
-      <h2>{year} ({group.length})</h2><div className={styles.list}>{group.map((a,index)=><article key={a.id} className={styles.record}>
+      <div className={styles.toolbar}><h2>{year} ({group.length})</h2><form action={sortActivitiesByDate}><input type="hidden" name="year" value={year}/><button className={styles.secondary}>Sort by latest date</button></form></div><div className={styles.list}>{group.map((a,index)=><article key={a.id} className={styles.record}>
         <div className={styles.badges}><span>#{index+1}</span><span>{a.activity_type}</span></div><h3>{a.title}</h3><p>{a.institution}</p>
         {a.date_text&&<p>{a.date_text}</p>}{a.duration_text&&<p>{a.duration_text}</p>}{a.details&&<details><summary>Activity details</summary><p>{a.details}</p></details>}
         {a.proof_url?<a href={a.proof_url} target="_blank" rel="noopener noreferrer">Certificate / Proof ↗</a>:<p className={styles.note}>Proof link will be updated soon</p>}

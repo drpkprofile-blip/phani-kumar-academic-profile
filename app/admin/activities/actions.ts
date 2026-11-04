@@ -5,6 +5,33 @@ import { revalidatePath } from "next/cache";
 import { requireAdminPage } from "../../../lib/auth/admin-page";
 import { positiveInteger } from "../../../lib/admin/publication-form";
 import { parseActivityForm, type ActivityFormState } from "../../../lib/admin/activity-form";
+import { orderActivitiesByDate } from "../../../lib/admin/activity-date-order";
+
+async function sortYearByDate(supabase: Awaited<ReturnType<typeof requireAdminPage>>["supabase"], year: string): Promise<{ code?: string } | null> {
+  const { data, error } = await supabase.from("activities").select("id,year,date_text,display_order")
+    .eq("year", year).order("display_order", { ascending: true });
+  if (error || !data) return error ? { code: error.code } : {};
+
+  const current = data.map((row) => row.id);
+  const desired = orderActivitiesByDate(data).map((row) => row.id);
+  const order = [...current];
+  for (let index = 0; index < desired.length; index += 1) {
+    if (order[index] === desired[index]) continue;
+    const from = order.indexOf(desired[index]);
+    if (from < 0) return { code: "P0001" };
+    const [id] = order.splice(from, 1);
+    order.splice(index, 0, id);
+    const { error: moveError } = await supabase.rpc("admin_move_activity", {
+      p_id: id,
+      p_year: year,
+      p_position: index + 1,
+      p_expected_order: [...current],
+    });
+    if (moveError) return { code: moveError.code };
+    current.splice(0, current.length, ...order);
+  }
+  return null;
+}
 
 function success(status: string): never {
   revalidatePath("/");
@@ -29,12 +56,30 @@ export async function saveActivity(_previous: ActivityFormState, form: FormData)
   if ((rawId !== "" && id === null) || (id !== null && (!timestamp || !Number.isFinite(Date.parse(timestamp))))) {
     return { message: "Invalid record reference. Reload this page.", values: parsed.values };
   }
+  let previousYear: string | null = null;
+  if (id !== null) {
+    const existing = await supabase.from("activities").select("year").eq("id", id).maybeSingle();
+    if (existing.error) return { message: "Unable to check the current activity. Reload and try again.", values: parsed.values };
+    previousYear = existing.data?.year ?? null;
+  }
   const { error } = await supabase.rpc("admin_save_activity", {
     p_activity: parsed.data,
     ...(id === null ? {} : { p_id: id, p_expected_updated_at: timestamp }),
   });
   if (error) return { message: error.code === "P0001" ? "This activity changed or was removed. Reload before saving." : "Unable to save this activity. Please try again.", values: parsed.values };
+  const sortErrors = await Promise.all([...new Set([parsed.data.year, previousYear].filter((year): year is string => !!year))]
+    .map((year) => sortYearByDate(supabase, year)));
+  if (sortErrors.some(Boolean)) return { message: "Activity saved, but its year could not be date-sorted. Use ‘Sort by latest date’ on the Activities page.", values: parsed.values };
   success(id === null ? "added" : "saved");
+}
+
+export async function sortActivitiesByDate(form: FormData) {
+  const { supabase } = await requireAdminPage();
+  const year = form.get("year");
+  if (typeof year !== "string" || !/^\d{4}$/.test(year)) redirect("/admin/activities?error=position");
+  const error = await sortYearByDate(supabase, year);
+  if (error) failed(error.code);
+  success("date-sorted");
 }
 
 export async function deleteActivity(form: FormData) {

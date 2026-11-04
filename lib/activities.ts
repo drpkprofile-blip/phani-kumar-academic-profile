@@ -3,6 +3,7 @@ import "server-only";
 import { activities as referenceActivities, activityTypes as referenceTypes, type AcademicActivity } from "../data/activities";
 import { createClient } from "./supabase/server";
 import type { Database } from "./supabase/database.types";
+import { orderActivitiesByDate } from "./admin/activity-date-order";
 
 type ActivityRow = Database["public"]["Tables"]["activities"]["Row"];
 export type PublicActivities = {
@@ -37,7 +38,10 @@ function result(activities: AcademicActivity[], labels: string[]): PublicActivit
 export async function getPublicActivities(): Promise<PublicActivities> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     console.warn("Supabase public configuration missing; using the committed Activities reference.");
-    return result([...referenceActivities].sort((a,b) => Number(b.year)-Number(a.year)), referenceTypes);
+    const ordered = orderActivitiesByDate(referenceActivities.map((activity, index) => ({
+      ...activity, id: index, date_text: activity.date ?? null, display_order: index,
+    }))).map(({ id }) => referenceActivities[id]);
+    return result(ordered, referenceTypes);
   }
   const supabase = await createClient();
   const [records, categories] = await Promise.all([
