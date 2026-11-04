@@ -28,32 +28,46 @@ export function activityDateKey(dateText: string | null, fallbackYear: string): 
   let match = value.match(/\b\d{1,2}[/.\-]\d{1,2}[/.\-]\d{4}\s*(?:to|-)\s*(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})\b/i);
   if (match) return dateKey(Number(match[3]), Number(match[2]), Number(match[1]));
 
+  // Cross-month academic ranges, e.g. 27 April–02 May 2020.
+  match = value.match(/\b\d{1,2}(?:st|nd|rd|th)?\s+([a-z]+)\s*(?:to|-)\s*(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\s+(\d{4})\b/i);
+  if (match) {
+    const month = monthNames[match[3].toLowerCase()];
+    if (month) return dateKey(Number(match[4]), month, Number(match[2]));
+  }
+
+  // Two individually dated days, e.g. 21 & 24 December 2022.
+  match = value.match(/\b\d{1,2}(?:st|nd|rd|th)?\s*(?:&|and)\s*(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\s+(\d{4})\b/i);
+  if (match) {
+    const month = monthNames[match[2].toLowerCase()];
+    if (month) return dateKey(Number(match[3]), month, Number(match[1]));
+  }
+
   match = value.match(/\b(\d{4})-(\d{1,2})-(\d{1,2})\b/);
   if (match) return dateKey(Number(match[1]), Number(match[2]), Number(match[3]));
 
   // Day range followed by a month and year, e.g. 07-08 August 2026.
-  match = value.match(/\b\d{1,2}\s*[-/]\s*(\d{1,2})\s+([a-z]+)\s+(\d{4})\b/i);
+  match = value.match(/\b\d{1,2}(?:st|nd|rd|th)?\s*[-/]\s*(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\s+(\d{4})\b/i);
   if (match) {
     const month = monthNames[match[2].toLowerCase()];
     if (month) return dateKey(Number(match[3]), month, Number(match[1]));
   }
 
   // Month followed by a day range and year, e.g. August 07-08, 2026.
-  match = value.match(/\b([a-z]+)\s+\d{1,2}\s*[-/]\s*(\d{1,2}),?\s+(\d{4})\b/i);
+  match = value.match(/\b([a-z]+)\s+\d{1,2}(?:st|nd|rd|th)?\s*[-/]\s*(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})\b/i);
   if (match) {
     const month = monthNames[match[1].toLowerCase()];
     if (month) return dateKey(Number(match[3]), month, Number(match[2]));
   }
 
   // Day + month + optional year, e.g. 8 August 2026.
-  match = value.match(/\b(\d{1,2})\s+([a-z]+)(?:\s+(\d{4}))?\b/i);
+  match = value.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)(?:\s+(\d{4}))?\b/i);
   if (match) {
     const month = monthNames[match[2].toLowerCase()];
     if (month) return dateKey(Number(match[3] ?? fallbackYear), month, Number(match[1]));
   }
 
   // Month + day + optional year, e.g. August 8, 2026.
-  match = value.match(/\b([a-z]+)\s+(\d{1,2})(?:,?\s+(\d{4}))?\b/i);
+  match = value.match(/\b([a-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?\b/i);
   if (match) {
     const month = monthNames[match[1].toLowerCase()];
     if (month) return dateKey(Number(match[3] ?? fallbackYear), month, Number(match[2]));
