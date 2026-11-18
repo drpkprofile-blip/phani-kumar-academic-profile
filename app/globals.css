@@ -3317,7 +3317,7 @@ body {
 }
 
 .hero-stats--guided .publication-equation-parts span:not(.publication-equation-operator),
-.hero-stats--guided .publication-equation-total > span:last-child {
+.hero-stats--guided .publication-equation-total-value > span {
   margin: 0;
   font-size: 9px;
   line-height: 1.2;
@@ -3335,8 +3335,14 @@ body {
 
 .publication-equation-total {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
+}
+
+.publication-equation-total-value {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
 }
 
 .hero-stats--guided .publication-equation-total strong,

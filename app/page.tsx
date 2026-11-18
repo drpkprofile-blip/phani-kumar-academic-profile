@@ -143,8 +143,10 @@ export default async function Home() {
                 </div>
                 <div className="publication-equation-total">
                   <span className="publication-equation-operator" aria-hidden="true">=</span>
-                  <strong>{publishedCount + acceptedCount}+</strong>
-                  <span>Total</span>
+                  <div className="publication-equation-total-value">
+                    <strong>{publishedCount + acceptedCount}+</strong>
+                    <span>Total</span>
+                  </div>
                 </div>
               </div>
               <div>
