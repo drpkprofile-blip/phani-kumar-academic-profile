@@ -3294,8 +3294,9 @@ body {
 }
 
 .publication-equation-stat {
-  display: grid;
-  gap: 7px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .publication-equation-parts {
@@ -3336,8 +3337,6 @@ body {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  padding-top: 6px;
-  border-top: 1px solid rgba(180, 138, 255, 0.22);
 }
 
 .hero-stats--guided .publication-equation-total strong,
