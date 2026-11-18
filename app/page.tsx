@@ -135,9 +135,17 @@ export default async function Home() {
             </div>
 
             <div className="hero-stats hero-stats--guided">
-              <div>
-                <strong>{publishedCount}+</strong>
-                <span>Published · {acceptedCount}+ accepted</span>
+              <div className="publication-equation-stat">
+                <div className="publication-equation-parts">
+                  <div><strong>{publishedCount}+</strong><span>Published</span></div>
+                  <span className="publication-equation-operator" aria-hidden="true">+</span>
+                  <div><strong>{acceptedCount}+</strong><span>Accepted</span></div>
+                </div>
+                <div className="publication-equation-total">
+                  <span className="publication-equation-operator" aria-hidden="true">=</span>
+                  <strong>{publishedCount + acceptedCount}+</strong>
+                  <span>Total Publications</span>
+                </div>
               </div>
               <div>
                 <strong>{heroPeerReviews}</strong>
@@ -384,6 +392,7 @@ export default async function Home() {
             <div className="publication-count-stats" aria-label="Publication counts">
               <div className="big-stat"><strong>{publishedCount}+</strong><span>Published</span></div>
               <div className="big-stat"><strong>{acceptedCount}+</strong><span>Accepted</span></div>
+              <div className="big-stat big-stat--total"><strong>{publishedCount + acceptedCount}+</strong><span>Total Publications</span></div>
             </div>
           </div>
 

@@ -3293,6 +3293,67 @@ body {
   letter-spacing: 0.09em;
 }
 
+.publication-equation-stat {
+  display: grid;
+  gap: 7px;
+}
+
+.publication-equation-parts {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.publication-equation-parts > div {
+  display: grid;
+  gap: 4px;
+}
+
+.hero-stats--guided .publication-equation-parts strong,
+.hero-stats--guided .publication-equation-total strong {
+  font-size: clamp(20px, 2.1vw, 29px);
+  line-height: 1;
+}
+
+.hero-stats--guided .publication-equation-parts span:not(.publication-equation-operator),
+.hero-stats--guided .publication-equation-total > span:last-child {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+}
+
+.hero-stats--guided .publication-equation-operator {
+  margin: 0;
+  color: #d5ff63;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.publication-equation-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(180, 138, 255, 0.22);
+}
+
+.hero-stats--guided .publication-equation-total strong,
+.publication-count-stats .big-stat--total strong {
+  color: #d5ff63;
+}
+
+.publication-count-stats {
+  flex-wrap: wrap;
+}
+
+.publication-count-stats .big-stat--total {
+  border-color: rgba(213, 255, 99, 0.38);
+  background: linear-gradient(145deg, rgba(213, 255, 99, 0.1), rgba(180, 138, 255, 0.08));
+}
+
 .profile-card {
   border-radius: 24px;
   padding: 18px;
