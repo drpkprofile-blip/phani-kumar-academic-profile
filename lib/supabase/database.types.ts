@@ -577,6 +577,7 @@ export type Database = {
           journal: string
           proof_url: string | null
           publication_type: string | null
+          publication_status: "Published" | "Accepted"
           source_order: number | null
           title: string
           updated_at: string
@@ -593,6 +594,7 @@ export type Database = {
           journal: string
           proof_url?: string | null
           publication_type?: string | null
+          publication_status?: "Published" | "Accepted"
           source_order?: number | null
           title: string
           updated_at?: string
@@ -609,6 +611,7 @@ export type Database = {
           journal?: string
           proof_url?: string | null
           publication_type?: string | null
+          publication_status?: "Published" | "Accepted"
           source_order?: number | null
           title?: string
           updated_at?: string

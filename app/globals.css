@@ -1089,6 +1089,78 @@ main {
   gap: 18px;
 }
 
+.publication-status-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 18px;
+}
+
+.publication-status-filter button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.publication-status-filter button span {
+  color: var(--teal);
+}
+
+.publication-status-filter button[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: rgba(56, 214, 204, 0.12);
+  color: var(--white);
+}
+
+.publication-list-heading {
+  margin: 0 0 16px;
+  color: var(--white);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 26px;
+}
+
+.publication-count-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.publication-count-stats .big-stat {
+  min-width: 90px;
+}
+
+.publication-status-tag--accepted {
+  border-color: rgba(210, 149, 255, 0.5) !important;
+  color: #d295ff !important;
+  background: rgba(210, 149, 255, 0.08) !important;
+}
+
+.publication-empty {
+  grid-column: 1 / -1;
+  padding: 24px;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+@media (max-width: 600px) {
+  .publication-count-stats {
+    gap: 14px;
+  }
+
+  .publication-status-filter button {
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+}
+
 .publication-card {
   display: flex;
   flex-direction: column;

@@ -57,7 +57,7 @@ export default async function Home() {
     hIndex: primaryScholarMetric(profile.googleScholarMetrics.hIndexText),
     i10Index: primaryScholarMetric(profile.googleScholarMetrics.i10IndexText),
   };
-  const { publications: sortedPublications, heroPublications } = await getPublicPublications();
+  const { publications: sortedPublications, publishedCount, acceptedCount } = await getPublicPublications();
   const patents = await getPublicPatents();
   const { activities, activityTypes, activityYears } = await getPublicActivities();
   const certifications = await getPublicCertifications();
@@ -136,8 +136,8 @@ export default async function Home() {
 
             <div className="hero-stats hero-stats--guided">
               <div>
-                <strong>{heroPublications}</strong>
-                <span>{pageCopy.publicationsLabel}</span>
+                <strong>{publishedCount}+</strong>
+                <span>Published · {acceptedCount}+ accepted</span>
               </div>
               <div>
                 <strong>{heroPeerReviews}</strong>
@@ -381,9 +381,9 @@ export default async function Home() {
               <h2>{pageCopy.researchPublications}</h2>
               <p>{pageCopy.publicationsDescription}</p>
             </div>
-            <div className="big-stat">
-              <strong>{sortedPublications.length}{pageCopy.counterSuffix}</strong>
-              <span>{pageCopy.researchPublicationsLabel}</span>
+            <div className="publication-count-stats" aria-label="Publication counts">
+              <div className="big-stat"><strong>{publishedCount}+</strong><span>Published</span></div>
+              <div className="big-stat"><strong>{acceptedCount}+</strong><span>Accepted</span></div>
             </div>
           </div>
 

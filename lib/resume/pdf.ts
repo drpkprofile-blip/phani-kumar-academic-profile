@@ -317,10 +317,17 @@ export async function renderResumePdf(
       paragraph(doc, scholarMetrics);
       paragraph(doc, "Peer-reviewed Web of Science (WoS) publications: 17", { muted: true });
     }
-    const allPublications = yearNewestFirst(model.publications, (item) => item.year);
-    section(doc, `Research Publications (${allPublications.length})`);
+    const published = yearNewestFirst(model.publications.filter((item) => (item.status ?? "Published") === "Published"), (item) => item.year);
+    const accepted = yearNewestFirst(model.publications.filter((item) => item.status === "Accepted"), (item) => item.year);
+    const publicationGroups = [
+      { heading: `Research Publications (${published.length})`, items: published },
+      { heading: `Accepted Publications (${accepted.length})`, items: accepted },
+    ].filter((group) => group.items.length > 0);
     let publicationPage = doc.bufferedPageRange().count;
-    for (const publication of allPublications) {
+    for (const group of publicationGroups) {
+      section(doc, group.heading);
+      publicationPage = doc.bufferedPageRange().count;
+      for (const publication of group.items) {
       const title = `${publication.title} (${publication.year})`;
       const indexing = publication.indexing?.filter(Boolean) ?? [];
       const metadata = [
@@ -339,13 +346,14 @@ export async function renderResumePdf(
         + (doi ? 13 : 0) + 8;
       ensureRoom(doc, estimatedHeight);
       const currentPage = doc.bufferedPageRange().count;
-      if (currentPage !== publicationPage) {
-        section(doc, "Research Publications (continued)");
-        publicationPage = doc.bufferedPageRange().count;
-      }
-      entry(doc, title, detail);
-      if (doi) {
-        paragraph(doc, `doi:${doi}`, { link: `https://doi.org/${doi}`, fontSize: 8.1 });
+        if (currentPage !== publicationPage) {
+          section(doc, `${group.heading} (continued)`);
+          publicationPage = doc.bufferedPageRange().count;
+        }
+        entry(doc, title, detail);
+        if (doi) {
+          paragraph(doc, `doi:${doi}`, { link: `https://doi.org/${doi}`, fontSize: 8.1 });
+        }
       }
     }
 

@@ -1,5 +1,6 @@
 export type Publication = {
   id: number;
+  status?: "Published" | "Accepted";
   year: string;
   title: string;
   journal: string;
@@ -30,6 +31,7 @@ export type Publication = {
 export const publications: Publication[] = [
   {
     id: 1,
+    status: "Published",
     year: "2026",
     title:
       "Machine learning assisted development and finite element based multi-objective optimization of Al6061/WS2/TiO2 hybrid composite spur gears",

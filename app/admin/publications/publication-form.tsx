@@ -12,7 +12,7 @@ export default function PublicationForm({ id, updatedAt, initial }: {
   const value = (name: keyof PublicationValues) => state.values?.[name] ?? initial?.[name] ?? "";
   const error = (name: keyof PublicationValues) => state.errors?.[name];
   const props = (name: keyof PublicationValues) => ({
-    id: name, name, defaultValue: value(name), "aria-invalid": !!error(name),
+    id: name, name, defaultValue: value(name) || (name === "publication_status" ? "Published" : ""), "aria-invalid": !!error(name),
     "aria-describedby": error(name) ? `${name}-error` : undefined,
   });
   const hint = (name: keyof PublicationValues) => error(name) && <span id={`${name}-error`} className={styles.error}>{error(name)}</span>;
@@ -26,6 +26,12 @@ export default function PublicationForm({ id, updatedAt, initial }: {
       </label>
       <label className={styles.field} htmlFor="year">Year (required)
         <input {...props("year")} inputMode="numeric" pattern="[0-9]{4}" maxLength={4} required />{hint("year")}
+      </label>
+      <label className={styles.field} htmlFor="publication_status">Publication status (required)
+        <select {...props("publication_status")} required>
+          <option value="Published">Published</option>
+          <option value="Accepted">Accepted</option>
+        </select>{hint("publication_status")}
       </label>
       <label className={styles.field} htmlFor="journal">Journal / publication details (required)
         <textarea {...props("journal")} rows={3} required />{hint("journal")}

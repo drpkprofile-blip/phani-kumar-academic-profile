@@ -26,12 +26,26 @@ function PublicationPdfLink({ url }: { url?: string }) {
 }
 
 export default function PublicationBrowser({ publications }: PublicationBrowserProps) {
+  const [selectedStatus, setSelectedStatus] = useState<"Published" | "Accepted">("Published");
   const [selectedYear, setSelectedYear] = useState("ALL");
-  const years = getPublicationYears(publications);
-  const visiblePublications = filterPublications(publications, selectedYear);
+  const statusPublications = publications.filter((publication) => (publication.status ?? "Published") === selectedStatus);
+  const years = getPublicationYears(statusPublications);
+  const visiblePublications = filterPublications(statusPublications, selectedYear);
+  const publishedCount = publications.filter((publication) => (publication.status ?? "Published") === "Published").length;
+  const acceptedCount = publications.filter((publication) => publication.status === "Accepted").length;
 
   return (
     <>
+      <div className="publication-status-filter" role="group" aria-label="Publication status">
+        <button type="button" aria-pressed={selectedStatus === "Published"} onClick={() => { setSelectedStatus("Published"); setSelectedYear("ALL"); }}>
+          Published Publications <span>{publishedCount}+</span>
+        </button>
+        <button type="button" aria-pressed={selectedStatus === "Accepted"} onClick={() => { setSelectedStatus("Accepted"); setSelectedYear("ALL"); }}>
+          Accepted Publications <span>{acceptedCount}+</span>
+        </button>
+      </div>
+
+      <h3 className="publication-list-heading">{selectedStatus === "Accepted" ? "Accepted Publications" : "Published Publications"}</h3>
       <div className="publication-filter-note" role="group" aria-label="Filter Publications by year">
         <button
           type="button"
@@ -55,6 +69,7 @@ export default function PublicationBrowser({ publications }: PublicationBrowserP
           return (
             <article className="publication-card" key={publication.id}>
               <div className="publication-tags">
+                <span className={`publication-status-tag publication-status-tag--${selectedStatus.toLowerCase()}`}>{selectedStatus}</span>
                 <span>{publication.year}</span>
                 {publication.indexing.map((tag) => <span key={tag}>{tag}</span>)}
                 {publication.impactFactor !== undefined && <span>{pageCopy.if}{publication.impactFactor}</span>}
@@ -78,6 +93,7 @@ export default function PublicationBrowser({ publications }: PublicationBrowserP
             </article>
           );
         })}
+        {visiblePublications.length === 0 && <p className="publication-empty">No {selectedStatus.toLowerCase()} publications are listed yet.</p>}
       </div>
     </>
   );

@@ -7,6 +7,7 @@ import { parsePublicationForm, positiveInteger, type PublicationFormState } from
 
 function success(status: string): never {
   revalidatePath("/");
+  revalidatePath("/admin/publications");
   revalidatePath("/admin", "layout");
   redirect(`/admin?success=${status}`);
 }

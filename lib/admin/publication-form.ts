@@ -1,4 +1,4 @@
-export const publicationFields = ["title", "year", "journal", "indexing", "doi", "article_url", "proof_url", "publication_type", "impact_factor"] as const;
+export const publicationFields = ["title", "year", "journal", "indexing", "doi", "article_url", "proof_url", "publication_type", "impact_factor", "publication_status"] as const;
 export type PublicationField = typeof publicationFields[number];
 export type PublicationValues = Record<PublicationField, string>;
 export type PublicationFormState = {
@@ -24,6 +24,8 @@ export function parsePublicationForm(form: FormData) {
   }
   const type = optional(values.publication_type);
   if (type && !["Journal Article", "Book Chapter", "Conference Proceeding"].includes(type)) errors.publication_type = "Choose a listed publication type.";
+  const status = values.publication_status || "Published";
+  if (status !== "Published" && status !== "Accepted") errors.publication_status = "Choose Published or Accepted.";
   const impact = optional(values.impact_factor);
   const impactFactor = impact === null ? null : Number(impact);
   if (impact !== null && (!/^(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(impact) || !Number.isFinite(impactFactor) || impactFactor! < 0)) {
@@ -36,6 +38,7 @@ export function parsePublicationForm(form: FormData) {
       indexing: values.indexing.split(/\r?\n/).filter((badge) => badge.trim()),
       doi: optional(values.doi), article_url: optional(values.article_url), proof_url: optional(values.proof_url),
       publication_type: type, impact_factor: impactFactor,
+      publication_status: status,
     },
   };
 }

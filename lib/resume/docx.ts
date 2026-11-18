@@ -243,10 +243,13 @@ export async function renderResumeDocx(model: ResumeModel, images: ResumeImages 
   })] }));
   body.push(p("Peer-reviewed Web of Science (WoS) publications: 17", { color: muted, size: 17 }));
 
-  const publications = yearNewestFirst(model.publications, (item) => item.year);
-  if (publications.length) {
-    body.push(section(`Research Publications (${publications.length})`));
-    for (const item of publications) {
+  const publicationGroups = [
+    { heading: "Research Publications", items: yearNewestFirst(model.publications.filter((item) => (item.status ?? "Published") === "Published"), (item) => item.year) },
+    { heading: "Accepted Publications", items: yearNewestFirst(model.publications.filter((item) => item.status === "Accepted"), (item) => item.year) },
+  ];
+  for (const group of publicationGroups) {
+    if (group.items.length) body.push(section(`${group.heading} (${group.items.length})`));
+    for (const item of group.items) {
       const metadata = [item.journal, item.type, item.indexing?.length ? `Indexing: ${item.indexing.join(", ")}` : undefined,
         item.impactFactor !== undefined ? `Impact Factor: ${item.impactFactor}` : undefined].filter(Boolean).join(" | ");
       body.push(...entry(`${item.title} (${item.year})`, metadata));
