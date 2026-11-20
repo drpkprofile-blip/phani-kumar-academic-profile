@@ -3708,3 +3708,89 @@ body:has(.navbar) .hero {
     padding-top: 8px;
   }
 }
+
+/* Fit the complete desktop home profile into a single initial viewport. */
+@media (min-width: 1001px) {
+  body:has(.navbar) .navbar,
+  body:has(.navbar) .nav-container {
+    min-height: 96px;
+  }
+
+  body:has(.navbar) .nav-container {
+    padding-block: 5px;
+  }
+
+  body:has(.navbar) .nav-links a {
+    min-height: 40px;
+    padding-block: 6px;
+    font-size: 14px;
+  }
+
+  body:has(.navbar) .hero {
+    padding-top: 6px;
+    padding-bottom: 14px;
+  }
+
+  body:has(.navbar) .hero > .hero-message {
+    margin-bottom: 12px;
+    padding-block: 8px;
+  }
+
+  body:has(.navbar) .hero-container {
+    gap: clamp(24px, 3vw, 42px);
+  }
+
+  body:has(.navbar) .hero-nameplate {
+    margin-bottom: 0;
+    padding: 12px 16px;
+  }
+
+  body:has(.navbar) .hero-nameplate .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  body:has(.navbar) .hero-nameplate h1.hero-name {
+    margin-bottom: 6px;
+  }
+
+  body:has(.navbar) .hero-summary-row {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  body:has(.navbar) .hero-summary-row .hero-description {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  body:has(.navbar) .hero-download-actions {
+    gap: 6px;
+  }
+
+  body:has(.navbar) .hero-download {
+    min-height: 42px;
+    padding-inline: 12px;
+    font-size: 13px;
+  }
+
+  body:has(.navbar) .hero-stats--guided {
+    margin-top: 16px;
+  }
+
+  body:has(.navbar) .hero-stats--guided > div {
+    padding: 10px 8px 9px 0;
+  }
+
+  body:has(.navbar) .hero-stats--guided > div:nth-child(3n + 2),
+  body:has(.navbar) .hero-stats--guided > div:nth-child(3n) {
+    padding-left: 10px;
+  }
+
+  body:has(.navbar) .photo-frame img {
+    max-height: 270px;
+  }
+
+  body:has(.navbar) .profile-card {
+    padding: 14px;
+  }
+}
