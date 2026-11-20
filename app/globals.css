@@ -2116,6 +2116,83 @@ main {
   }
 }
 
+/* Selected profile-card layout: six compact links over the portrait's side bands. */
+body:has(.navbar) .profile-card .photo-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+body:has(.navbar) .profile-photo-link-stack {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  display: flex;
+  width: clamp(72px, 18%, 92px);
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(-50%);
+}
+
+body:has(.navbar) .profile-photo-link-stack--left { left: 8px; }
+body:has(.navbar) .profile-photo-link-stack--right { right: 8px; }
+
+body:has(.navbar) .profile-photo-link-stack a {
+  display: flex;
+  min-height: 50px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 3px;
+  border: 1px solid rgba(177, 128, 255, 0.45);
+  border-radius: 10px;
+  background: rgba(22, 27, 47, 0.9);
+  color: #f5efff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.05;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  backdrop-filter: blur(5px);
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+body:has(.navbar) .profile-photo-link-stack a:hover {
+  border-color: rgba(177, 128, 255, 0.8);
+  background: rgba(34, 43, 76, 0.96);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+body:has(.navbar) .profile-photo-link-stack a:focus-visible {
+  outline: 2px solid #b180ff;
+  outline-offset: 2px;
+}
+
+body:has(.navbar) .profile-photo-link-stack .profile-social-icon {
+  display: block;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  font-size: 10px;
+}
+
+@media (max-width: 480px) {
+  body:has(.navbar) .profile-photo-link-stack {
+    width: 70px;
+    gap: 6px;
+  }
+
+  body:has(.navbar) .profile-photo-link-stack--left { left: 6px; }
+  body:has(.navbar) .profile-photo-link-stack--right { right: 6px; }
+
+  body:has(.navbar) .profile-photo-link-stack a {
+    min-height: 46px;
+    font-size: 9px;
+  }
+}
+
 /* Glacier & Indigo profile theme, scoped to the public profile page. */
 body:has(.navbar) {
   --bg: #edf5f8;

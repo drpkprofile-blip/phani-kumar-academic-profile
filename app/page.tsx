@@ -70,6 +70,9 @@ export default async function Home() {
   const profileVisitCount = await getPublicProfileVisitCount();
   const { peerReviews, heroCounterText: heroPeerReviews, completedReviewsCount: peerReviewCount, manuscriptsCount } = await getPublicPeerReviews();
   const certificationCount = certifications.length;
+  const profileSocialLinks = profile.profileLinks.filter(
+    (social) => social.href && social.label.toLowerCase() !== "web of science",
+  );
 
   return (
     <main id="top">
@@ -175,6 +178,22 @@ export default async function Home() {
 
             <div className="photo-frame">
               <Image src={profile.photo} alt={profile.name} width={1200} height={1500} unoptimized />
+              <nav className="profile-photo-link-stack profile-photo-link-stack--left" aria-label="Social links">
+                {profileSocialLinks.slice(0, 3).map((social) => (
+                  <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" title={social.label}>
+                    <SocialLinkIcon label={social.label} />
+                    <span>{social.label}</span>
+                  </a>
+                ))}
+              </nav>
+              <nav className="profile-photo-link-stack profile-photo-link-stack--right" aria-label="Academic profile links">
+                {profileSocialLinks.slice(3, 6).map((social) => (
+                  <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" title={social.label}>
+                    <SocialLinkIcon label={social.label} />
+                    <span>{social.label === "Google Scholar" ? "Scholar" : social.label}</span>
+                  </a>
+                ))}
+              </nav>
             </div>
 
             <div className="profile-bottom">
@@ -183,23 +202,6 @@ export default async function Home() {
                 <span>{profile.department}</span>
               </div>
               <div className="profile-initial">{pageCopy.pk}</div>
-            </div>
-
-            <div className="profile-socials">
-              {profile.profileLinks.filter((social) => social.label.toLowerCase() !== "web of science").map((social) =>
-                social.href ? (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={social.label}
-                  >
-                    <SocialLinkIcon label={social.label} />
-                    {social.label}
-                  </a>
-                ) : null
-              )}
             </div>
 
             <a
