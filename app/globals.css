@@ -3871,3 +3871,163 @@ body:has(.navbar) .hero {
     padding: 14px;
   }
 }
+
+/* Responsive home layout for compact laptops, tablets and narrow phones. */
+@media (max-width: 1100px) {
+  body:has(.navbar) .hero-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  body:has(.navbar) .profile-card {
+    width: min(100%, 680px);
+    margin-inline: auto;
+  }
+}
+
+/* Use the existing menu toggle on tablet widths, before the desktop links get cramped. */
+@media (min-width: 761px) and (max-width: 1000px) {
+  body:has(.navbar) .navbar {
+    position: sticky;
+  }
+
+  body:has(.navbar) main {
+    padding-top: 0;
+  }
+
+  body:has(.navbar) .nav-container {
+    display: grid;
+    width: calc(100% - 40px);
+    min-height: 72px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+    padding-block: 8px;
+  }
+
+  body:has(.navbar) .nav-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body:has(.navbar) .primary-navigation {
+    display: contents;
+  }
+
+  body:has(.navbar) .nav-menu-toggle {
+    display: inline-flex;
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding-inline: 15px;
+  }
+
+  body:has(.navbar) .nav-links:not(.is-open) {
+    display: none;
+  }
+
+  body:has(.navbar) .nav-links.is-open {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+  }
+
+  body:has(.navbar) .nav-links a {
+    min-height: 42px;
+    padding: 7px 6px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 760px) {
+  body:has(.navbar) .hero-container {
+    width: calc(100% - 28px);
+    gap: 20px;
+  }
+
+  body:has(.navbar) .hero-nameplate h1.hero-name {
+    max-width: 100%;
+    font-size: clamp(32px, 8.8vw, 48px);
+    line-height: 1.06;
+    white-space: normal;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  body:has(.navbar) .hero-nameplate .qualifications {
+    font-size: clamp(14px, 3.8vw, 17px);
+    overflow-wrap: anywhere;
+  }
+
+  body:has(.navbar) .profile-card {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  body:has(.navbar) .photo-frame img {
+    max-height: 340px;
+  }
+
+  body:has(.navbar) .profile-photo-link-stack {
+    width: clamp(64px, 18%, 82px);
+  }
+
+  body:has(.navbar) .profile-photo-link-stack a {
+    min-height: 44px;
+    font-size: 9px;
+  }
+
+  body:has(.navbar) .hero-summary-row {
+    gap: 12px;
+  }
+
+  body:has(.navbar) .hero-download-actions {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+@media (max-width: 380px) {
+  body:has(.navbar) .hero > .hero-message {
+    width: calc(100% - 20px);
+    grid-template-columns: 23px minmax(0, 1fr);
+    gap: 6px;
+    padding-inline: 10px;
+  }
+
+  body:has(.navbar) .hero-container {
+    width: calc(100% - 20px);
+  }
+
+  body:has(.navbar) .hero-nameplate {
+    padding: 16px 12px;
+  }
+
+  body:has(.navbar) .profile-card {
+    padding: 11px;
+  }
+
+  body:has(.navbar) .profile-photo-link-stack {
+    width: 62px;
+    gap: 5px;
+  }
+
+  body:has(.navbar) .profile-photo-link-stack--left { left: 4px; }
+  body:has(.navbar) .profile-photo-link-stack--right { right: 4px; }
+
+  body:has(.navbar) .profile-photo-link-stack a {
+    min-height: 42px;
+    padding-inline: 2px;
+    font-size: 8px;
+  }
+
+  body:has(.navbar) .profile-bottom strong {
+    font-size: 14px;
+  }
+}
