@@ -4031,3 +4031,28 @@ body:has(.navbar) .hero {
     font-size: 14px;
   }
 }
+
+/* Keep publication type and year filters clearly separated and easy to scan. */
+body:has(.navbar) .publication-filters {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+body:has(.navbar) .publication-filter-group {
+  min-width: 0;
+}
+
+body:has(.navbar) .publication-filter-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #a8a0bb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body:has(.navbar) .publication-filter-group .publication-filter-note {
+  margin-bottom: 0;
+}
