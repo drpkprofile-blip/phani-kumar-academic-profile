@@ -2800,6 +2800,12 @@ body:has(.navbar) .hero-buttons .button-secondary[href="/admin/resume"]:hover { 
   color: var(--teal);
 }
 
+.project-guided-student {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.3em;
+}
+
 .project-guided-topline {
   display: flex;
   flex-wrap: wrap;

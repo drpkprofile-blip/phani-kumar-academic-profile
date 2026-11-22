@@ -40,7 +40,11 @@ export default function ProjectGuidedBrowser({ projects }: ProjectGuidedBrowserP
           <h3>{project.projectTitle}</h3>
           {[project.degreeProgram, project.branch, project.academicYear, project.batch]
             .filter(Boolean).map((detail, detailIndex) => <p key={`${detailIndex}-${detail}`}>{detail}</p>)}
-          {project.studentNames && <p><strong>{pageCopy.students}:</strong> {project.studentNames.join(", ")}</p>}
+          {project.studentNames && <p className="project-guided-students"><strong>{pageCopy.students}:</strong>{" "}
+            {project.studentNames.map((student, studentIndex) => <span className="project-guided-student" key={`${studentIndex}-${student}`}>
+              {student}{studentIndex < project.studentNames!.length - 1 ? "," : ""}
+            </span>)}
+          </p>}
           {project.guideName && <p><strong>{pageCopy.guide}:</strong> {project.guideName}</p>}
           {project.coGuideNames && <p><strong>{pageCopy.coGuides}:</strong> {project.coGuideNames.join(", ")}</p>}
           {project.proofUrl && <div className="proof-row"><a href={project.proofUrl} target="_blank" rel="noopener noreferrer" className="proof-link">{pageCopy.proof}{pageCopy.linkArrowWithSpace}</a></div>}

@@ -12,7 +12,7 @@ const fields: Array<{ name: keyof ProjectGuidedValues; label: string; multiline?
   { name: "branch", label: "Branch (optional)" },
   { name: "academic_year", label: "Academic Year (optional)" },
   { name: "batch", label: "Batch (optional)" },
-  { name: "student_names", label: "Student Names (optional; one name per line)", multiline: true },
+  { name: "student_names", label: "Students (optional; one student per line, keep name and roll number together)", multiline: true },
   { name: "guide_name", label: "Guide Name (optional)" },
   { name: "co_guide_names", label: "Co-Guide Names (optional; one name per line)", multiline: true },
   { name: "proof_url", label: "Proof URL (optional)" },
